@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Arvis — ШІ, сайти, боти та застосунки на замовлення</title>
   <meta name="description" content="Arvis — команда розробників і ШІ: робимо ШІ-помічників, сайти, Telegram-ботів, застосунки, ігри в Roblox, відеомонтаж, дизайн і 3D-моделі на замовлення.">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#FFFFFF">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,17 +39,7 @@
 
   <header class="top">
     <div class="wrap top-in">
-      <!-- логотип в шапке собран по частям: на заставке электроны рисуют свои орбиты, буквы съезжаются -->
-      <a class="brand brand-top" href="#top" aria-label="Arvis">
-        <svg class="brand-mark" viewBox="0 0 120 120" aria-hidden="true">
-          <path class="bo bo1" pathLength="1" d="M79.09 40.91A27 27 0 1 1 40.91 79.09A27 27 0 1 1 79.09 40.91"/>
-          <path class="bo bo2" pathLength="1" d="M25.35 94.65A49 49 0 1 1 94.65 25.35A49 49 0 1 1 25.35 94.65"/>
-          <circle class="bn" cx="60" cy="60" r="11"/>
-          <g class="be be1"><circle cx="79.1" cy="40.9" r="7"/></g>
-          <g class="be be2"><circle cx="25.4" cy="94.6" r="7.5"/></g>
-        </svg>
-        <span class="brand-name" aria-hidden="true"><span style="--i:0">a</span><span style="--i:1">r</span><span style="--i:2">v</span><span style="--i:3">i</span><span style="--i:4">s</span></span>
-      </a>
+      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#atom"/></svg><span class="brand-name">arvis</span></a>
       <nav class="nav" aria-label="Розділи" data-i18n-aria="nav.label">
         <a href="#services" data-i18n="nav.services">Послуги</a>
         <a href="#process" data-i18n="nav.process">Як працюємо</a>
@@ -61,33 +51,36 @@
           <button type="button" data-lang="ru" lang="ru" aria-pressed="false">RU</button>
           <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
         </div>
-        <a class="btn btn-inv btn-sm top-cta" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="cta.short">Написати</a>
+        <a class="btn btn-sm top-cta" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="cta.short">Написати</a>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <!-- Первый экран: сначала логотип (он живёт в шапке и на заставке увеличен в центр), потом текст лесенкой.
-         Сзади — тот же атом, огромный и тусклый: электроны медленно ходят по орбитам. -->
+    <!-- Первый экран — плакат: сверху текст, снизу слово arvis во всю ширину, низ букв срезан линией.
+         Заставка: сначала буквы выезжают из-за линии и рисуется атом, потом появляется текст. -->
     <section class="hero" id="top">
-      <div class="orbits" aria-hidden="true">
-        <svg viewBox="0 0 120 120"><circle class="g-orb" cx="60" cy="60" r="27"/><circle class="g-orb" cx="60" cy="60" r="49"/><circle class="g-nuc" cx="60" cy="60" r="11"/></svg>
-        <div class="g-e g-e1"><svg viewBox="0 0 120 120"><circle cx="79.1" cy="40.9" r="2.2"/></svg></div>
-        <div class="g-e g-e2"><svg viewBox="0 0 120 120"><circle cx="25.4" cy="94.6" r="2.4"/></svg></div>
-      </div>
-      <div class="wrap hero-in">
-        <h1 class="hl" data-i18n-lines="hero.lines"><span class="ln l1"><span>Робимо сайти,</span></span> <span class="ln l2"><span>ботів і ШІ&#8209;помічників</span></span> <span class="ln l3"><span>для вашого бізнесу</span></span></h1>
-        <div class="hero-foot">
+      <div class="wrap hero-top">
+        <h1 class="hl"><span data-i18n="hero.title">Робимо сайти, ботів і ШІ&#8209;помічників для вашого бізнесу</span></h1>
+        <div class="hero-side">
           <p class="lead" data-i18n="hero.lead">Люди продумують задачу й пишуть код, ШІ бере на себе рутину — тому швидко і без зайвих витрат. Ціну називаємо одразу після розмови.</p>
-          <div class="hero-act">
-            <div class="hero-actions">
-              <a class="btn btn-inv" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="hero.cta">Обговорити задачу</a>
-              <a class="link" href="#services" data-i18n="hero.more">Дивитися ціни</a>
-            </div>
-            <p class="note" data-i18n="hero.note">Відповідаємо в Telegram. Обговорення безкоштовне.</p>
+          <div class="hero-actions">
+            <a class="btn" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="hero.cta">Обговорити задачу</a>
+            <a class="link" href="#services" data-i18n="hero.more">Дивитися ціни</a>
           </div>
+          <p class="note" data-i18n="hero.note">Відповідаємо в Telegram. Обговорення безкоштовне.</p>
         </div>
       </div>
+      <div class="word" aria-hidden="true"><span>a</span><span>r</span><span>v</span><span class="ii">ı<span class="i-atom">
+          <!-- орбиты начинаются в точке своего электрона: он ведёт линию, как перо -->
+          <svg viewBox="0 0 120 120">
+            <path class="bo bo1" pathLength="1" d="M79.09 40.91A27 27 0 1 1 40.91 79.09A27 27 0 1 1 79.09 40.91"/>
+            <path class="bo bo2" pathLength="1" d="M25.35 94.65A49 49 0 1 1 94.65 25.35A49 49 0 1 1 25.35 94.65"/>
+            <circle class="bn" cx="60" cy="60" r="11"/>
+          </svg>
+          <i class="de de1"><svg viewBox="0 0 120 120"><circle cx="79.1" cy="40.9" r="7"/></svg></i>
+          <i class="de de2"><svg viewBox="0 0 120 120"><circle cx="25.4" cy="94.6" r="7.5"/></svg></i>
+        </span></span><span>s</span></div>
     </section>
 
     <!-- Услуги: список-указатель, строка раскрывается в цены и живую сценку -->

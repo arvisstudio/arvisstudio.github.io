@@ -12,7 +12,7 @@
       "skip": "Перейти до змісту",
       "nav.label": "Розділи", "nav.services": "Послуги", "nav.process": "Як працюємо", "nav.contact": "Контакти",
       "cta.short": "Написати",
-      "hero.lines": "Робимо сайти,|ботів і ШІ‑помічників|для вашого бізнесу",
+      "hero.title": "Робимо сайти, ботів і ШІ‑помічників для вашого бізнесу",
       "hero.lead": "Люди продумують задачу й пишуть код, ШІ бере на себе рутину — тому швидко і без зайвих витрат. Ціну називаємо одразу після розмови.",
       "hero.cta": "Обговорити задачу", "hero.more": "Дивитися ціни",
       "hero.note": "Відповідаємо в Telegram. Обговорення безкоштовне.",
@@ -49,7 +49,7 @@
       "skip": "Перейти к содержанию",
       "nav.label": "Разделы", "nav.services": "Услуги", "nav.process": "Как работаем", "nav.contact": "Контакты",
       "cta.short": "Написать",
-      "hero.lines": "Делаем сайты,|ботов и ИИ‑помощников|для вашего бизнеса",
+      "hero.title": "Делаем сайты, ботов и ИИ‑помощников для вашего бизнеса",
       "hero.lead": "Люди продумывают задачу и пишут код, ИИ берёт на себя рутину — поэтому быстро и без лишних затрат. Цену называем сразу после разговора.",
       "hero.cta": "Обсудить задачу", "hero.more": "Смотреть цены",
       "hero.note": "Отвечаем в Telegram. Обсуждение бесплатное.",
@@ -86,7 +86,7 @@
       "skip": "Skip to content",
       "nav.label": "Sections", "nav.services": "Services", "nav.process": "How we work", "nav.contact": "Contact",
       "cta.short": "Message us",
-      "hero.lines": "We build websites,|bots and AI assistants|for your business",
+      "hero.title": "We build websites, bots and AI assistants for your business",
       "hero.lead": "People think the task through and write the code; AI takes care of the routine — so it's fast and costs less. You get a price right after the first chat.",
       "hero.cta": "Discuss your project", "hero.more": "See prices",
       "hero.note": "We reply on Telegram. The first chat is free.",
@@ -200,11 +200,6 @@
     document.documentElement.lang = lang;
     document.querySelectorAll("[data-i18n]").forEach((el) => { const t = dict[el.dataset.i18n]; if (t) el.textContent = t; });
     document.querySelectorAll("[data-i18n-aria]").forEach((el) => { const t = dict[el.dataset.i18nAria]; if (t) el.setAttribute("aria-label", t); });
-    // заголовок лесенкой: строки через «|», каждая в своём окошке
-    document.querySelectorAll("[data-i18n-lines]").forEach((el) => {
-      const lines = dict[el.dataset.i18nLines].split("|");
-      el.querySelectorAll(".ln > span").forEach((s, i) => { s.textContent = lines[i] || ""; });
-    });
     document.title = dict["meta.title"];
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", dict["meta.desc"]);
@@ -356,31 +351,37 @@
     plus.textContent = "+10";
   })();
 
-  /* ---------- заставка: логотип увеличен в центре экрана, потом улетает на своё место в шапке ---------- */
+  /* ---------- слово arvis во всю ширину экрана: меряем на 100px и пересчитываем ---------- */
+  const word = document.querySelector(".word");
+  function fitWord() {
+    const free = document.documentElement.clientWidth - (innerWidth <= 560 ? 32 : 48);
+    word.style.setProperty("--word-size", "100px");
+    word.style.setProperty("--word-size", (100 * free / word.getBoundingClientRect().width).toFixed(1) + "px");
+  }
+  let resizeTimer;
+  window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(fitWord, 100); });
+  if (document.fonts) document.fonts.addEventListener("loadingdone", fitWord);
+  fitWord();
+
+  /* ---------- заставка: буквы выезжают из-за линии, рисуется атом, потом текст ---------- */
   const root = document.documentElement;
-  // слабое устройство или экономия трафика — без постоянного движения (зерно и электроны стоят на месте)
+  // слабое устройство или экономия трафика — без заставки и без постоянного движения
   const conn = navigator.connection;
   if ((conn && conn.saveData) || navigator.deviceMemory <= 2 || navigator.hardwareConcurrency <= 2) root.classList.add("lite");
-  if (root.classList.contains("intro")) {
-    if (window.scrollY > 80) root.classList.remove("intro");   // страницу открыли не с начала — заставка не нужна
-    const brand = document.querySelector(".brand-top");
-    const start = () => {
-      if (!root.classList.contains("intro") || root.classList.contains("go")) return;  // запасной таймер успел раньше
-      const r = brand.getBoundingClientRect();
-      brand.style.setProperty("--bx", (innerWidth / 2 - (r.left + r.width / 2)).toFixed(1) + "px");
-      brand.style.setProperty("--by", (innerHeight / 2 - (r.top + r.height / 2)).toFixed(1) + "px");
-      brand.style.setProperty("--bs", Math.min(3.4, (innerWidth * 0.62) / r.width).toFixed(3));
-      root.classList.add("go");
-      // ?t=1500 — стоп-кадр заставки на 1.5 с: так проверяю кадры, на обычных посетителей не влияет
-      const t = new URLSearchParams(location.search).get("t");
-      if (t !== null) {
-        getComputedStyle(brand).transform;   // пересчитать стили сразу, чтобы анимации уже существовали
-        document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(t); });
-      }
-    };
-    // ждём шрифты, чтобы буквы «arvis» не прыгнули посреди анимации, но не дольше 0.7 с
-    Promise.race([document.fonts ? document.fonts.ready : null, new Promise((r) => setTimeout(r, 700))]).then(start);
-  }
+  // страницу открыли не с начала — заставка тоже не нужна
+  if (window.scrollY > 80 || root.classList.contains("lite")) root.classList.remove("intro");
+  // ждём шрифты, чтобы слово не поменяло ширину посреди анимации, но не дольше 0.7 с
+  Promise.race([document.fonts ? document.fonts.ready : null, new Promise((r) => setTimeout(r, 700))]).then(() => {
+    fitWord();
+    if (!root.classList.contains("intro") || root.classList.contains("go")) return;  // запасной таймер успел раньше
+    root.classList.add("go");
+    // ?t=1500 — стоп-кадр заставки на 1.5 с: так проверяю кадры, на обычных посетителей не влияет
+    const t = new URLSearchParams(location.search).get("t");
+    if (t !== null) {
+      getComputedStyle(word).width;   // пересчитать стили сразу, чтобы анимации уже существовали
+      document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(t); });
+    }
+  });
 
   /* ---------- что видно на экране: запускаем и ставим на паузу ---------- */
   const hero = document.querySelector(".hero");
