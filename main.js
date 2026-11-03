@@ -12,11 +12,10 @@
       "skip": "Перейти до змісту",
       "nav.label": "Розділи", "nav.services": "Послуги", "nav.process": "Як працюємо", "nav.contact": "Контакти",
       "cta.short": "Написати",
-      "hero.title": "Робимо сайти, ботів і ШІ‑помічників для вашого бізнесу",
+      "hero.lines": "Робимо сайти,|ботів і ШІ‑помічників|для вашого бізнесу",
       "hero.lead": "Люди продумують задачу й пишуть код, ШІ бере на себе рутину — тому швидко і без зайвих витрат. Ціну називаємо одразу після розмови.",
       "hero.cta": "Обговорити задачу", "hero.more": "Дивитися ціни",
       "hero.note": "Відповідаємо в Telegram. Обговорення безкоштовне.",
-      "hero.people": "люди", "hero.ai": "ШІ", "hero.biz": "ваш бізнес",
       "svc.title": "Що ми робимо",
       "svc.lead": "Оберіть напрям — покажемо, як це працює і скільки коштує.",
       "svc.cta": "Обговорити в Telegram",
@@ -50,11 +49,10 @@
       "skip": "Перейти к содержанию",
       "nav.label": "Разделы", "nav.services": "Услуги", "nav.process": "Как работаем", "nav.contact": "Контакты",
       "cta.short": "Написать",
-      "hero.title": "Делаем сайты, ботов и ИИ‑помощников для вашего бизнеса",
+      "hero.lines": "Делаем сайты,|ботов и ИИ‑помощников|для вашего бизнеса",
       "hero.lead": "Люди продумывают задачу и пишут код, ИИ берёт на себя рутину — поэтому быстро и без лишних затрат. Цену называем сразу после разговора.",
       "hero.cta": "Обсудить задачу", "hero.more": "Смотреть цены",
       "hero.note": "Отвечаем в Telegram. Обсуждение бесплатное.",
-      "hero.people": "люди", "hero.ai": "ИИ", "hero.biz": "ваш бизнес",
       "svc.title": "Что мы делаем",
       "svc.lead": "Выберите направление — покажем, как это работает и сколько стоит.",
       "svc.cta": "Обсудить в Telegram",
@@ -88,11 +86,10 @@
       "skip": "Skip to content",
       "nav.label": "Sections", "nav.services": "Services", "nav.process": "How we work", "nav.contact": "Contact",
       "cta.short": "Message us",
-      "hero.title": "We build websites, bots and AI assistants for your business",
+      "hero.lines": "We build websites,|bots and AI assistants|for your business",
       "hero.lead": "People think the task through and write the code; AI takes care of the routine — so it's fast and costs less. You get a price right after the first chat.",
       "hero.cta": "Discuss your project", "hero.more": "See prices",
       "hero.note": "We reply on Telegram. The first chat is free.",
-      "hero.people": "people", "hero.ai": "AI", "hero.biz": "your business",
       "svc.title": "What we do",
       "svc.lead": "Pick a service to see how it works and what it costs.",
       "svc.cta": "Discuss on Telegram",
@@ -203,6 +200,11 @@
     document.documentElement.lang = lang;
     document.querySelectorAll("[data-i18n]").forEach((el) => { const t = dict[el.dataset.i18n]; if (t) el.textContent = t; });
     document.querySelectorAll("[data-i18n-aria]").forEach((el) => { const t = dict[el.dataset.i18nAria]; if (t) el.setAttribute("aria-label", t); });
+    // заголовок лесенкой: строки через «|», каждая в своём окошке
+    document.querySelectorAll("[data-i18n-lines]").forEach((el) => {
+      const lines = dict[el.dataset.i18nLines].split("|");
+      el.querySelectorAll(".ln > span").forEach((s, i) => { s.textContent = lines[i] || ""; });
+    });
     document.title = dict["meta.title"];
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", dict["meta.desc"]);
@@ -354,9 +356,37 @@
     plus.textContent = "+10";
   })();
 
+  /* ---------- заставка: логотип увеличен в центре экрана, потом улетает на своё место в шапке ---------- */
+  const root = document.documentElement;
+  // слабое устройство или экономия трафика — без постоянного движения (зерно и электроны стоят на месте)
+  const conn = navigator.connection;
+  if ((conn && conn.saveData) || navigator.deviceMemory <= 2 || navigator.hardwareConcurrency <= 2) root.classList.add("lite");
+  if (root.classList.contains("intro")) {
+    if (window.scrollY > 80) root.classList.remove("intro");   // страницу открыли не с начала — заставка не нужна
+    const brand = document.querySelector(".brand-top");
+    const start = () => {
+      if (!root.classList.contains("intro") || root.classList.contains("go")) return;  // запасной таймер успел раньше
+      const r = brand.getBoundingClientRect();
+      brand.style.setProperty("--bx", (innerWidth / 2 - (r.left + r.width / 2)).toFixed(1) + "px");
+      brand.style.setProperty("--by", (innerHeight / 2 - (r.top + r.height / 2)).toFixed(1) + "px");
+      brand.style.setProperty("--bs", Math.min(3.4, (innerWidth * 0.62) / r.width).toFixed(3));
+      root.classList.add("go");
+      // ?t=1500 — стоп-кадр заставки на 1.5 с: так проверяю кадры, на обычных посетителей не влияет
+      const t = new URLSearchParams(location.search).get("t");
+      if (t !== null) {
+        getComputedStyle(brand).transform;   // пересчитать стили сразу, чтобы анимации уже существовали
+        document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(t); });
+      }
+    };
+    // ждём шрифты, чтобы буквы «arvis» не прыгнули посреди анимации, но не дольше 0.7 с
+    Promise.race([document.fonts ? document.fonts.ready : null, new Promise((r) => setTimeout(r, 700))]).then(start);
+  }
+
   /* ---------- что видно на экране: запускаем и ставим на паузу ---------- */
+  const hero = document.querySelector(".hero");
   const services = document.getElementById("services");
   if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([e]) => hero.classList.toggle("paused", !e.isIntersecting)).observe(hero);
     new IntersectionObserver(([e]) => {
       servicesVisible = e.isIntersecting;
       if (servicesVisible && current) runScene(current); else stopScene();

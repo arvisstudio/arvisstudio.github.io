@@ -5,13 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Arvis — ШІ, сайти, боти та застосунки на замовлення</title>
   <meta name="description" content="Arvis — команда розробників і ШІ: робимо ШІ-помічників, сайти, Telegram-ботів, застосунки, ігри в Roblox, відеомонтаж, дизайн і 3D-моделі на замовлення.">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#000000">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geologica:wght,SHRP@300..800,0..100&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    // Заставка с логотипом — только при обычном заходе: не по ссылке на раздел и не при «меньше движения».
+    // Запускает её main.js, когда загрузятся шрифты; если что-то пошло не так — через 1.5 с сама.
+    (function (d) {
+      d.classList.add("js");
+      if (location.hash || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      d.classList.add("intro");
+      setTimeout(function () { d.classList.add("go"); }, 1500);
+    })(document.documentElement);
+  </script>
 </head>
 <body>
   <a class="skip" href="#main" data-i18n="skip">Перейти до змісту</a>
@@ -30,7 +39,17 @@
 
   <header class="top">
     <div class="wrap top-in">
-      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#atom"/></svg><span class="brand-name">arvis</span></a>
+      <!-- логотип в шапке собран по частям: на заставке электроны рисуют свои орбиты, буквы съезжаются -->
+      <a class="brand brand-top" href="#top" aria-label="Arvis">
+        <svg class="brand-mark" viewBox="0 0 120 120" aria-hidden="true">
+          <path class="bo bo1" pathLength="1" d="M79.09 40.91A27 27 0 1 1 40.91 79.09A27 27 0 1 1 79.09 40.91"/>
+          <path class="bo bo2" pathLength="1" d="M25.35 94.65A49 49 0 1 1 94.65 25.35A49 49 0 1 1 25.35 94.65"/>
+          <circle class="bn" cx="60" cy="60" r="11"/>
+          <g class="be be1"><circle cx="79.1" cy="40.9" r="7"/></g>
+          <g class="be be2"><circle cx="25.4" cy="94.6" r="7.5"/></g>
+        </svg>
+        <span class="brand-name" aria-hidden="true"><span style="--i:0">a</span><span style="--i:1">r</span><span style="--i:2">v</span><span style="--i:3">i</span><span style="--i:4">s</span></span>
+      </a>
       <nav class="nav" aria-label="Розділи" data-i18n-aria="nav.label">
         <a href="#services" data-i18n="nav.services">Послуги</a>
         <a href="#process" data-i18n="nav.process">Як працюємо</a>
@@ -42,40 +61,31 @@
           <button type="button" data-lang="ru" lang="ru" aria-pressed="false">RU</button>
           <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
         </div>
-        <a class="btn btn-sm top-cta" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="cta.short">Написати</a>
+        <a class="btn btn-inv btn-sm top-cta" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="cta.short">Написати</a>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <!-- Первый экран: логотип-атом собирается в схему «ваш бизнес в центре, вокруг — люди и ИИ» -->
+    <!-- Первый экран: сначала логотип (он живёт в шапке и на заставке увеличен в центр), потом текст лесенкой.
+         Сзади — тот же атом, огромный и тусклый: электроны медленно ходят по орбитам. -->
     <section class="hero" id="top">
+      <div class="orbits" aria-hidden="true">
+        <svg viewBox="0 0 120 120"><circle class="g-orb" cx="60" cy="60" r="27"/><circle class="g-orb" cx="60" cy="60" r="49"/><circle class="g-nuc" cx="60" cy="60" r="11"/></svg>
+        <div class="g-e g-e1"><svg viewBox="0 0 120 120"><circle cx="79.1" cy="40.9" r="2.2"/></svg></div>
+        <div class="g-e g-e2"><svg viewBox="0 0 120 120"><circle cx="25.4" cy="94.6" r="2.4"/></svg></div>
+      </div>
       <div class="wrap hero-in">
-        <div class="hero-copy">
-          <h1 data-i18n="hero.title">Робимо сайти, ботів і ШІ&#8209;помічників для вашого бізнесу</h1>
+        <h1 class="hl" data-i18n-lines="hero.lines"><span class="ln l1"><span>Робимо сайти,</span></span> <span class="ln l2"><span>ботів і ШІ&#8209;помічників</span></span> <span class="ln l3"><span>для вашого бізнесу</span></span></h1>
+        <div class="hero-foot">
           <p class="lead" data-i18n="hero.lead">Люди продумують задачу й пишуть код, ШІ бере на себе рутину — тому швидко і без зайвих витрат. Ціну називаємо одразу після розмови.</p>
-          <div class="hero-actions">
-            <a class="btn" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="hero.cta">Обговорити задачу</a>
-            <a class="link" href="#services" data-i18n="hero.more">Дивитися ціни</a>
+          <div class="hero-act">
+            <div class="hero-actions">
+              <a class="btn btn-inv" href="https://t.me/yyfvjk" target="_blank" rel="noopener" data-i18n="hero.cta">Обговорити задачу</a>
+              <a class="link" href="#services" data-i18n="hero.more">Дивитися ціни</a>
+            </div>
+            <p class="note" data-i18n="hero.note">Відповідаємо в Telegram. Обговорення безкоштовне.</p>
           </div>
-          <p class="note" data-i18n="hero.note">Відповідаємо в Telegram. Обговорення безкоштовне.</p>
-        </div>
-
-        <div class="diagram" aria-hidden="true">
-          <svg class="dg-base" viewBox="-14 -4 148 128">
-            <path class="orbit o1" pathLength="1" d="M60 33a27 27 0 1 1 0 54a27 27 0 1 1 0-54"/>
-            <path class="orbit o2" pathLength="1" d="M60 11a49 49 0 1 1 0 98a49 49 0 1 1 0-98"/>
-            <circle class="nucleus" cx="60" cy="60" r="11"/>
-            <path class="leader l-biz" pathLength="1" d="M68 68L104 104H110"/>
-            <path class="leader l-people" pathLength="1" d="M84 36L100 20H110"/>
-            <path class="leader l-ai" pathLength="1" d="M20 100L6 114H-2"/>
-          </svg>
-          <!-- электроны отдельными слоями: так их проще прокрутить по орбите -->
-          <div class="e-ring e-in"><svg viewBox="0 0 120 120"><circle cx="79.1" cy="40.9" r="7"/></svg></div>
-          <div class="e-ring e-out"><svg viewBox="0 0 120 120"><circle cx="25.4" cy="94.6" r="7.5"/></svg></div>
-          <span class="tag t-people" data-i18n="hero.people">люди</span>
-          <span class="tag t-ai" data-i18n="hero.ai">ШІ</span>
-          <span class="tag t-biz" data-i18n="hero.biz">ваш бізнес</span>
         </div>
       </div>
     </section>

@@ -9,6 +9,8 @@
   --font: "Geologica", system-ui, -apple-system, "Segoe UI", sans-serif;
   --word: "Space Grotesk", "Geologica", sans-serif;  /* только надпись «arvis», кириллицы в нём нет */
   --spring: cubic-bezier(0.3, 1.3, 0.5, 1);
+  /* плёночное зерно: настоящий шум (feTurbulence), прозрачность уже зашита в плитку — браузер рисует её один раз */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 .38 0 0 0 -.16'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -42,56 +44,93 @@ a { color: inherit; }
 .link:hover { text-decoration-thickness: 4px; }
 
 /* ---------- шапка ---------- */
-.top { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--ink); }
+/* шапка с тем же зерном, что и первый экран, — без ступеньки на стыке */
+.top { position: sticky; top: 0; z-index: 50; background: var(--grain) 0 0 / 240px 240px, var(--ink); color: var(--paper); border-bottom: 1px solid #262626; }
+.top :focus-visible { outline-color: var(--paper); }
 .top-in { display: flex; align-items: center; gap: 32px; min-height: 68px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
 .brand-mark { width: 32px; height: 32px; }
 .brand-name { font: 600 25px/1 var(--word); letter-spacing: -0.08em; padding-bottom: 3px; }
+.brand-name > span { display: inline-block; }
+.bo { fill: none; stroke: currentColor; stroke-width: 5; }
+.bn, .be { fill: currentColor; }
+.be { transform-box: view-box; transform-origin: 60px 60px; }
 .nav { display: flex; gap: 28px; }
 .nav a { font-size: 16px; text-decoration: none; }
 .nav a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
 .top-actions { display: flex; align-items: center; gap: 18px; margin-left: auto; }
 .lang { display: inline-flex; gap: 2px; }
-.lang button { border: 0; background: none; color: var(--grey); cursor: pointer; font: 500 14px/1 var(--font); padding: 9px 7px; border-radius: 4px; }
-.lang button:hover { color: var(--ink); }
-.lang button[aria-pressed="true"] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.lang button { border: 0; background: none; color: var(--grey-dark); cursor: pointer; font: 500 14px/1 var(--font); padding: 9px 7px; border-radius: 4px; }
+.lang button:hover { color: var(--paper); }
+.lang button[aria-pressed="true"] { color: var(--paper); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
 
-/* ---------- первый экран ---------- */
-.hero { padding: 88px 0 104px; overflow: hidden; }
-.hero-in { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center; }
-.hero h1 { font-size: clamp(40px, 6.2vw, 88px); line-height: 1; letter-spacing: -0.04em; max-width: 11.5ch; }
-.lead { margin-top: 32px; max-width: 31em; font-size: 21px; line-height: 1.5; }
-.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; margin-top: 40px; }
-.note { margin-top: 20px; font-size: 15px; color: var(--grey); }
+/* ---------- первый экран: чёрный, текст лесенкой через весь экран, сзади огромный тусклый атом ---------- */
+.hero { position: relative; isolation: isolate; overflow: hidden; display: grid; align-items: center; min-height: calc(100svh - 68px); padding: 72px 0 64px; background: var(--ink); color: var(--paper); }
+.hero :focus-visible { outline-color: var(--paper); }
+/* зерно на первом экране слегка дрожит: плитку только сдвигаем, перерисовки нет */
+.hero::before { content: ""; position: absolute; inset: -64px; z-index: 2; pointer-events: none; background: var(--grain) 0 0 / 240px 240px; }
+.hero-in { position: relative; z-index: 1; }
+.hl { font-size: clamp(36px, 6vw, 80px); line-height: 1; letter-spacing: -0.045em; }
+/* каждая строка — окошко: текст поднимается снизу; поля — чтобы не обрезались хвосты и точки над «ї» */
+.ln { display: block; overflow: hidden; padding: 0.08em 0 0.14em; margin: -0.08em 0 -0.14em; }
+.ln > span { display: inline-block; }
+.l2 { padding-left: 12%; }
+.l3 { text-align: right; }
+.hero-foot { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 32px 64px; margin-top: 72px; }
+.lead { max-width: 30em; font-size: 20px; line-height: 1.5; color: #D4D4D4; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+.note { margin-top: 16px; font-size: 15px; color: var(--grey-dark); }
 
-/* схема-атом: те же пропорции, что у логотипа; подписи — как выноски в учебнике */
-.diagram { position: relative; width: 100%; max-width: 500px; justify-self: end; aspect-ratio: 148 / 128; }
-.dg-base { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.orbit { fill: none; stroke: var(--ink); stroke-width: 5; }
-.nucleus, .e-ring circle { fill: var(--ink); }
-.leader { fill: none; stroke: var(--ink); stroke-width: 1.25; vector-effect: non-scaling-stroke; }
-.e-ring { position: absolute; left: 9.459%; top: 3.125%; width: 81.081%; height: 93.75%; }
-.e-ring svg { width: 100%; height: 100%; }
-.tag { position: absolute; transform: translateY(-50%); font-size: 16px; line-height: 1.15; max-width: 5.6em; }
-.t-people { left: 85.6%; top: 18.75%; }
-.t-biz { left: 85.6%; top: 84.375%; }
-.t-ai { right: 93.6%; top: 92.19%; text-align: right; }
+/* огромный атом за текстом: тонкие тёмно-серые линии — фон, а не картинка, текст поверх читается */
+.orbits { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: max(600px, min(124vh, 104vw)); aspect-ratio: 1; pointer-events: none; }
+.orbits svg, .g-e { position: absolute; inset: 0; width: 100%; height: 100%; }
+.g-orb { fill: none; stroke: #2A2A2A; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.g-nuc { fill: #121212; }
+.g-e circle { fill: #3A3A3A; }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* один раз при загрузке: орбиты рисуются, электроны прилетают на свои места, потом появляются подписи */
-  .js .orbit { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1s cubic-bezier(0.6, 0, 0.2, 1) forwards; }
-  .js .o1 { animation-delay: 0.15s; }
-  .js .o2 { animation-delay: 0.35s; }
-  .js .nucleus { transform-box: fill-box; transform-origin: center; animation: grow 0.5s var(--spring) both; }
-  .js .e-ring { animation: orbit-in 1.7s cubic-bezier(0.16, 0.84, 0.24, 1) 0.3s both; }
-  .js .e-out { --from: -160deg; animation-duration: 1.9s; }
-  .js .leader, .js .tag { animation: show 0.5s ease 1.7s both; }
+  /* постоянное движение — только transform, его считает видеокарта; вне экрана стоит на паузе */
+  .js:not(.lite) .hero::before { animation: grain 0.9s steps(1) infinite; }
+  .js:not(.lite) .g-e1 { animation: spin 64s linear infinite; }
+  .js:not(.lite) .g-e2 { animation: spin 100s linear infinite; }
+
+  /* заставка ~3.5 с: логотип в центре → электроны рисуют орбиты → буквы съезжаются → логотип улетает в шапку → текст */
+  .intro:not(.go) *, .intro:not(.go) *::before { animation-play-state: paused !important; }
+  .intro .brand-top { position: relative; z-index: 60; animation: brand-fly 2.9s cubic-bezier(0.65, 0, 0.35, 1) both; }
+  .intro .bo { stroke-dasharray: 1; stroke-dashoffset: 1; animation: pen 1.3s cubic-bezier(0.45, 0.05, 0.25, 1) 0.1s both; }
+  .intro .bo2 { animation-duration: 1.5s; animation-delay: 0.2s; }
+  .intro .be1 { animation: lap 1.3s cubic-bezier(0.45, 0.05, 0.25, 1) 0.1s both; }
+  .intro .be2 { animation: lap 1.5s cubic-bezier(0.45, 0.05, 0.25, 1) 0.2s both; }
+  .intro .bn { transform-box: fill-box; transform-origin: center; animation: nuc 0.6s ease-out both; }
+  .intro .brand-name > span { animation: track 1s cubic-bezier(0.22, 1, 0.36, 1) 1.05s both; }
+  .intro .top { animation: rule 0.6s ease 2.6s both; }
+  .intro .nav, .intro .top-actions { animation: show 0.6s ease 2.6s both; }
+  .intro .orbits { animation: orbits-in 1.6s cubic-bezier(0.22, 1, 0.36, 1) 1.95s both; }
+  .intro .ln > span { animation: rise 1s cubic-bezier(0.22, 1, 0.36, 1) 2.2s both; }
+  .intro .l2 > span { animation-delay: 2.32s; }
+  .intro .l3 > span { animation-delay: 2.44s; }
+  .intro .hero-foot { animation: up 0.8s cubic-bezier(0.22, 1, 0.36, 1) 2.75s both; }
 }
-/* в конце пунктир снимаем совсем — иначе на стыке начала и конца остаётся волосок */
-@keyframes draw { 99% { stroke-dashoffset: 0; stroke-dasharray: 1; } 100% { stroke-dashoffset: 0; stroke-dasharray: none; } }
-@keyframes grow { from { transform: scale(0); } }
-@keyframes orbit-in { from { transform: rotate(var(--from, -300deg)); opacity: 0; } 15% { opacity: 1; } }
+/* логотип увеличен в центре экрана (смещение и масштаб считает main.js), держится, потом улетает на место */
+@keyframes brand-fly { 0%, 66% { transform: translate(var(--bx, 0px), var(--by, 0px)) scale(var(--bs, 1)); } 100% { transform: none; } }
+/* орбита рисуется от электрона и с той же скоростью — он ведёт линию, как перо.
+   В конце пунктир снимаем совсем — иначе на стыке начала и конца остаётся волосок */
+@keyframes pen { 99% { stroke-dashoffset: 0; stroke-dasharray: 1; } 100% { stroke-dashoffset: 0; stroke-dasharray: none; } }
+@keyframes lap { 0% { transform: rotate(-360deg); opacity: 0; } 6% { opacity: 1; } 100% { transform: rotate(0deg); } }
+@keyframes nuc { 0% { transform: scale(0); } 70% { transform: scale(1.03); } 100% { transform: scale(1); } }
+/* разрядка «a r v i s» большая → обычная: буквы съезжаются к середине */
+@keyframes track { from { opacity: 0; transform: translateX(calc((var(--i) - 2) * 0.42em)); } }
+@keyframes rule { from { border-bottom-color: transparent; } }
 @keyframes show { from { opacity: 0; } }
+@keyframes orbits-in { from { opacity: 0; scale: 0.8; } }
+@keyframes rise { from { transform: translateY(140%); } }   /* с запасом: иначе верх букв торчит в нижнем поле окошка */
+@keyframes up { from { opacity: 0; transform: translateY(16px); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes grain {
+  0% { transform: translate(0, 0); } 12.5% { transform: translate(-28px, 14px); } 25% { transform: translate(18px, -30px); }
+  37.5% { transform: translate(-12px, -18px); } 50% { transform: translate(30px, 22px); } 62.5% { transform: translate(-34px, -6px); }
+  75% { transform: translate(8px, 32px); } 87.5% { transform: translate(24px, -14px); }
+}
 
 /* ---------- услуги: список-указатель ---------- */
 .services { padding: 40px 0 112px; }
@@ -322,13 +361,11 @@ a { color: inherit; }
 .foot .brand { margin-bottom: 8px; color: var(--paper); }
 .legal { font-size: 13px; }
 
-.paused, .paused * { animation-play-state: paused !important; }
+.paused, .paused *, .paused::before { animation-play-state: paused !important; }
 
 /* ---------- адаптив ---------- */
 @media (max-width: 980px) {
-  .hero { padding: 56px 0 72px; }
-  .hero-in { grid-template-columns: 1fr; gap: 56px; }
-  .diagram { justify-self: start; max-width: 380px; margin-left: 24px; }
+  .hero-foot { grid-template-columns: 1fr; margin-top: 56px; }
   .detail { grid-template-columns: 1fr; gap: 32px; padding-left: 0; }
   .detail-copy .btn { margin-top: 0; }
   .steps { grid-template-columns: 1fr; gap: 24px; }
@@ -344,12 +381,12 @@ a { color: inherit; }
   .top-actions { gap: 10px; }
   .brand-name { font-size: 23px; }
   .brand-mark { width: 28px; height: 28px; }
-  .hero { padding: 40px 0 64px; }
-  .lead { margin-top: 24px; font-size: 18px; }
-  .hero-actions { margin-top: 32px; }
+  .hero { min-height: calc(100svh - 60px); padding: 48px 0 40px; }
+  .hl { font-size: clamp(34px, 10.4vw, 44px); }
+  .l2 { padding-left: 8%; }
+  .hero-foot { gap: 28px; margin-top: 44px; }
+  .lead { font-size: 17px; }
   .hero-actions .btn { flex: 1 1 100%; }
-  .diagram { margin-left: 12px; max-width: calc(100% - 64px); }
-  .tag { font-size: 15px; }
   .services { padding-bottom: 80px; }
   .svc-btn { grid-template-columns: 16px minmax(0, 1fr); grid-template-areas: "m n" ". f"; gap: 4px 16px; padding: 20px 0; }
   .mark { grid-area: m; width: 16px; height: 16px; }
@@ -365,7 +402,6 @@ a { color: inherit; }
 }
 @media (max-width: 400px) {
   .top-cta { display: none; }
-  .hero h1 { font-size: clamp(34px, 10.4vw, 40px); }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
