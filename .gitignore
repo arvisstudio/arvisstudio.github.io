@@ -4,3 +4,5 @@
 Thumbs.db
 desktop.ini
 _check/
+# бриф менеджера (сырые ответы) — только для Claude, на сайт не публикуем
+demo/*/brief.json
