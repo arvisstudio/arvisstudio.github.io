@@ -134,6 +134,8 @@ a { color: inherit; }
 .prices li { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--soft); font-size: 16px; }
 .prices b { flex: none; max-width: 55%; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
 .detail-copy .btn { align-self: flex-start; margin-top: auto; }
+.live-link { align-self: flex-start; margin: -8px 0 32px; font-size: 16px; text-underline-offset: 5px; }
+.live-link[hidden] { display: none; }
 .detail.swap .detail-copy > * { animation: swap-in 0.35s ease both; }
 @keyframes swap-in { from { opacity: 0; } }
 .terms { margin-top: 28px; max-width: 40em; color: var(--grey); font-size: 16px; }

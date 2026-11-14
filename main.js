@@ -19,6 +19,7 @@
       "svc.title": "Що ми робимо",
       "svc.lead": "Оберіть напрям — покажемо, як це працює і скільки коштує.",
       "svc.cta": "Обговорити в Telegram",
+      "svc.live": "Поговорити з живим прикладом — наш ШІ-продавець у Telegram",
       "svc.from": "від {n} грн",
       "svc.terms": "Передоплата 50%, решта — після здачі. Дві правки безкоштовно. Місяць підтримки в подарунок.",
       "sc.ai.name": "Помічник кав’ярні", "sc.ai.status": "онлайн 24/7",
@@ -56,6 +57,7 @@
       "svc.title": "Что мы делаем",
       "svc.lead": "Выберите направление — покажем, как это работает и сколько стоит.",
       "svc.cta": "Обсудить в Telegram",
+      "svc.live": "Поговорить с живым примером — наш ИИ-продавец в Telegram",
       "svc.from": "от {n} грн",
       "svc.terms": "Предоплата 50%, остальное — после сдачи. Две правки бесплатно. Месяц поддержки в подарок.",
       "sc.ai.name": "Помощник кофейни", "sc.ai.status": "онлайн 24/7",
@@ -93,6 +95,7 @@
       "svc.title": "What we do",
       "svc.lead": "Pick a service to see how it works and what it costs.",
       "svc.cta": "Discuss on Telegram",
+      "svc.live": "Talk to a live example — our AI sales assistant on Telegram",
       "svc.from": "from {n} UAH",
       "svc.terms": "50% upfront, the rest after delivery. Two rounds of changes are free. One month of support included.",
       "sc.ai.name": "Café assistant", "sc.ai.status": "online 24/7",
@@ -221,6 +224,7 @@
   function renderService(id, animate) {
     const [, desc, prices] = SVC[lang][id];
     document.getElementById("svc-desc").textContent = desc;
+    document.getElementById("svc-live").hidden = id !== "ai";   // живой пример — наш @arvisstudio_bot
     const ul = document.getElementById("svc-prices");
     ul.textContent = "";
     prices.forEach(([n, price]) => {
