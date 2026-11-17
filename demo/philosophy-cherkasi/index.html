@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PHILOSOPHY — кав'ярня і бар у Черкасах</title>
+<meta name="description" content="PHILOSOPHY — кав'ярня і бар у Черкасах. Афіша вечорів, бронь столика онлайн.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root{
+  --ink:#16120f;
+  --ink-2:#1f1914;
+  --ink-3:#2a221b;
+  --cream:#f1e8da;
+  --muted:#b9ab97;
+  --brass:#c9995a;
+  --brass-2:#e0b77c;
+  --wine:#6e2b2b;
+  --line:rgba(241,232,218,.14);
+  --r:14px;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Manrope',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--ink);color:var(--cream);font:16px/1.6 var(--sans);padding-bottom:84px}
+img{display:block;max-width:100%}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.08;letter-spacing:-.01em}
+h2{font-size:clamp(36px,7vw,58px);margin-bottom:14px}
+h2 em{font-style:italic;color:var(--brass-2);font-weight:500}
+.lead{color:var(--muted);font-size:17px;max-width:560px}
+section{padding:76px 0}
+
+/* demo bar */
+.demo{background:#000;color:#ddd;font-size:14px;line-height:1.4;text-align:center;padding:9px 16px}
+.demo b{color:#fff}
+.demo a{color:var(--brass-2);font-weight:600;margin-left:4px}
+
+/* header */
+header{position:sticky;top:0;z-index:30;background:rgba(22,18,15,.94);border-bottom:1px solid var(--line);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.logo{font-family:var(--serif);font-size:25px;font-weight:700;letter-spacing:.14em;text-decoration:none}
+.logo span{color:var(--brass)}
+nav{display:none;gap:28px}
+nav a{text-decoration:none;color:var(--muted);font-weight:500;transition:color .2s}
+nav a:hover{color:var(--cream)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 24px;border-radius:999px;font:600 16px var(--sans);text-decoration:none;cursor:pointer;border:1px solid transparent;transition:background .2s,color .2s,border-color .2s}
+.btn svg{width:19px;height:19px;flex:none}
+.btn-gold{background:var(--brass);color:#1a130c}
+.btn-gold:hover{background:var(--brass-2)}
+.btn-ghost{border-color:rgba(241,232,218,.5);color:var(--cream)}
+.btn-ghost:hover{background:var(--cream);color:var(--ink)}
+.hd .btn{min-height:44px;padding:0 16px;font-size:15px}
+.hd .btn span{display:none}
+
+/* hero */
+.hero{position:relative;min-height:calc(100svh - 100px);display:flex;align-items:flex-end;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,18,15,.25) 0%,rgba(22,18,15,.35) 40%,rgba(22,18,15,.96) 100%)}
+.hero .wrap{position:relative;z-index:2;padding-bottom:54px;padding-top:120px;width:100%}
+.hero h1{font-size:clamp(58px,15vw,140px);letter-spacing:.06em;font-weight:700}
+.hero .sub{font-family:var(--serif);font-style:italic;font-size:clamp(23px,4.6vw,32px);color:var(--brass-2);margin:6px 0 14px}
+.hero p.txt{font-size:17px;max-width:520px;color:#e2d7c6;margin-bottom:28px}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.cta .btn{flex:1 1 220px}
+
+/* menu */
+#menu{background:var(--ink-2)}
+.tabs{display:flex;gap:8px;margin:30px 0 26px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;min-height:48px;padding:0 22px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--muted);font:600 16px var(--sans);cursor:pointer}
+.tab[aria-selected=true]{background:var(--cream);color:var(--ink);border-color:var(--cream)}
+.grid{display:grid;grid-template-columns:1fr;gap:18px}
+.panel[hidden]{display:none}
+.item{display:flex;gap:16px;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.item img{width:104px;height:104px;border-radius:12px;object-fit:cover;flex:none}
+.item .noimg{width:104px;height:104px;border-radius:12px;flex:none;background:var(--ink-3);display:grid;place-items:center;color:var(--brass)}
+.item .noimg svg{width:40px;height:40px}
+.item h3{font-size:25px;margin-bottom:4px}
+.item p{color:var(--muted);font-size:16px;line-height:1.45}
+.price{font-family:var(--serif);font-size:25px;font-weight:700;color:var(--brass-2);margin-left:auto;white-space:nowrap;align-self:flex-start}
+.note{margin-top:26px;color:var(--muted);font-size:16px;font-style:italic;border-left:2px solid var(--brass);padding-left:14px}
+
+/* events */
+.events{display:grid;gap:16px;margin-top:32px}
+.ev{display:grid;grid-template-columns:86px 1fr;gap:18px;padding:22px;border:1px solid var(--line);border-radius:var(--r);align-items:center}
+.ev .day{font-family:var(--serif);text-align:center;border-right:1px solid var(--line);padding-right:16px}
+.ev .day b{display:block;font-size:34px;line-height:1;color:var(--brass-2)}
+.ev .day span{font-size:16px;color:var(--muted)}
+.ev h3{font-size:26px;margin-bottom:4px}
+.ev p{color:var(--muted)}
+
+/* about */
+.about{display:grid;gap:34px;align-items:center}
+.about-img{position:relative}
+.about-img img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r)}
+.about-img img.sm{position:absolute;width:44%;aspect-ratio:1;right:-6px;bottom:-26px;border:6px solid var(--ink)}
+.about p{color:#ddd1bf;font-size:17px;margin-bottom:14px}
+.why{display:grid;gap:22px;margin-top:30px}
+.why div{display:flex;gap:16px}
+.why svg{width:30px;height:30px;color:var(--brass);flex:none;margin-top:2px}
+.why h3{font-size:24px;margin-bottom:2px}
+.why p{margin:0;color:var(--muted);font-size:16px}
+
+/* booking */
+#bron{background:var(--wine);background:linear-gradient(180deg,#5a2424,#3d1a1a)}
+.book{display:grid;gap:34px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:flex;flex-direction:column;gap:6px;font-size:16px;color:#ead9cc}
+label.full{grid-column:1/-1}
+input,select{min-height:50px;border-radius:10px;border:1px solid rgba(241,232,218,.3);background:rgba(0,0,0,.25);color:var(--cream);font:16px var(--sans);padding:0 14px;width:100%}
+input:focus,select:focus{outline:2px solid var(--brass-2);outline-offset:1px}
+select option{color:#000}
+form .btn{grid-column:1/-1;margin-top:6px}
+.ok{grid-column:1/-1;display:none;padding:14px 16px;border-radius:10px;background:rgba(0,0,0,.3);font-size:16px}
+
+/* gallery */
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:30px}
+.gal img{width:100%;height:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}
+.gal img:first-child{grid-column:1/-1;aspect-ratio:16/10}
+
+/* reviews */
+#vidguky{background:var(--ink-2)}
+.rev{margin-top:28px;display:grid;gap:16px}
+.rev div{border:1px dashed rgba(241,232,218,.25);border-radius:var(--r);padding:26px;color:var(--muted)}
+.rev q{font-family:var(--serif);font-size:24px;font-style:italic;color:var(--cream);display:block;margin-bottom:10px;quotes:"«" "»"}
+
+/* contacts */
+.contacts{display:grid;gap:30px}
+.cl{list-style:none;display:grid;gap:22px;margin:24px 0 28px}
+.cl li{display:flex;gap:16px;align-items:flex-start}
+.cl svg{width:26px;height:26px;color:var(--brass);flex:none;margin-top:2px}
+.cl small{display:block;color:var(--muted);font-size:16px}
+.cl a,.cl b{font-size:19px;font-weight:600;text-decoration:none}
+.cl em{color:var(--muted);font-size:16px}
+.map{border-radius:var(--r);overflow:hidden;min-height:340px;border:1px solid var(--line)}
+.map iframe{width:100%;height:100%;min-height:340px;border:0;display:block;filter:grayscale(.3) contrast(1.05)}
+
+footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-size:16px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+footer a{color:var(--brass-2)}
+
+/* sticky call */
+.fab{position:fixed;left:16px;right:16px;bottom:14px;z-index:40;transform:translateY(130%);transition:transform .3s;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.fab.on{transform:none}
+
+@media (min-width:760px){
+  section{padding:104px 0}
+  nav{display:flex}
+  .hd .btn span{display:inline}
+  .cta .btn{flex:0 0 auto}
+  .grid{grid-template-columns:1fr 1fr;column-gap:48px}
+  .events{grid-template-columns:repeat(3,1fr)}
+  .ev{grid-template-columns:1fr;gap:12px}
+  .ev .day{text-align:left;border-right:0;border-bottom:1px solid var(--line);padding:0 0 12px}
+  .about{grid-template-columns:1fr 1fr;gap:70px}
+  .book{grid-template-columns:1fr 1.1fr;gap:60px;align-items:center}
+  .gal{grid-template-columns:repeat(4,1fr)}
+  .gal img:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+  .rev{grid-template-columns:1fr 1fr}
+  .contacts{grid-template-columns:1fr 1.3fr;gap:60px}
+  body{padding-bottom:0}
+  .fab{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="demo">Це демо-сайт від <b>Arvis</b> — так може виглядати сайт «PHILOSOPHY». <a href="https://t.me/arvisstudio_bot">Замовити</a></div>
+
+<header>
+  <div class="wrap hd">
+    <a href="#top" class="logo">PHILOSOPHY<span>.</span></a>
+    <nav>
+      <a href="#menu">Меню</a>
+      <a href="#afisha">Афіша</a>
+      <a href="#about">Про нас</a>
+      <a href="#contacts">Контакти</a>
+    </nav>
+    <a class="btn btn-gold" href="tel:+380661967799" aria-label="Зателефонувати">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+      <span>Зателефонувати</span>
+    </a>
+  </div>
+</header>
+
+<section class="hero" id="top" style="padding:0">
+  <img src="../_photos/interior/cafe-bulbs.jpg" alt="Вечірній затишний зал з теплими лампами">
+  <div class="wrap">
+    <h1>PHILOSOPHY</h1>
+    <div class="sub">кав'ярня та бар у Черкасах</div>
+    <p class="txt">Вдень — кава й десерти, ввечері — бар і події за афішею. Столик можна забронювати онлайн.</p>
+    <div class="cta">
+      <a class="btn btn-gold" href="#bron">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        Забронювати столик
+      </a>
+      <a class="btn btn-ghost" href="tel:+380661967799">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+        Зателефонувати
+      </a>
+      <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=PHILOSOPHY%2C%20%D0%A7%D0%B5%D1%80%D0%BA%D0%B0%D1%81%D0%B8" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Як дістатися
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="wrap">
+    <h2>Меню — <em>від ранкової кави до вечірнього келиха</em></h2>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-t="p1">Кава</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="p2">Десерти</button>
+      <button class="tab" role="tab" aria-selected="false" data-t="p3">Бар</button>
+    </div>
+
+    <div class="panel grid" id="p1">
+      <div class="item">
+        <img src="../_photos/coffee/espresso.jpg" alt="Еспресо" loading="lazy">
+        <div><h3>Еспресо</h3><p>Класика на свіжообсмаженому зерні</p></div>
+        <div class="price">40 ₴</div>
+      </div>
+      <div class="item">
+        <img src="../_photos/coffee/cappuccino-mug.jpg" alt="Капучино" loading="lazy">
+        <div><h3>Капучино</h3><p>Еспресо, молоко, ніжна пінка</p></div>
+        <div class="price">60 ₴</div>
+      </div>
+      <div class="item">
+        <img src="../_photos/coffee/iced-latte.jpg" alt="Айс-лате" loading="lazy">
+        <div><h3>Айс-лате</h3><p>Холодна кава з молоком і льодом</p></div>
+        <div class="price">80 ₴</div>
+      </div>
+    </div>
+
+    <div class="panel grid" id="p2" hidden>
+      <div class="item">
+        <img src="../_photos/desserts/cheesecake-coffee.jpg" alt="Чізкейк" loading="lazy">
+        <div><h3>Чізкейк</h3><p>З ягідним топінгом</p></div>
+        <div class="price">110 ₴</div>
+      </div>
+      <div class="item">
+        <img src="../_photos/desserts/chocolate-cake.jpg" alt="Шоколадний торт" loading="lazy">
+        <div><h3>Шоколадний торт</h3><p>Насичений, до кави — те що треба</p></div>
+        <div class="price">105 ₴</div>
+      </div>
+    </div>
+
+    <div class="panel grid" id="p3" hidden>
+      <div class="item">
+        <div class="noimg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/></svg></div>
+        <div><h3>Авторський коктейль</h3><p>Запитайте бармена, що сьогодні в карті</p></div>
+        <div class="price">180 ₴</div>
+      </div>
+    </div>
+
+    <p class="note">Приклад меню — тут будуть ваші позиції з цінами.</p>
+  </div>
+</section>
+
+<section id="afisha">
+  <div class="wrap">
+    <h2>Афіша <em>вечорів</em></h2>
+    <p class="lead">Вечорами в PHILOSOPHY відбуваються події — тут гості бачать, що буде цього тижня, і одразу бронюють столик.</p>
+    <div class="events">
+      <div class="ev">
+        <div class="day"><b>Ср</b><span>19:00</span></div>
+        <div><h3>Вечір розмов</h3><p>Тема вечора, гарна кава та люди, з якими цікаво сперечатися.</p></div>
+      </div>
+      <div class="ev">
+        <div class="day"><b>Пт</b><span>20:00</span></div>
+        <div><h3>Жива музика</h3><p>Акустичний сет у теплому світлі ламп.</p></div>
+      </div>
+      <div class="ev">
+        <div class="day"><b>Нд</b><span>18:00</span></div>
+        <div><h3>Кіновечір</h3><p>Добре кіно, плед і келих чогось смачного.</p></div>
+      </div>
+    </div>
+    <p class="note">Приклад афіші — тут будуть ваші події з датами.</p>
+  </div>
+</section>
+
+<section id="about" style="background:var(--ink-2)">
+  <div class="wrap about">
+    <div class="about-img">
+      <img src="../_photos/interior/coffee-machines.jpg" alt="Барна стійка з кавомашиною" loading="lazy">
+      <img class="sm" src="../_photos/coffee/latte-art.jpg" alt="Лате з малюнком" loading="lazy">
+    </div>
+    <div>
+      <h2>Про <em>нас</em></h2>
+      <p>PHILOSOPHY — місце, де день починається з кави, а закінчується розмовами в барі. Сюди приходять не поспіхом, а щоб посидіти довше.</p>
+      <p>Вечорами в нас події за афішею, а щоб не залишитись без місця — столик можна забронювати онлайн.</p>
+      <div class="why">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+          <div><h3>Вечори за афішею</h3><p>Завжди є привід зайти ввечері.</p></div>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M9 15l2 2 4-4"/></svg>
+          <div><h3>Бронь столика онлайн</h3><p>Кілька секунд — і місце чекає на вас.</p></div>
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M16 10h2a2 2 0 0 1 0 4h-2M8 3v2M12 3v2"/></svg>
+          <div><h3>Кава і бар в одному місці</h3><p>Вдень — кав'ярня, ввечері — бар.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="bron">
+  <div class="wrap book">
+    <div>
+      <h2>Забронювати <em>столик</em></h2>
+      <p class="lead" style="color:#e3cfc3">Залиште заявку — ми підтвердимо бронь дзвінком. Або просто наберіть нас.</p>
+      <p style="margin-top:18px"><a class="btn btn-ghost" href="tel:+380661967799">+380 66 196 7799</a></p>
+    </div>
+    <form id="bf">
+      <label class="full">Ваше ім'я<input name="n" required autocomplete="name"></label>
+      <label class="full">Телефон<input name="p" type="tel" required autocomplete="tel" placeholder="+380"></label>
+      <label>Дата<input name="d" type="date" required></label>
+      <label>Час<input name="t" type="time" value="19:00" required></label>
+      <label class="full">Гостей
+        <select name="g"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5–6</option><option>7+</option></select>
+      </label>
+      <button class="btn btn-gold" type="submit">Надіслати заявку</button>
+      <div class="ok" id="ok">Це демо: на справжньому сайті заявка одразу прийде вам у Telegram.</div>
+    </form>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <h2>Атмосфера</h2>
+    <div class="gal">
+      <img src="../_photos/interior/cafe-bulbs.jpg" alt="Зал увечері" loading="lazy">
+      <img src="../_photos/coffee/cappuccino-mug.jpg" alt="Капучино" loading="lazy">
+      <img src="../_photos/desserts/cheesecake.jpg" alt="Чізкейк" loading="lazy">
+      <img src="../_photos/interior/cafe-counter.jpg" alt="Барна стійка" loading="lazy">
+      <img src="../_photos/coffee/coffee-saucer.jpg" alt="Кава на блюдці" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="vidguky">
+  <div class="wrap">
+    <h2>Відгуки</h2>
+    <p class="lead">Тут будуть відгуки ваших гостей.</p>
+    <div class="rev">
+      <div><q>Місце для відгуку гостя</q>Ім'я гостя</div>
+      <div><q>Місце для відгуку гостя</q>Ім'я гостя</div>
+    </div>
+  </div>
+</section>
+
+<section id="contacts">
+  <div class="wrap contacts">
+    <div>
+      <h2>Контакти</h2>
+      <ul class="cl">
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <div><small>Адреса</small><b>Черкаси</b></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+          <div><small>Телефон</small><a href="tel:+380661967799">+380 66 196 7799</a></div>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div><small>Години роботи</small><b>Пн–Нд 8:00–21:00</b> <em>(приклад)</em></div>
+        </li>
+      </ul>
+      <div class="cta">
+        <a class="btn btn-gold" href="tel:+380661967799">Зателефонувати</a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=PHILOSOPHY%2C%20%D0%A7%D0%B5%D1%80%D0%BA%D0%B0%D1%81%D0%B8" target="_blank" rel="noopener">Як дістатися</a>
+      </div>
+    </div>
+    <div class="map">
+      <iframe src="https://maps.google.com/maps?q=PHILOSOPHY%2C%20%D0%A7%D0%B5%D1%80%D0%BA%D0%B0%D1%81%D0%B8&output=embed" loading="lazy" title="PHILOSOPHY на карті" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© PHILOSOPHY, Черкаси</span>
+    <span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span>
+  </div>
+</footer>
+
+<a class="btn btn-gold fab" id="fab" href="tel:+380661967799">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+  Зателефонувати
+</a>
+
+<script>
+document.querySelectorAll('.tab').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-selected',x===b)});
+    document.querySelectorAll('.panel').forEach(function(p){p.hidden=p.id!==b.dataset.t});
+  });
+});
+var f=document.getElementById('bf');
+f.addEventListener('submit',function(e){e.preventDefault();document.getElementById('ok').style.display='block';});
+var fab=document.getElementById('fab'),hero=document.getElementById('top');
+if('IntersectionObserver' in window){
+  new IntersectionObserver(function(en){fab.classList.toggle('on',!en[0].isIntersecting)}).observe(hero);
+}else{fab.classList.add('on')}
+</script>
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3556046dccae470a8d703f119cfbdda8"}'></script>
+</body>
+</html>
