@@ -29,7 +29,7 @@ header .wrap { height: 64px; display: flex; align-items: center; justify-content
 .brand svg { width: 30px; height: 30px; }
 .back { font-size: 15px; color: var(--grey); text-decoration: none; }
 .back:hover { color: var(--ink); }
-h1 { margin: 26px 0 10px; font-size: clamp(54px, 10vw, 150px); line-height: .85; letter-spacing: -.05em; font-weight: 800; }
+h1 { margin: 26px 0 22px; font-size: clamp(54px, 10vw, 150px); line-height: .98; letter-spacing: -.05em; font-weight: 800; }
 .lead { margin: 0 0 30px; max-width: 60ch; color: var(--grey); }
 .studio { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 18px; padding-bottom: 60px; }
 .list { display: grid; gap: 8px; align-content: start; }
@@ -123,7 +123,7 @@ async function show(id) {
   document.getElementById('sw').innerHTML = (m.meta.colors || []).map((c, i) => `<button type="button" style="--c:${c}" data-c="${c}" aria-label="Колір ${c}" aria-pressed="${i === 0}"></button>`).join('');
   if (stage) stage.stop();
   const old = document.getElementById('c'), c = old.cloneNode(); old.replaceWith(c);
-  stage = await mountStage(c, m, { fill: 'parent', progress, z: m.meta.z || 7.5, instant: q.has('shot') });
+  stage = await mountStage(c, m, { fill: 'parent', progress, z: m.meta.z || 7.5, instant: q.has('shot') || q.has('p') });
   window.__ready = true;
 }
 document.getElementById('sw').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b || !stage) return; stage.setColor(b.dataset.c); document.querySelectorAll('#sw button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
