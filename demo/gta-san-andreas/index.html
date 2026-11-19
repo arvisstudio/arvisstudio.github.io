@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oi&family=Golos+Text:wght@400;500;700&display=swap">
+<script>document.documentElement.classList.add("js")</script>
 <style>
 :root {
   color-scheme: dark;
@@ -33,11 +34,15 @@ a { color: var(--bone); }
 .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
 h1, h2, h3 { margin: 0; font-weight: 400; text-wrap: balance; }
 
-/* HUD как в игре: деньги растут, пока листаешь */
-.hud { position: fixed; z-index: 30; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); text-align: right; pointer-events: none; }
-.cash { font: 400 clamp(22px, 3vw, 34px)/1 var(--display); color: var(--cash); -webkit-text-stroke: 2px #0d0c09; paint-order: stroke fill; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
-.bars { display: grid; gap: 4px; margin-top: 8px; justify-items: end; }
-.bar { width: 120px; height: 9px; background: #0d0c09; border: 2px solid #0d0c09; }
+/* HUD как в игре: своя полоса сверху, текст страницы под неё не залезает */
+.hud { position: fixed; z-index: 30; inset: 0 0 auto 0; height: calc(52px + env(safe-area-inset-top, 0px)); padding: env(safe-area-inset-top, 0px) max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); display: flex; align-items: center; justify-content: space-between; gap: 16px; pointer-events: none; background: rgba(13,12,9,0); border-bottom: 1px solid transparent; transition: background .5s, border-color .5s; }
+.hud.solid { background: #0d0c09; border-color: #2c271f; }
+.hud .tagline { white-space: nowrap; font: 400 18px/1 var(--display); color: var(--grove); opacity: 0; transform: translateY(-6px); transition: opacity .5s, transform .5s; }
+.hud.solid .tagline { opacity: 1; transform: none; }
+.hud .right { display: flex; align-items: center; gap: 14px; }
+.cash { font: 400 clamp(20px, 2.4vw, 28px)/1 var(--display); color: var(--cash); -webkit-text-stroke: 2px #0d0c09; paint-order: stroke fill; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.bars { display: grid; gap: 4px; justify-items: end; }
+.bar { width: 96px; height: 8px; background: #0d0c09; border: 2px solid #0d0c09; outline: 1px solid #3a3428; }
 .bar i { display: block; height: 100%; width: 100%; }
 .bar.hp i { background: #b83a2c; }
 .bar.ar i { background: #cfcfcf; width: 0; transition: width .6s; }
@@ -66,20 +71,39 @@ h1, h2, h3 { margin: 0; font-weight: 400; text-wrap: balance; }
 .crew b { font-weight: 700; }
 .crew span { color: var(--dust); font-size: 15px; }
 
-/* города — фото на всю ширину */
-.city { position: relative; min-height: 88vh; display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; overflow: hidden; isolation: isolate; }
-.city img { position: absolute; inset: -8% 0; width: 100%; height: 116%; object-fit: cover; z-index: -2; will-change: transform; }
-.city::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(20,18,14,.9), rgba(20,18,14,.15) 55%, rgba(20,18,14,.35)); }
-.city .wrap { width: 100%; padding-block: 0 64px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 24px 48px; align-items: end; }
-.city h2 { font: 400 clamp(40px, 8.4vw, 132px)/.9 var(--display); overflow-wrap: anywhere; hyphens: auto; }
+/* города — одна «сцена»: фото стоит на месте и плавно перетекает в следующее, текст едет поверх */
+.cities { position: relative; isolation: isolate; overflow: clip; }
+.radio, .stats, .facts, .end, footer { position: relative; }
+.stage { position: sticky; top: 0; height: 100vh; height: 100svh; margin-bottom: -100vh; margin-bottom: -100svh; overflow: hidden; z-index: -1; background: #000; }
+.stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.12); transition: opacity 1.3s ease, transform 7s cubic-bezier(.2,.6,.2,1); }
+.stage img.on { opacity: 1; transform: scale(1); }
+.stage::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,18,14,.9), rgba(20,18,14,.45) 50%, rgba(20,18,14,.6)); }
+.city .wrap { text-shadow: 0 2px 16px rgba(0,0,0,.75), 0 0 2px rgba(0,0,0,.6); }
+.city .real { color: #f0a46a; }
+.cities::before, .cities::after { content: ""; position: absolute; left: 0; right: 0; height: 38vh; z-index: 1; pointer-events: none; }
+.cities::before { top: 0; background: linear-gradient(180deg, var(--asphalt), rgba(27,24,19,0)); }
+.cities::after { bottom: 0; background: linear-gradient(0deg, var(--tar), rgba(36,32,26,0)); }
+.city { position: relative; z-index: 2; min-height: 115vh; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; }
+.city:first-of-type { min-height: 135vh; align-items: end; padding-bottom: 12vh; }
+.city:last-of-type { align-items: start; padding-top: 10vh; min-height: 125vh; }
+.city .wrap { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 24px 48px; align-items: end; }
+.city .num { display: block; font: 700 15px/1 var(--body); color: var(--dust); margin-bottom: 14px; letter-spacing: .04em; }
+.city h2 { font: 400 clamp(40px, 7vw, 112px)/.9 var(--display); overflow-wrap: normal; hyphens: manual; }
 .city .copy { min-width: 0; }
 .city .real { font-weight: 700; color: var(--smog); margin: 0 0 6px; }
 .city .copy p { margin: 0 0 10px; }
-.city .credit { position: absolute; right: max(12px, env(safe-area-inset-right, 0px)); top: 12px; font-size: 12px; color: rgba(236,227,207,.7); }
+.city .credit { display: block; margin-top: 14px; font-size: 12px; color: rgba(236,227,207,.65); }
 .city .credit a { color: inherit; }
 
+/* появление при прокрутке: блоки выезжают, а не стоят, как слайды */
+.js .rv { opacity: 0; transform: translateY(28px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+.js .city h2.rv { transform: translateY(40px); clip-path: inset(0 0 100% 0); transition-property: opacity, transform, clip-path; }
+.js .city h2.rv.in { clip-path: inset(0 0 -10% 0); transform: none; }
+
 /* радио */
-.radio { padding-block: 110px; background: var(--tar); border-top: 6px solid var(--tune); transition: border-color .4s; }
+.radio { padding-block: 70px 110px; background: var(--tar); }
+.radio .head h2::after { content: ""; display: block; width: 96px; height: 6px; margin-top: 22px; background: var(--tune); transition: background .4s; }
 .radio .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 24px 56px; align-items: end; margin-bottom: 44px; }
 .radio h2 { font: 400 clamp(44px, 6vw, 84px)/.95 var(--display); }
 .radio .head p { margin: 0; color: var(--dust); }
@@ -107,7 +131,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; text-wrap: balance; }
 }
 
 /* прокачка */
-.stats { padding-block: 110px; }
+.stats { padding-block: 130px 110px; background: linear-gradient(180deg, var(--tar), var(--asphalt) 260px); }
 .stats .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: start; }
 .stats h2 { font: 400 clamp(40px, 5.5vw, 76px)/.95 var(--display); }
 .stats .intro { color: var(--dust); margin: 18px 0 0; max-width: 46ch; }
@@ -146,14 +170,18 @@ footer p { margin: 0 0 8px; max-width: 90ch; }
   .stations button { grid-template-columns: 14px minmax(0, 1fr); }
   .stations .gn { grid-column: 2; text-align: left; }
 }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+@media (max-width: 520px) { .hud .tagline { font-size: 14px; } .hud .right { gap: 10px; } .cash { font-size: 17px; } .bar { width: 54px; height: 7px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } .js .rv, .js .city h2.rv { opacity: 1; transform: none; clip-path: none; } }
 </style>
 </head>
 <body>
 
-<div class="hud" aria-hidden="true">
-  <div class="cash" id="cash">$00000000</div>
-  <div class="bars"><div class="bar hp"><i></i></div><div class="bar ar"><i id="armor"></i></div></div>
+<div class="hud" id="hud" aria-hidden="true">
+  <div class="tagline">Grove St.</div>
+  <div class="right">
+    <div class="bars"><div class="bar hp"><i></i></div><div class="bar ar"><i id="armor"></i></div></div>
+    <div class="cash" id="cash">$00000000</div>
+  </div>
 </div>
 
 <header class="hero">
@@ -171,8 +199,8 @@ footer p { margin: 0 0 8px; max-width: 90ch; }
 <main>
   <section class="home">
     <div class="wrap grid">
-      <h2>Дома всё стало хуже, чем было</h2>
-      <div class="text">
+      <h2 class="rv">Дома всё стало хуже, чем было</h2>
+      <div class="text rv" style="--d:.15s">
         <p>Район поделили «Балласы» и «Вагос», на углах торгуют тем, за что раньше выгоняли, а старые друзья смотрят на CJ как на чужого.</p>
         <p>Чтобы вернуть уважение, придётся начинать с самого низа: красить чужие граффити, отбивать улицы и снова собирать Families. Дальше история уведёт его далеко от дома — в туманный Сан-Фиерро и в неоновый Лас-Вентурас.</p>
         <ul class="crew">
@@ -187,59 +215,60 @@ footer p { margin: 0 0 8px; max-width: 90ch; }
     </div>
   </section>
 
-  <section class="city" aria-label="Лос-Сантос">
-    <img src="img/los-santos.jpg" alt="Пальмы вдоль улицы на закате, на холме видна надпись" loading="lazy">
-    <small class="credit">Фото: <a href="https://unsplash.com/@jakeblucker" target="_blank" rel="noopener">@jakeblucker</a> / Unsplash</small>
-    <div class="wrap">
-      <h2>Лос-Сантос</h2>
-      <div class="copy">
-        <p class="real">Похож на Лос-Анджелес</p>
-        <p>Гетто Гантона, особняки Малхолланда, пляж Санта-Мария и вечный смог над даунтауном. Здесь начинается и заканчивается история.</p>
-      </div>
+  <section class="cities" aria-label="Три города и дорога между ними">
+    <div class="stage" aria-hidden="true">
+      <img src="img/los-santos.jpg" alt="" data-k="0" class="on" loading="lazy">
+      <img src="img/san-fierro.jpg" alt="" data-k="1" loading="lazy">
+      <img src="img/las-venturas.jpg" alt="" data-k="2" loading="lazy">
+      <img src="img/desert.jpg" alt="" data-k="3" loading="lazy">
     </div>
-  </section>
-
-  <section class="city" aria-label="Сан-Фиерро">
-    <img src="img/san-fierro.jpg" alt="Крутая улица спускается к заливу с островом" loading="lazy">
-    <small class="credit">Фото: <a href="https://unsplash.com/@centelm" target="_blank" rel="noopener">@centelm</a> / Unsplash</small>
-    <div class="wrap">
-      <h2>Сан-Фиерро</h2>
-      <div class="copy">
-        <p class="real">Похож на Сан-Франциско</p>
-        <p>Крутые холмы, по которым машины взлетают на перекрёстках, туман с залива и большой красный мост. Тут CJ начинает свой бизнес.</p>
+    <article class="city" data-k="0" aria-label="Лос-Сантос">
+      <div class="wrap">
+        <div><span class="num rv">01 / 03</span><h2 class="rv">Лос-Сантос</h2></div>
+        <div class="copy rv" style="--d:.15s">
+          <p class="real">Похож на Лос-Анджелес</p>
+          <p>Гетто Гантона, особняки Малхолланда, пляж Санта-Мария и вечный смог над даунтауном. Здесь начинается и заканчивается история.</p>
+          <small class="credit">Фото: <a href="https://unsplash.com/@jakeblucker" target="_blank" rel="noopener">@jakeblucker</a> / Unsplash · пальмы вдоль улицы на закате, на холме видна надпись</small>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="city" aria-label="Лас-Вентурас">
-    <img src="img/las-venturas.jpg" alt="Ночной бульвар с казино и полосами света от машин" loading="lazy">
-    <small class="credit">Фото: <a href="https://unsplash.com/@davidvives" target="_blank" rel="noopener">@davidvives</a> / Unsplash</small>
-    <div class="wrap">
-      <h2>Лас-Вентурас</h2>
-      <div class="copy">
-        <p class="real">Похож на Лас-Вегас</p>
-        <p>Казино, мафия и пустыня до горизонта. Город, где одно ограбление стоит больше, чем вся жизнь в гетто.</p>
+    </article>
+    <article class="city" data-k="1" aria-label="Сан-Фиерро">
+      <div class="wrap">
+        <div><span class="num rv">02 / 03</span><h2 class="rv">Сан-Фиерро</h2></div>
+        <div class="copy rv" style="--d:.15s">
+          <p class="real">Похож на Сан-Франциско</p>
+          <p>Крутые холмы, по которым машины взлетают на перекрёстках, туман с залива и большой красный мост. Тут CJ начинает свой бизнес.</p>
+          <small class="credit">Фото: <a href="https://unsplash.com/@centelm" target="_blank" rel="noopener">@centelm</a> / Unsplash · крутая улица спускается к заливу с островом</small>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="city" aria-label="Между городами">
-    <img src="img/desert.jpg" alt="Прямое шоссе через пустыню к горам" loading="lazy">
-    <small class="credit">Фото: <a href="https://unsplash.com/@mizsakpeti" target="_blank" rel="noopener">@mizsakpeti</a> / Unsplash</small>
-    <div class="wrap">
-      <h2>А между ними</h2>
-      <div class="copy">
-        <p class="real">Глушь, леса и пустыня</p>
-        <p>Фермы, заправки, гора Чилиад и секретная база в пустыне. Можно просто ехать по трассе и слушать радио.</p>
+    </article>
+    <article class="city" data-k="2" aria-label="Лас-Вентурас">
+      <div class="wrap">
+        <div><span class="num rv">03 / 03</span><h2 class="rv">Лас-Вентурас</h2></div>
+        <div class="copy rv" style="--d:.15s">
+          <p class="real">Похож на Лас-Вегас</p>
+          <p>Казино, мафия и пустыня до горизонта. Город, где одно ограбление стоит больше, чем вся жизнь в гетто.</p>
+          <small class="credit">Фото: <a href="https://unsplash.com/@davidvives" target="_blank" rel="noopener">@davidvives</a> / Unsplash · ночной бульвар с казино и полосами света от машин</small>
+        </div>
       </div>
-    </div>
+    </article>
+    <article class="city" data-k="3" aria-label="А между ними">
+      <div class="wrap">
+        <div><span class="num rv">Дорога</span><h2 class="rv">А между ними</h2></div>
+        <div class="copy rv" style="--d:.15s">
+          <p class="real">Глушь, леса и пустыня</p>
+          <p>Фермы, заправки, гора Чилиад и секретная база в пустыне. Можно просто ехать по трассе и слушать радио.</p>
+          <small class="credit">Фото: <a href="https://unsplash.com/@mizsakpeti" target="_blank" rel="noopener">@mizsakpeti</a> / Unsplash · прямое шоссе через пустыню к горам</small>
+        </div>
+      </div>
+    </article>
   </section>
 
   <section class="radio" id="radio">
     <div class="wrap">
       <div class="head">
-        <h2>Что играет в машине</h2>
-        <p>В каждой машине своё радио. Выбери станцию — и страница перекрасится под неё.</p>
+        <h2 class="rv">Что играет в машине</h2>
+        <p class="rv" style="--d:.15s">В каждой машине своё радио. Выбери станцию — и страница перекрасится под неё.</p>
       </div>
       <div class="dial">
         <ul class="stations" id="stations"></ul>
@@ -256,14 +285,14 @@ footer p { margin: 0 0 8px; max-width: 90ch; }
   <section class="stats">
     <div class="wrap grid">
       <div>
-        <h2>CJ можно прокачать</h2>
-        <p class="intro">В San Andreas герой меняется от того, как ты играешь. Ешь бургеры — поправляешься. Ходишь в зал — растут мышцы. Бегаешь — дольше не устаёшь.</p>
+        <h2 class="rv">CJ можно прокачать</h2>
+        <p class="intro rv" style="--d:.15s">В San Andreas герой меняется от того, как ты играешь. Ешь бургеры — поправляешься. Ходишь в зал — растут мышцы. Бегаешь — дольше не устаёшь.</p>
       </div>
       <div class="meters">
-        <div class="meter" style="--to:86%"><div class="row">Уважение<span>растёт за дела района</span></div><div class="track"><div class="fill"></div></div><p>Чем больше уважения, тем больше бойцов пойдёт за тобой.</p></div>
-        <div class="meter" style="--to:64%"><div class="row">Выносливость<span>бег, плавание, велосипед</span></div><div class="track"><div class="fill"></div></div><p>Можно дольше бежать от погони и не выдыхаться.</p></div>
-        <div class="meter" style="--to:72%"><div class="row">Мышцы<span>спортзал</span></div><div class="track"><div class="fill"></div></div><p>Сильнее бьёшь в драке и выглядишь соответственно.</p></div>
-        <div class="meter fat" style="--to:28%"><div class="row">Жир<span>бургеры и пицца</span></div><div class="track"><div class="fill"></div></div><p>Перебор — и подруги начинают отказываться от свиданий.</p></div>
+        <div class="meter rv" style="--to:86%"><div class="row">Уважение<span>растёт за дела района</span></div><div class="track"><div class="fill"></div></div><p>Чем больше уважения, тем больше бойцов пойдёт за тобой.</p></div>
+        <div class="meter rv" style="--to:64%;--d:.1s"><div class="row">Выносливость<span>бег, плавание, велосипед</span></div><div class="track"><div class="fill"></div></div><p>Можно дольше бежать от погони и не выдыхаться.</p></div>
+        <div class="meter rv" style="--to:72%;--d:.2s"><div class="row">Мышцы<span>спортзал</span></div><div class="track"><div class="fill"></div></div><p>Сильнее бьёшь в драке и выглядишь соответственно.</p></div>
+        <div class="meter fat rv" style="--to:28%;--d:.3s"><div class="row">Жир<span>бургеры и пицца</span></div><div class="track"><div class="fill"></div></div><p>Перебор — и подруги начинают отказываться от свиданий.</p></div>
       </div>
     </div>
   </section>
@@ -271,17 +300,17 @@ footer p { margin: 0 0 8px; max-width: 90ch; }
   <section class="facts" aria-label="Игра в цифрах">
     <div class="wrap">
       <dl>
-        <div><dt>2004</dt><dd>Год выхода на PlayStation 2 — 26 октября</dd></div>
-        <div><dt>3</dt><dd>Города в одном штате, плюс деревни и пустыня</dd></div>
-        <div><dt>1992</dt><dd>Год, в котором происходит история</dd></div>
-        <div><dt>11</dt><dd>Радиостанций — от рэпа до кантри</dd></div>
+        <div class="rv"><dt>2004</dt><dd>Год выхода на PlayStation 2 — 26 октября</dd></div>
+        <div class="rv" style="--d:.1s"><dt>3</dt><dd>Города в одном штате, плюс деревни и пустыня</dd></div>
+        <div class="rv" style="--d:.2s"><dt>1992</dt><dd>Год, в котором происходит история</dd></div>
+        <div class="rv" style="--d:.3s"><dt>11</dt><dd>Радиостанций — от рэпа до кантри</dd></div>
       </dl>
     </div>
   </section>
 
   <section class="end" aria-label="Финал">
     <img src="img/skyline.jpg" alt="Пальмы и силуэт большого города на закате" loading="lazy">
-    <blockquote>
+    <blockquote class="rv">
       <q>Опять всё сначала</q>
       <cite>— Карл Джонсон, в первые минуты игры</cite>
     </blockquote>
@@ -299,22 +328,29 @@ footer p { margin: 0 0 8px; max-width: 90ch; }
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* деньги и броня в HUD */
-  const cash = document.getElementById('cash'), armor = document.getElementById('armor');
-  const cities = [...document.querySelectorAll('.city img')];
+  /* деньги и броня в HUD; полоса темнеет после первого экрана */
+  const hud = document.getElementById('hud'), cash = document.getElementById('cash'), armor = document.getElementById('armor');
+  const hero = document.querySelector('.hero');
   function onScroll() {
     const max = document.documentElement.scrollHeight - innerHeight;
     const k = max > 0 ? Math.min(1, scrollY / max) : 0;
     cash.textContent = '$' + String(Math.round(k * k * 1000000)).padStart(8, '0');
     armor.style.width = Math.round(k * 100) + '%';
-    if (!reduce) for (const img of cities) {
-      const r = img.parentElement.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > innerHeight) continue;
-      const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
-      img.style.transform = `translateY(${p * -6}%)`;
-    }
+    hud.classList.toggle('solid', scrollY > hero.offsetHeight - 80);
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* сцена городов: какое фото показывать — по тексту, который сейчас в центре экрана */
+  const imgs = [...document.querySelectorAll('.stage img')];
+  imgs.forEach(im => { im.loading = 'eager'; });
+  const show = k => imgs.forEach(im => im.classList.toggle('on', im.dataset.k === k));
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) show(e.target.dataset.k); }), { rootMargin: '-45% 0px -45% 0px' });
+    document.querySelectorAll('.city').forEach(c => io.observe(c));
+    /* блоки выезжают, когда до них долистали */
+    const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+  } else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
 
   /* радио */
   const st = [
