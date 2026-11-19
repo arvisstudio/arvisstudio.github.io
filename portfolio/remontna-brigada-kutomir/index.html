@@ -58,7 +58,7 @@ header.top .btn { min-height: 44px; padding: 0 16px; }
 .slot::before, .slot::after { content: ""; position: absolute; width: 30px; height: 30px; border: 3px solid rgba(43,43,43,.6); pointer-events: none; }
 .slot::before { top: 0; left: 0; border-right: 0; border-bottom: 0; }
 .slot::after { bottom: 0; right: 0; border-left: 0; border-top: 0; }
-.dim { position: absolute; left: 30px; right: 30px; bottom: 6px; display: flex; align-items: center; gap: 10px; font-size: 16px; color: var(--mut); }
+.dim { position: absolute; left: 30px; right: 30px; bottom: -30px; display: flex; align-items: center; gap: 10px; font-size: 16px; color: var(--mut); }
 .dim::before, .dim::after { content: ""; flex: 1; height: 0; border-top: 1px dashed rgba(43,43,43,.35); }
 
 /* перший екран */
@@ -71,9 +71,9 @@ header.top .btn { min-height: 44px; padding: 0 16px; }
 .hero .bgword { display: none; }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 6px; width: 100%; }
 /* слот має пропорції моделі — кутики креслення обіймають квартиру, без порожнечі зверху */
-.hero .slot { order: -1; width: calc(100% + 24px); margin: 0 -12px 4px; aspect-ratio: 5 / 3.3; }
-.hero h1 { font-size: clamp(30px, 8vw, 92px); max-width: 310px; }
-.hero h1 span { color: var(--or); display: block; }
+.hero .slot { order: -1; width: calc(100% + 24px); margin: 0 -12px 34px; aspect-ratio: 5 / 3.3; }
+.hero h1 { font-size: clamp(44px, 12.6vw, 92px); line-height: .98; }
+.hero h1 span { color: var(--or); display: block; width: fit-content; font-size: 1.14em; margin-top: .06em; background: linear-gradient(transparent 70%, rgba(43,43,43,.13) 0) no-repeat; }
 .hero p:not(.eye) { margin: 12px 0 18px; max-width: 40ch; color: var(--mut); }
 .cta { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .hero .cta .ghost { display: none; }
@@ -93,9 +93,12 @@ header.top .btn { min-height: 44px; padding: 0 16px; }
 .story .bgword { top: 30px; }
 .story .intro { margin-bottom: 30px; }
 .sgrid { display: grid; grid-template-columns: minmax(0, 1fr); }
-.stick { position: sticky; top: 62px; height: 52svh; display: flex; flex-direction: column; gap: 8px; padding-bottom: 8px; z-index: 0; align-self: start; }
-.stick .slot { flex: 1; }
-.weeks b { font: 400 20px/1 var(--head); }
+.stick { position: sticky; top: 62px; height: 40svh; display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; z-index: 0; align-self: start; }
+.stick .slot { flex: 1; min-height: 0; }
+.weeks { line-height: 1.25; }
+.weeks b { font: 400 18px/1 var(--head); }
+.weeks .wk-bar { margin: 5px 0 3px; }
+.weeks .wk-bar i { height: 6px; }
 .wk-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .wk-top span { font-weight: 600; color: var(--mut); }
 .wk-bar { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; margin: 8px 0 4px; }
@@ -119,6 +122,7 @@ header.top .btn { min-height: 44px; padding: 0 16px; }
 .js .in .pts li { opacity: 1; transform: none; transition-delay: 1.5s; }
 .js .in .pts li + li { transition-delay: 1.8s; }
 .stamps { display: flex; flex-wrap: wrap; gap: 14px 12px; margin-top: 26px; }
+.snote { margin: 16px 0 0 !important; font-size: 16px; color: var(--mut); }
 .stamp { display: inline-block; padding: 8px 14px; border: 3px solid var(--or); outline: 1px solid var(--or); outline-offset: 3px; border-radius: 6px; color: #b4501f; font: 400 16px/1.2 var(--head); text-transform: uppercase; transform: rotate(var(--r)); }
 .js .stamp { opacity: 0; transform: rotate(var(--r)) scale(1.9); transition: opacity .25s, transform .35s cubic-bezier(.5,1.6,.5,1); transition-delay: var(--d); }
 .js .in .stamp { opacity: 1; transform: rotate(var(--r)) scale(1); }
@@ -155,7 +159,7 @@ header.top .btn { min-height: 44px; padding: 0 16px; }
 .js .wbot.on { opacity: 1; transform: none; }
 
 /* калькулятор */
-.calc { padding: 110px 0 90px; overflow: hidden; }
+.calc { padding: 110px 0 36px; overflow: hidden; }
 .calc .bgword { top: 40px; }
 .cgrid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; margin-top: 34px; }
 .prev .slot { height: 300px; touch-action: pan-y; cursor: grab; }
@@ -200,7 +204,7 @@ header.top .btn { min-height: 44px; padding: 0 16px; }
 .msg { margin: 14px 0 0; color: var(--teal); font-weight: 600; min-height: 1.6em; }
 
 /* контакти */
-.info { padding: 40px 0 70px; }
+.info { padding: 20px 0 24px; }
 .info dl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; margin: 26px 0 0; border-top: 2px solid var(--ink); }
 .info dl div { padding: 18px 0; border-bottom: 1px solid rgba(43,43,43,.2); display: grid; gap: 4px; }
 .info dt { font-weight: 700; color: var(--or); }
@@ -215,10 +219,15 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 30px; justify-content: s
   .hero { min-height: calc(100svh - 105px); align-content: center; padding: 0 0 12px; }
   .hero::after { left: 66%; top: 50%; transform: translate(-50%, -50%); }
   .hero::before { -webkit-mask-image: radial-gradient(ellipse 50% 60% at 66% 50%, #000 20%, transparent 75%); mask-image: radial-gradient(ellipse 50% 60% at 66% 50%, #000 20%, transparent 75%); }
-  .hero .bgword { display: block; top: auto; bottom: -.34em; left: 20px; transform: none; font-size: clamp(120px, 15vw, 230px); }
+  .hero .bgword { display: block; top: auto; bottom: 10px; left: 20px; transform: none; font-size: clamp(120px, 15vw, 230px); }
   .hero .wrap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 30px; }
-  .hero .slot { order: 2; margin: 0; justify-self: center; width: min(100%, calc((100svh - 150px) * 5 / 3.3)); }
-  .hero h1 { max-width: none; }
+  .hero .slot { order: 2; margin: 0 0 34px; justify-self: center; width: min(100%, calc((100svh - 190px) * 5 / 3.3)); }
+  .hero h1 { font-size: clamp(44px, 5vw, 80px); }
+  .weeks b { font-size: 20px; }
+  .weeks .wk-bar { margin: 8px 0 4px; }
+  .weeks .wk-bar i { height: 10px; }
+  .calc { padding-bottom: 70px; }
+  .info { padding: 40px 0 50px; }
   .hero .cta .ghost { display: inline-flex; }
   .hint em { display: inline; }
   .story { padding-top: 60px; }
@@ -307,6 +316,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 30px; justify-content: s
               <span class="stamp" style="--r:3deg;--d:.6s">Фотозвіт щоп'ятниці</span>
               <span class="stamp" style="--r:-2deg;--d:.9s">Оплата по етапах</span>
             </div>
+            <p class="snote">Приклад гарантій — тут будуть ваші умови.</p>
           </div></article>
           <article class="step" style="--h:16"><div class="sx rv">
             <span class="num" aria-hidden="true">03</span>
@@ -475,7 +485,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 30px; justify-content: s
     /* на телефоні текст етапу тане, перш ніж заїхати під квартиру */
     if (innerWidth < 900) {
       const sb = stick.getBoundingClientRect().bottom;
-      sxs.forEach(el => { const t = el.getBoundingClientRect().top; el.style.opacity = cl((t - sb) / 70); });
+      sxs.forEach(el => { const t = el.getBoundingClientRect().top; el.style.opacity = cl((t - sb) / 24); });
     } else sxs.forEach(el => { el.style.opacity = ''; });
 
     /* вікна: спершу світяться всі, потім гаснуть, крім вашого */
@@ -576,13 +586,25 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 30px; justify-content: s
 </script>
 
 <script type="module">
+import * as THREE from 'three';
 import { mountStage } from '../3d/stage.js';
 import * as model from '../3d/models/izometrichna-3d-kvartira.js';
 /* квартира летить між «слотами»: бере той, що ближче до центру екрана */
 const K = window.KM, still = !document.documentElement.classList.contains('js');
 const slots = [...document.querySelectorAll('[data-slot]')];
 const fine = matchMedia('(pointer: fine)').matches;
-let act = null, teal = false;
+let act = null, teal = 0;
+const EL = new THREE.Color('#ffe08a'), ELC = new THREE.Color('#fff4cf'), SHC = new THREE.Color('#1e130c');
+const near = (a, b) => Math.abs(a.r - b.r) + Math.abs(a.g - b.g) + Math.abs(a.b - b.b) < .06;
+let sTex = null;
+function softTex() {
+  if (sTex) return sTex;
+  const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d');
+  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, 'rgba(255,255,255,.75)'); gr.addColorStop(.45, 'rgba(255,255,255,.42)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+  sTex = new THREE.CanvasTexture(c); sTex.colorSpace = THREE.SRGBColorSpace; return sTex;
+}
 const cur = { x: 0, y: 0, s: 1, ok: false };
 function pick() {
   let best = null, bd = 1e9; const vc = innerHeight / 2;
@@ -602,7 +624,13 @@ const st = await mountStage(document.getElementById('gl'), model, {
   beforeFrame(f, inst) {
     /* проводка — бірюзова, як у задумі */
     /* яскрава з першого кадру: модель щокадру скидає силу світіння на 0,5 — фіксуємо її вище */
-    if (!teal) { teal = true; inst.object.traverse(o => { const m = o.material; if (m && m.emissive && m.emissive.getHexString() === 'ffe08a') { m.color.set('#d6fffb'); m.emissive.set('#2fe3d4'); Object.defineProperty(m, 'emissiveIntensity', { get: () => 1.6, set() {}, configurable: true }); } }); }
+    /* колір шукаємо з допуском (sRGB↔linear може зсунути hex на одиницю) — і за емісією, і за основним кольором проводки */
+    /* насичена бірюза без білого «пересвіту»: темніший основний колір + помірна емісія */
+    /* тіні під меблями — замість чорних плям м'яка тепла запечена тінь */
+    if (teal < 3) { teal++; const seen = new Set(); inst.object.traverse(o => { const m = o.material; if (!m || seen.has(m)) return; seen.add(m);
+      if (m.emissive && (near(m.emissive, EL) || near(m.color, ELC))) { m.color.set('#20b3a8'); m.emissive.set('#19d6c6'); Object.defineProperty(m, 'emissiveIntensity', { get: () => .85, set() {}, configurable: true }); m.needsUpdate = true; }
+      else if (m.isMeshBasicMaterial && m.transparent && m.map && near(m.color, SHC)) { m.map = softTex(); m.color.set('#6b4a32'); m.opacity = .45; m.needsUpdate = true; }
+    }); }
     if (!act) return;
     const r = act.r, W = f.viewW, H = f.viewH;
     const tx = ((r.left + r.width / 2) / innerWidth - .5) * W;
