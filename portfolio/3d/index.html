@@ -121,6 +121,8 @@ async function show(id) {
   document.getElementById('idea').textContent = m.meta.idea;
   document.getElementById('for').textContent = 'Для: ' + m.meta.for;
   document.getElementById('sw').innerHTML = (m.meta.colors || []).map((c, i) => `<button type="button" style="--c:${c}" data-c="${c}" aria-label="Колір ${c}" aria-pressed="${i === 0}"></button>`).join('');
+  document.getElementById('view').style.background = m.meta.bg || ''; // темна сцена (дим, неон-вивіска, ніч) може попросити свій фон
+  document.querySelector('.hint').style.color = m.meta.bg ? 'rgba(255,255,255,.6)' : '';
   if (stage) stage.stop();
   const old = document.getElementById('c'), c = old.cloneNode(); old.replaceWith(c);
   stage = await mountStage(c, m, { fill: 'parent', progress, z: m.meta.z || 7.5, instant: q.has('shot') || q.has('p') });
