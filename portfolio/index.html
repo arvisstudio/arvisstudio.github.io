@@ -155,6 +155,10 @@ header.top .wrap { height: 64px; display: flex; align-items: center; justify-con
 <script type="module">
 {
   const works = await (await fetch('works.json', { cache: 'no-store' })).json();
+  const n = works.length, k = n % 10, h = n % 100;
+  const word = k === 1 && h !== 11 ? 'робота' : k >= 2 && k <= 4 && (h < 12 || h > 14) ? 'роботи' : 'робіт';
+  const month = new Date().toLocaleDateString('uk-UA', { month: 'long', year: 'numeric' }).replace(' р.', '');
+  document.querySelector('.count').textContent = `${n} ${word} · ${month}`;
   const box = document.getElementById('works');
   box.innerHTML = works.map((w, i) => `
   <article class="work">
