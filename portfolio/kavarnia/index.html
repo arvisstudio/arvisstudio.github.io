@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Пінка — кав'ярня біля дому</title>
+<meta name="description" content="Концепт-сайт кав'ярні від студії Arvis: меню, замовлення на виніс до потрібної хвилини.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Manrope:wght@400;500;700&display=swap">
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<style>
+:root {
+  color-scheme: light;
+  --milk: #f4ede2;
+  --foam: #fbf7f0;
+  --bean: #2a1c13;
+  --roast: #5b3a26;
+  --clay: #b8532a;
+  --line: #dccfbc;
+  --muted: #7a6656;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --sans: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--milk); color: var(--bean); font: 400 17px/1.6 var(--sans); overflow-x: hidden; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--clay); outline-offset: 3px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-inline: max(18px, env(safe-area-inset-left, 0px)); }
+h1, h2, h3 { margin: 0; font-family: var(--serif); font-weight: 500; line-height: 1; text-wrap: balance; }
+
+.demo { background: var(--bean); color: var(--milk); font-size: 14px; padding: 9px 0; }
+.demo .wrap { display: flex; gap: 6px 14px; flex-wrap: wrap; justify-content: space-between; }
+.demo a { color: #f0c9a6; font-weight: 700; }
+
+header.top { position: sticky; top: 0; z-index: 20; background: rgba(244,237,226,.94); border-bottom: 1px solid transparent; transition: border-color .3s; }
+header.top.line { border-color: var(--line); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 62px; }
+.logo { font: italic 600 30px/1 var(--serif); text-decoration: none; letter-spacing: -.01em; }
+.logo i { color: var(--clay); font-style: normal; }
+nav.anchors { display: flex; gap: 26px; font-size: 15px; font-weight: 500; }
+nav.anchors a { text-decoration: none; }
+nav.anchors a:hover { color: var(--clay); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1.5px solid var(--bean); background: var(--bean); color: var(--foam); font-weight: 700; font-size: 15px; text-decoration: none; cursor: pointer; transition: background .25s, color .25s, transform .25s; }
+.btn:hover { background: var(--clay); border-color: var(--clay); }
+.btn.ghost { background: transparent; color: var(--bean); }
+.btn.ghost:hover { background: var(--bean); color: var(--foam); border-color: var(--bean); }
+
+/* перший екран: фото стискається в картку, поки гортаєш */
+.hero { padding: 34px 0 0; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: 40px; align-items: end; }
+.hero h1 { font-size: clamp(64px, 11vw, 168px); line-height: .86; letter-spacing: -.02em; }
+.hero h1 em { display: block; color: var(--clay); font-weight: 500; }
+.hero .side { padding-bottom: 14px; }
+.hero .side p { margin: 0 0 24px; font-size: clamp(18px, 1.7vw, 21px); max-width: 34ch; }
+.hero .cta { display: flex; flex-wrap: wrap; gap: 10px; }
+.shot { margin-top: 40px; padding-inline: max(18px, env(safe-area-inset-left, 0px)); }
+.shot .frame { position: relative; max-width: 1600px; margin: 0 auto; height: min(78vh, 760px); overflow: hidden; border-radius: calc(var(--p, 0) * 28px); transform: scale(calc(1 - var(--p, 0) * .06)); transform-origin: 50% 0; }
+.shot img { width: 100%; height: 118%; object-fit: cover; transform: translateY(calc(var(--p, 0) * -9%)); }
+.shot .hours { position: absolute; left: 22px; bottom: 22px; background: var(--foam); border-radius: 18px; padding: 14px 18px; font-size: 15px; line-height: 1.4; }
+.shot .hours b { display: block; font: 600 24px/1.1 var(--serif); }
+
+/* стрічка */
+.ticker { overflow: hidden; border-block: 1px solid var(--line); margin-top: 70px; }
+.ticker .run { display: flex; width: max-content; gap: 48px; padding: 18px 0; font: italic 500 clamp(26px, 3vw, 38px)/1 var(--serif); white-space: nowrap; }
+.ticker span::after { content: "·"; margin-left: 48px; color: var(--clay); font-style: normal; }
+@media (prefers-reduced-motion: no-preference) { .ticker .run { animation: run 38s linear infinite; } @keyframes run { to { transform: translateX(-50%); } } }
+
+/* меню + замовлення */
+.menu { padding: 100px 0 110px; }
+.menu .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 20px 40px; align-items: end; margin-bottom: 36px; }
+.menu h2 { font-size: clamp(48px, 6.5vw, 96px); }
+.menu .head p { margin: 0; color: var(--muted); }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 30px; }
+.tabs button { min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; cursor: pointer; font-weight: 500; transition: background .25s, border-color .25s, color .25s; }
+.tabs button[aria-selected="true"] { background: var(--bean); border-color: var(--bean); color: var(--foam); }
+.items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; }
+.item { display: grid; grid-template-rows: auto 1fr; gap: 14px; animation: in .5s both; animation-delay: calc(var(--i) * 60ms); }
+@keyframes in { from { opacity: 0; transform: translateY(14px); } }
+.item .ph { aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: var(--line); }
+.item .ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.item:hover .ph img { transform: scale(1.05); }
+.item .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; align-items: start; }
+.item h3 { font-size: 28px; font-weight: 600; }
+.item .price { font-weight: 700; font-size: 17px; padding-top: 4px; }
+.item p { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 15px; }
+.qty { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.qty button { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--bean); background: transparent; cursor: pointer; font-size: 20px; line-height: 1; transition: background .2s, color .2s; }
+.qty button:hover { background: var(--bean); color: var(--foam); }
+.qty .add { width: auto; border-radius: 999px; padding: 0 18px; font-size: 15px; font-weight: 700; }
+.qty output { min-width: 22px; text-align: center; font-weight: 700; }
+.note { margin-top: 34px; color: var(--muted); font-size: 14px; }
+
+.bag { position: fixed; z-index: 30; left: 50%; bottom: max(14px, env(safe-area-inset-bottom, 0px)); width: min(560px, calc(100% - 24px)); transform: translate(-50%, 140%); transition: transform .45s cubic-bezier(.2,.8,.2,1); background: var(--bean); color: var(--foam); border-radius: 22px; padding: 14px 14px 14px 20px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 14px; align-items: center; }
+.bag.on { transform: translate(-50%, 0); }
+.bag .sum { font-size: 15px; line-height: 1.35; }
+.bag .sum b { font: 600 24px/1 var(--serif); display: block; }
+.bag label { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; font-size: 14px; color: #d9c8b4; }
+.bag select { flex: 1; min-height: 40px; border-radius: 12px; border: 0; padding: 0 10px; font: 500 15px var(--sans); background: #3d2a1d; color: var(--foam); }
+.bag .btn { background: var(--clay); border-color: var(--clay); }
+.bag .btn:hover { background: var(--foam); color: var(--bean); border-color: var(--foam); }
+.bag .done { grid-column: 1 / -1; margin: 0; font-size: 14px; color: #f0c9a6; display: none; }
+.bag.sent .done { display: block; }
+
+/* про нас: фото стоїть, текст їде */
+.story { background: var(--bean); color: var(--milk); }
+.story .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 60px; }
+.story .pin { position: sticky; top: 90px; height: calc(100vh - 130px); max-height: 760px; padding: 40px 0; }
+.story .pin img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; }
+.story .text { padding: 120px 0; display: grid; gap: 70vh; }
+.story .text > div { max-width: 46ch; }
+.story h2 { font-size: clamp(44px, 5.5vw, 80px); margin-bottom: 22px; }
+.story h2 em { color: #e08a5c; }
+.story p { margin: 0 0 14px; color: #dccfbc; font-size: 18px; }
+.story .text > div:not(:first-child) h2 { font-size: clamp(36px, 4vw, 56px); }
+
+/* контакти */
+.visit { padding: 110px 0; }
+.visit .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 50px; align-items: start; }
+.visit h2 { font-size: clamp(48px, 6vw, 90px); margin-bottom: 26px; }
+.visit dl { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.visit dl div { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.visit dt svg { width: 22px; height: 22px; stroke: var(--clay); fill: none; stroke-width: 1.6; margin-top: 3px; }
+.visit dd { margin: 0; }
+.visit dd small { display: block; color: var(--muted); font-size: 14px; }
+.visit .cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+.reviews { background: var(--foam); border-radius: 22px; padding: 30px; min-height: 100%; display: grid; align-content: center; gap: 16px; }
+.reviews q { font: italic 500 clamp(26px, 3vw, 36px)/1.15 var(--serif); quotes: "«" "»"; }
+.reviews small { color: var(--muted); font-size: 14px; }
+
+footer { border-top: 1px solid var(--line); padding: 30px 0 110px; font-size: 14px; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 30px; justify-content: space-between; }
+
+.js .rv { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 860px) {
+  nav.anchors { display: none; }
+  .hero .wrap, .menu .head, .visit .grid, .story .wrap { grid-template-columns: 1fr; }
+  .hero .wrap { gap: 22px; }
+  .shot .frame { height: 62vh; }
+  .items { grid-template-columns: 1fr; gap: 34px; }
+  .story .pin { position: relative; top: 0; height: 56vh; padding: 0; margin-top: 60px; }
+  .story .text { padding: 50px 0 80px; gap: 60px; }
+  header.top .btn { padding: 0 16px; }
+}
+@media (min-width: 861px) and (max-width: 1080px) { .items { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } .js .rv { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap"><span>Концепт-сайт від <b>Arvis</b>: такої кав'ярні немає, це приклад нашої роботи.</span><a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div></div>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#">Пінка<i>.</i></a>
+    <nav class="anchors" aria-label="Розділи"><a href="#menu">Меню</a><a href="#story">Про нас</a><a href="#visit">Контакти</a></nav>
+    <a class="btn" href="#menu">Замовити на виніс</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="rv">Кава <em>біля дому</em></h1>
+      <div class="side rv" style="--d:.15s">
+        <p>Маленька кав'ярня на розі: зерно обсмажуємо щотижня, круасани печемо зранку. Замовте заздалегідь, і каву зроблять рівно до вашого приходу.</p>
+        <div class="cta"><a class="btn" href="#menu">Подивитися меню</a><a class="btn ghost" href="#visit">Як нас знайти</a></div>
+      </div>
+    </div>
+    <div class="shot"><div class="frame" id="frame">
+      <img src="img/coffee-machines.jpg" alt="Барна стійка кав'ярні з кавомашиною і полицями" fetchpriority="high">
+      <div class="hours"><b>Відчинено з 7:30</b>Пн–Нд, до 21:00 (приклад)</div>
+    </div></div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="run" id="run"><span>Еспресо за хвилину</span><span>Круасани з печі о 8:00</span><span>Свій посуд — мінус 5 ₴</span><span>Обсмажуємо щочетверга</span></div></div>
+
+  <section class="menu" id="menu">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="rv">Що будете?</h2>
+        <p class="rv" style="--d:.1s">Додайте в замовлення, оберіть час, коли зайдете, і заберіть без черги. Платите на місці.</p>
+      </div>
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="items" id="items" role="tabpanel"></div>
+      <p class="note">Приклад меню: тут будуть ваші позиції з цінами.</p>
+    </div>
+  </section>
+
+  <section class="story" id="story">
+    <div class="wrap">
+      <div class="pin"><img src="img/latte-art.jpg" alt="Чашка лате з малюнком на піні серед кавових зерен" loading="lazy" id="pinimg"></div>
+      <div class="text">
+        <div class="rv"><h2>Робимо <em>повільно</em>, щоб вам було швидко</h2><p>Кава тут не з автомата: бариста налаштовує помел зранку й пробує першу чашку сам. А ви просто забираєте замовлення, коли йдете на роботу.</p></div>
+        <div class="rv" data-img="img/croissants.jpg"><h2>Випічка з печі, а не з коробки</h2><p>Тісто для круасанів роблять напередодні, а печуть о 7:30. Що лишилось до вечора, віддаємо зі знижкою, щоб нічого не викидати.</p></div>
+        <div class="rv" data-img="img/cafe-counter.jpg"><h2>Місце, де можна посидіти</h2><p>Шість столиків біля вікна, розетки, тиша зранку. Ноутбук можна, гучні дзвінки краще надворі.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap grid">
+      <div>
+        <h2 class="rv">Заходьте</h2>
+        <dl class="rv" style="--d:.1s">
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="sr">Адреса</span></dt><dd>Тут буде ваша адреса<small>з кнопкою «Як дістатися» в Google Картах</small></dd></div>
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="sr">Години</span></dt><dd>Пн–Нд 7:30–21:00<small>(приклад)</small></dd></div>
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span class="sr">Телефон</span></dt><dd>Тут буде ваш номер<small>натиснув — і дзвінок</small></dd></div>
+        </dl>
+        <div class="cta"><a class="btn" href="#menu">Замовити на виніс</a><a class="btn ghost" href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div>
+      </div>
+      <div class="reviews rv" style="--d:.2s">
+        <q>Тут будуть відгуки ваших гостей</q>
+        <small>Справжні, з Google Карт. Вигадані відгуки ми не пишемо.</small>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="bag" id="bag" aria-live="polite">
+  <div class="sum"><b id="bag-total">0 ₴</b><span id="bag-count">0 позицій</span></div>
+  <button class="btn" type="button" id="bag-send">Замовити</button>
+  <label>Заберу о <select id="bag-time"></select></label>
+  <p class="done" id="bag-done">Це концепт: на справжньому сайті замовлення одразу прийде баристі в Telegram.</p>
+</div>
+
+<footer><div class="wrap"><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>Фото: Unsplash</span></div></footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const menu = {
+    'Кава': [
+      ['Еспресо', 'Коротко й міцно, 40 мл', 45, 'espresso'],
+      ['Капучино', 'Еспресо, молоко, щільна пінка', 65, 'cappuccino-mug'],
+      ['Лате', 'Більше молока, м\'якший смак', 70, 'latte-art'],
+      ['Айс-лате', 'Холодне молоко, лід, подвійне еспресо', 80, 'iced-latte'],
+      ['Фільтр дня', 'Зерно тижня, 250 мл', 60, 'coffee-flatlay'],
+    ],
+    'Випічка': [
+      ['Круасан', 'Масляний, з печі о 8:00', 55, 'croissants'],
+      ['Чизкейк', 'Класичний, шматок', 95, 'cheesecake'],
+      ['Хліб на заквасці', 'Половинка, до вечері', 50, 'bread-basket'],
+    ],
+    'Сніданки': [
+      ['Тост з яйцем', 'Хліб на заквасці, яйце, зелень', 120, 'toast-egg'],
+      ['Круасан + капучино', 'Ранковий набір до 11:00', 105, 'croissants'],
+    ],
+  };
+  const bag = {};
+  const all = Object.values(menu).flat();
+  const tabs = document.getElementById('tabs'), items = document.getElementById('items');
+  const groups = Object.keys(menu);
+  tabs.innerHTML = groups.map((g, i) => `<button role="tab" type="button" aria-selected="${i === 0}" data-g="${g}">${g}</button>`).join('');
+  function render(g) {
+    items.innerHTML = menu[g].map((m, i) => {
+      const n = bag[m[0]] || 0;
+      return `<article class="item" style="--i:${i}">
+        <div class="ph"><img src="img/${m[3]}.jpg" alt="${m[0]}" loading="lazy"></div>
+        <div class="row"><h3>${m[0]}</h3><span class="price">${m[2]} ₴</span><p>${m[1]}</p>
+          <div class="qty" data-n="${m[0]}">${n ? `<button type="button" data-d="-1" aria-label="Менше">−</button><output>${n}</output><button type="button" data-d="1" aria-label="Більше">+</button>` : `<button type="button" class="add" data-d="1">Додати</button>`}</div>
+        </div></article>`;
+    }).join('');
+  }
+  tabs.addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    tabs.querySelectorAll('button').forEach(x => x.setAttribute('aria-selected', String(x === b)));
+    render(b.dataset.g);
+  });
+  const bagEl = document.getElementById('bag');
+  items.addEventListener('click', e => {
+    const b = e.target.closest('button[data-d]'); if (!b) return;
+    const name = b.parentElement.dataset.n;
+    bag[name] = Math.max(0, (bag[name] || 0) + +b.dataset.d);
+    if (!bag[name]) delete bag[name];
+    render(tabs.querySelector('[aria-selected="true"]').dataset.g);
+    updateBag();
+  });
+  function word(n) { const a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'позиція' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'позиції' : 'позицій'; }
+  function updateBag() {
+    let n = 0, sum = 0;
+    for (const [k, q] of Object.entries(bag)) { const m = all.find(x => x[0] === k); n += q; sum += q * m[2]; }
+    document.getElementById('bag-total').textContent = sum + ' ₴';
+    document.getElementById('bag-count').textContent = n + ' ' + word(n);
+    bagEl.classList.toggle('on', n > 0);
+    bagEl.classList.remove('sent');
+  }
+  /* час: найближчі слоти по 10 хвилин */
+  const sel = document.getElementById('bag-time'), now = new Date();
+  let t = new Date(now.getTime() + 15 * 60000); t.setMinutes(Math.ceil(t.getMinutes() / 10) * 10, 0, 0);
+  const mins = d => d.getHours() * 60 + d.getMinutes();
+  let tomorrow = false;
+  if (mins(t) > 20 * 60 + 50 || mins(t) < 7 * 60 + 30) { /* зачинено: пропонуємо ранок */
+    if (mins(t) > 20 * 60 + 50) { t.setDate(t.getDate() + 1); tomorrow = true; }
+    t.setHours(7, 30, 0, 0);
+  }
+  for (let i = 0; i < 12 && mins(t) <= 20 * 60 + 50; i++) { const s = t.toTimeString().slice(0, 5); sel.add(new Option((tomorrow ? 'завтра ' : '') + s, s)); t = new Date(t.getTime() + 10 * 60000); }
+  document.getElementById('bag-send').addEventListener('click', () => bagEl.classList.add('sent'));
+  render(groups[0]);
+
+  /* стрічка: дублюємо текст, щоб їхала без шва */
+  const run = document.getElementById('run'); run.innerHTML += run.innerHTML;
+
+  /* перший екран стискається в картку */
+  const frame = document.getElementById('frame'), head = document.getElementById('top');
+  function onScroll() {
+    head.classList.toggle('line', scrollY > 10);
+    if (reduce) return;
+    const r = frame.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (innerHeight * .55 - r.top) / (innerHeight * .9)));
+    frame.style.setProperty('--p', p.toFixed(3));
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* про нас: фото змінюється разом із текстом */
+  const pin = document.getElementById('pinimg');
+  if ('IntersectionObserver' in window) {
+    const first = pin.getAttribute('src');
+    const so = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const src = e.target.dataset.img || first;
+      if (pin.getAttribute('src') === src) return;
+      pin.animate([{ opacity: 1 }, { opacity: 0 }], { duration: reduce ? 0 : 250 }).onfinish = () => { pin.src = src; pin.animate([{ opacity: 0 }, { opacity: 1 }], { duration: reduce ? 0 : 450 }); };
+    }), { rootMargin: '-45% 0px -45% 0px' });
+    document.querySelectorAll('.story .text > div').forEach(d => so.observe(d));
+    const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+  } else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
+})();
+</script>
+</body>
+</html>

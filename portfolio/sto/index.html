@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Гараж 17 — СТО</title>
+<meta name="description" content="Концепт-сайт СТО від студії Arvis: калькулятор вартості ремонту і запис на огляд.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<style>
+:root {
+  color-scheme: light;
+  --concrete: #e6e5df;
+  --paper: #f3f2ee;
+  --oil: #121212;
+  --grey: #5f5f5a;
+  --rule: #c9c8c0;
+  --sign: #f0b92b;
+  --head: "Unbounded", "Arial Black", sans-serif;
+  --sans: "IBM Plex Sans", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--concrete); color: var(--oil); font: 400 17px/1.6 var(--sans); overflow-x: hidden; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--sign); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: max(18px, env(safe-area-inset-left, 0px)); }
+h1, h2, h3 { margin: 0; font-family: var(--head); font-weight: 800; line-height: .98; letter-spacing: -.02em; text-wrap: balance; }
+
+.demo { background: var(--oil); color: var(--paper); font-size: 14px; padding: 9px 0; }
+.demo .wrap { display: flex; gap: 6px 14px; flex-wrap: wrap; justify-content: space-between; }
+.demo a { color: var(--sign); font-weight: 600; }
+
+header.top { position: sticky; top: 0; z-index: 20; background: var(--concrete); border-bottom: 2px solid var(--oil); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; font: 800 19px/1 var(--head); text-decoration: none; letter-spacing: -.01em; }
+.logo b { background: var(--sign); padding: 6px 8px; border: 2px solid var(--oil); }
+nav.anchors { display: flex; gap: 26px; font-weight: 500; font-size: 15px; }
+nav.anchors a { text-decoration: none; }
+nav.anchors a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 22px; border: 2px solid var(--oil); background: var(--sign); color: var(--oil); font: 700 14px/1 var(--head); text-decoration: none; cursor: pointer; box-shadow: 4px 4px 0 var(--oil); transition: transform .15s, box-shadow .15s; }
+.btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--oil); }
+.btn:active { transform: translate(4px, 4px); box-shadow: none; }
+.btn.plain { background: var(--paper); }
+
+/* перший екран: фото розкривається з вузької смуги на всю ширину */
+.hero { padding: 54px 0 0; }
+.hero h1 { font-size: clamp(46px, 9.6vw, 150px); }
+.hero h1 .y { background: var(--sign); padding: 0 .12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hero .lede { display: grid; grid-template-columns: minmax(0, 560px) auto; justify-content: space-between; align-items: end; gap: 24px; margin-top: 30px; }
+.hero p { margin: 0; font-size: clamp(18px, 1.8vw, 21px); }
+.hero .cta { display: flex; gap: 14px; flex-wrap: wrap; }
+.open { margin-top: 50px; height: min(80vh, 760px); position: relative; overflow: hidden; clip-path: inset(0 calc(var(--q, 1) * 22%) 0 calc(var(--q, 1) * 22%)); border-block: 2px solid var(--oil); }
+.open img { width: 100%; height: 100%; object-fit: cover; transform: scale(calc(1 + var(--q, 1) * .15)); }
+.open .tag { position: absolute; right: 18px; bottom: 18px; background: var(--paper); border: 2px solid var(--oil); padding: 10px 14px; font-size: 14px; font-weight: 600; }
+
+/* цифри-факти без вигадок: що отримає клієнт */
+.promise { padding: 90px 0; }
+.promise ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 2px solid var(--oil); }
+.promise li { padding: 24px 24px 0 0; display: grid; gap: 8px; }
+.promise li + li { border-left: 2px solid var(--oil); padding-left: 24px; }
+.promise b { font: 800 clamp(22px, 2.4vw, 30px)/1.1 var(--head); }
+.promise span { color: var(--grey); }
+
+/* калькулятор */
+.calc { background: var(--oil); color: var(--paper); padding: 110px 0; }
+.calc .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 20px 40px; align-items: end; margin-bottom: 44px; }
+.calc h2 { font-size: clamp(40px, 5.6vw, 84px); }
+.calc .head p { margin: 0; color: #b9b8b0; }
+.calc .grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 40px; align-items: start; }
+.cars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 30px; }
+.cars button { min-height: 76px; padding: 12px; text-align: left; background: transparent; border: 2px solid #3c3c39; cursor: pointer; display: grid; gap: 2px; transition: border-color .2s, background .2s, color .2s; }
+.cars button b { font: 700 15px/1.2 var(--head); }
+.cars button span { font-size: 13px; color: #a5a49c; }
+.cars button[aria-pressed="true"] { border-color: var(--sign); background: var(--sign); color: var(--oil); }
+.cars button[aria-pressed="true"] span { color: #3a3216; }
+.works { display: grid; gap: 0; border-top: 1px solid #34342f; }
+.works label { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 16px 0; border-bottom: 1px solid #34342f; cursor: pointer; }
+.works input { appearance: none; width: 24px; height: 24px; border: 2px solid #6d6c66; margin: 0; display: grid; place-items: center; cursor: pointer; transition: background .15s, border-color .15s; }
+.works input:checked { background: var(--sign); border-color: var(--sign); }
+.works input:checked::after { content: ""; width: 10px; height: 6px; border-left: 3px solid var(--oil); border-bottom: 3px solid var(--oil); transform: translateY(-2px) rotate(-45deg); }
+.works .nm b { display: block; font-weight: 600; }
+.works .nm span { color: #a5a49c; font-size: 14px; }
+.works .pr { font-weight: 600; white-space: nowrap; color: #d9d8d0; }
+.total { position: sticky; top: 90px; background: var(--paper); color: var(--oil); border: 2px solid var(--paper); padding: 26px; display: grid; gap: 16px; }
+.total .k { font-size: 14px; color: var(--grey); }
+.total .sum { font: 800 clamp(34px, 4vw, 52px)/1 var(--head); font-variant-numeric: tabular-nums; }
+.total .time { font-weight: 600; }
+.total ul { margin: 0; padding: 0 0 0 18px; font-size: 15px; color: var(--grey); }
+.total small { color: var(--grey); font-size: 13px; }
+.total .ok { display: none; background: var(--sign); padding: 10px 12px; font-size: 14px; border: 2px solid var(--oil); }
+.total.sent .ok { display: block; }
+
+/* як працюємо: лінія домальовується при прокрутці */
+.how { padding: 110px 0; }
+.how h2 { font-size: clamp(40px, 5.6vw, 84px); margin-bottom: 50px; }
+.steps { position: relative; display: grid; gap: 56px; padding-left: 64px; max-width: 820px; }
+.steps::before, .steps .bar { content: ""; position: absolute; left: 18px; top: 8px; bottom: 8px; width: 4px; background: var(--rule); }
+.steps .bar { background: var(--oil); transform-origin: 0 0; transform: scaleY(var(--h, 0)); }
+.st { position: relative; }
+.st::before { content: attr(data-n); position: absolute; left: -64px; top: -4px; width: 40px; height: 40px; display: grid; place-items: center; background: var(--paper); border: 2px solid var(--oil); font: 800 15px/1 var(--head); transition: background .3s; }
+.st.in::before { background: var(--sign); }
+.st h3 { font-size: clamp(22px, 2.4vw, 32px); margin-bottom: 8px; }
+.st p { margin: 0; color: var(--grey); max-width: 52ch; }
+
+.pics { display: grid; grid-template-columns: 1.2fr .8fr 1fr; gap: 14px; padding-bottom: 110px; }
+.pics img { width: 100%; height: clamp(220px, 30vw, 420px); object-fit: cover; border: 2px solid var(--oil); filter: grayscale(.15); }
+
+.visit { background: var(--sign); border-top: 2px solid var(--oil); padding: 100px 0 80px; }
+.visit .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: end; }
+.visit h2 { font-size: clamp(40px, 6vw, 92px); }
+.visit dl { margin: 0; display: grid; border-top: 2px solid var(--oil); }
+.visit dl div { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 2px solid var(--oil); }
+.visit svg { width: 22px; height: 22px; stroke: var(--oil); fill: none; stroke-width: 1.8; margin-top: 2px; }
+.visit dd { margin: 0; font-weight: 600; }
+.visit dd small { display: block; font-weight: 400; font-size: 14px; }
+footer { background: var(--oil); color: #b9b8b0; padding: 26px 0 40px; font-size: 14px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 10px 30px; flex-wrap: wrap; }
+
+.js .rv { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  nav.anchors { display: none; }
+  .hero .lede, .calc .head, .calc .grid, .visit .grid { grid-template-columns: 1fr; }
+  .open { height: 58vh; }
+  .promise ul { grid-template-columns: 1fr; }
+  .promise li + li { border-left: 0; padding-left: 0; border-top: 2px solid var(--oil); margin-top: 24px; }
+  .cars { grid-template-columns: 1fr; }
+  .cars button { min-height: 58px; }
+  .total { position: static; }
+  .pics { grid-template-columns: 1fr 1fr; }
+  .pics img:first-child { grid-column: 1 / -1; }
+  header.top .btn { padding: 0 14px; min-height: 44px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } .js .rv { opacity: 1; transform: none; } .open { clip-path: none; } .open img { transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="demo"><div class="wrap"><span>Концепт-сайт від <b>Arvis</b>: такого СТО немає, це приклад нашої роботи.</span><a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><b>17</b>Гараж</a>
+    <nav class="anchors" aria-label="Розділи"><a href="#calc">Ціни</a><a href="#how">Як працюємо</a><a href="#visit">Контакти</a></nav>
+    <a class="btn" href="#calc">Порахувати ремонт</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1 class="rv">Скажемо ціну <span class="y">до того,</span> як відкрутимо першу гайку</h1>
+      <div class="lede">
+        <p class="rv" style="--d:.1s">Ремонт і обслуговування легкових авто, кросоверів і бусів. Порахуйте вартість на сайті, запишіться на час, і майстер подзвонить, якщо знайде ще щось.</p>
+        <div class="cta rv" style="--d:.2s"><a class="btn" href="#calc">Порахувати</a><a class="btn plain" href="#visit">Де ми</a></div>
+      </div>
+    </div>
+    <div class="open" id="open">
+      <img src="img/shop.jpg" alt="Цех СТО: машини на підйомниках і майстри за роботою" fetchpriority="high">
+      <span class="tag">Пн–Сб 9:00–19:00 (приклад)</span>
+    </div>
+  </section>
+
+  <section class="promise">
+    <div class="wrap">
+      <ul>
+        <li class="rv"><b>Ціна наперед</b><span>Сума з калькулятора — орієнтир. Якщо знайдемо щось ще, спершу подзвонимо.</span></li>
+        <li class="rv" style="--d:.1s"><b>Старі деталі вам</b><span>Усе, що зняли, віддаємо в пакеті. Видно, що саме міняли.</span></li>
+        <li class="rv" style="--d:.2s"><b>Фото в Telegram</b><span>Майстер надсилає фото, поки машина на підйомнику.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="calc" id="calc">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="rv">Скільки коштуватиме</h2>
+        <p class="rv" style="--d:.1s">Оберіть машину й роботи. Ціни приблизні, з деталями середнього класу: точну суму скаже майстер після огляду.</p>
+      </div>
+      <div class="grid">
+        <div>
+          <div class="cars" id="cars" role="group" aria-label="Тип авто"></div>
+          <div class="works" id="works"></div>
+        </div>
+        <aside class="total" id="total" aria-live="polite">
+          <span class="k">Орієнтовно</span>
+          <div class="sum" id="sum">0 ₴</div>
+          <div class="time" id="time">Оберіть роботи зліва</div>
+          <ul id="picked"></ul>
+          <button class="btn" type="button" id="go">Записатися на огляд</button>
+          <small>Приклад цін: тут будуть ваші ціни.</small>
+          <p class="ok">Це концепт: на справжньому сайті заявка з переліком робіт прийде майстру в Telegram.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="wrap">
+      <h2 class="rv">Як працюємо</h2>
+      <div class="steps" id="steps">
+        <span class="bar" id="bar"></span>
+        <div class="st" data-n="1"><h3>Ви записуєтесь</h3><p>На сайті, з переліком робіт. Майстер одразу бачить, що потрібно, і готує деталі до вашого приїзду.</p></div>
+        <div class="st" data-n="2"><h3>Огляд за 15 хвилин</h3><p>Піднімаємо машину, дивимось ходову й гальма. Знайшли ще щось — показуємо й кажемо ціну, ви вирішуєте.</p></div>
+        <div class="st" data-n="3"><h3>Ремонт із фото</h3><p>Поки працюємо, надсилаємо фото в Telegram. Можна поїхати у справах і не сидіти в цеху.</p></div>
+        <div class="st" data-n="4"><h3>Забираєте з чеком</h3><p>Список робіт, гарантія й старі деталі. Нагадаємо про наступну заміну масла, коли настане час.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap pics">
+    <img src="img/engine-work.jpg" alt="Майстер працює під капотом" loading="lazy">
+    <img src="img/tire.jpg" alt="Майстер у рукавичках знімає колесо" loading="lazy">
+    <img src="img/hands.jpg" alt="Руки з ключем над двигуном" loading="lazy">
+  </div>
+
+  <section class="visit" id="visit">
+    <div class="wrap grid">
+      <h2 class="rv">Приїжджайте</h2>
+      <dl class="rv" style="--d:.1s">
+        <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="sr">Адреса</span></dt><dd>Тут буде ваша адреса<small>з маршрутом у Google Картах</small></dd></div>
+        <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="sr">Години</span></dt><dd>Пн–Сб 9:00–19:00<small>(приклад)</small></dd></div>
+        <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span class="sr">Телефон</span></dt><dd>Тут буде ваш номер<small>натиснув — і дзвінок</small></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>Фото: Unsplash — @winstonchen, @stenrademaker, @jimmynilssonmasth, @christianbuehner</span></div></footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cars = [['Легкова', 'седан, хетчбек', 1], ['Кросовер', 'SUV, універсал', 1.2], ['Бус', 'до 3,5 т', 1.45]];
+  /* назва, опис, ціна роботи+деталей для легкової, хвилин */
+  const works = [
+    ['Діагностика ходової', 'Огляд на підйомнику', 300, 20],
+    ['Заміна масла і фільтра', 'Масло 4–5 л, фільтр', 1400, 30],
+    ['Передні гальмівні колодки', 'Колодки + робота', 1600, 60],
+    ['Розвал-сходження', 'На стенді', 600, 40],
+    ['Шиномонтаж, 4 колеса', 'Зняти, змонтувати, збалансувати', 800, 45],
+    ['Комп\'ютерна діагностика', 'Помилки двигуна й датчиків', 400, 30],
+    ['Заміна ременя ГРМ', 'Комплект + робота', 6500, 240],
+  ];
+  const st = { c: 0, w: new Set() };
+  const $ = id => document.getElementById(id);
+  $('cars').innerHTML = cars.map((c, i) => `<button type="button" data-i="${i}" aria-pressed="${i === 0}"><b>${c[0]}</b><span>${c[1]}</span></button>`).join('');
+  $('works').innerHTML = works.map((w, i) => `<label><input type="checkbox" data-i="${i}"><span class="nm"><b>${w[0]}</b><span>${w[1]}</span></span><span class="pr" data-i="${i}"></span></label>`).join('');
+  const round = n => Math.round(n / 50) * 50;
+  const fmt = n => n.toLocaleString('uk-UA').replace(/ /g, ' ') + ' ₴';
+  let shown = 0;
+  function animateTo(v) {
+    const from = shown, t0 = performance.now(), dur = reduce ? 0 : 500;
+    const tick = now => { const k = dur ? Math.min(1, (now - t0) / dur) : 1; shown = Math.round(from + (v - from) * (1 - Math.pow(1 - k, 3))); $('sum').textContent = fmt(shown); if (k < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
+  function draw() {
+    const m = cars[st.c][2];
+    document.querySelectorAll('.works .pr').forEach(p => p.textContent = fmt(round(works[p.dataset.i][2] * m)));
+    let sum = 0, min = 0; const names = [];
+    st.w.forEach(i => { sum += round(works[i][2] * m); min += works[i][3]; names.push(works[i][0]); });
+    animateTo(sum);
+    $('time').textContent = names.length ? `≈ ${min >= 60 ? Math.floor(min / 60) + ' год ' + (min % 60 ? min % 60 + ' хв' : '') : min + ' хв'} · ${cars[st.c][0].toLowerCase()}` : 'Оберіть роботи зліва';
+    $('picked').innerHTML = names.map(n => `<li>${n}</li>`).join('');
+    $('total').classList.remove('sent');
+  }
+  $('cars').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.c = +b.dataset.i; $('cars').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); draw(); });
+  $('works').addEventListener('change', e => { const i = +e.target.dataset.i; e.target.checked ? st.w.add(i) : st.w.delete(i); draw(); });
+  $('go').addEventListener('click', () => { if (st.w.size) $('total').classList.add('sent'); else $('works').querySelector('input').focus(); });
+  draw();
+
+  /* фото розкривається, лінія кроків домальовується */
+  const open = $('open'), steps = $('steps'), bar = $('bar');
+  function onScroll() {
+    if (reduce) return;
+    const r = open.getBoundingClientRect();
+    const q = Math.min(1, Math.max(0, (r.top - innerHeight * .15) / (innerHeight * .6)));
+    open.style.setProperty('--q', q.toFixed(3));
+    const s = steps.getBoundingClientRect();
+    bar.style.setProperty('--h', Math.min(1, Math.max(0, (innerHeight * .6 - s.top) / s.height)).toFixed(3));
+  }
+  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); onScroll();
+
+  if ('IntersectionObserver' in window) {
+    const watch = (sel, margin) => { const o = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); } }), { rootMargin: margin }); document.querySelectorAll(sel).forEach(el => o.observe(el)); };
+    watch('.rv', '0px 0px -10% 0px'); watch('.st', '0px 0px -40% 0px');
+  } else document.querySelectorAll('.rv, .st').forEach(el => el.classList.add('in'));
+})();
+</script>
+</body>
+</html>

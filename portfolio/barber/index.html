@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Бритва — барбершоп</title>
+<meta name="description" content="Концепт-сайт барбершопу від студії Arvis: послуги, майстри й онлайн-запис за хвилину.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Manrope:wght@400;500;700&display=swap">
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<style>
+:root {
+  color-scheme: dark;
+  --ink: #0e0e0d;
+  --coal: #171715;
+  --steel: #262623;
+  --bone: #ebe5d9;
+  --ash: #a39d90;
+  --brass: #c19a5b;
+  --line: #2f2e2a;
+  --head: "Oswald", "Arial Narrow", Impact, sans-serif;
+  --sans: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--ink); color: var(--bone); font: 400 17px/1.6 var(--sans); overflow-x: hidden; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: max(18px, env(safe-area-inset-left, 0px)); }
+h1, h2, h3 { margin: 0; font-family: var(--head); font-weight: 600; text-transform: uppercase; line-height: .95; letter-spacing: .005em; text-wrap: balance; }
+
+.demo { background: var(--brass); color: var(--ink); font-size: 14px; padding: 9px 0; }
+.demo .wrap { display: flex; gap: 6px 14px; flex-wrap: wrap; justify-content: space-between; }
+.demo a { font-weight: 700; }
+
+header.top { position: fixed; z-index: 20; left: 0; right: 0; top: var(--off, 38px); transition: background .4s, top .3s; }
+header.top.solid { background: rgba(14,14,13,.96); top: 0; border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 66px; }
+.logo { font: 700 26px/1 var(--head); letter-spacing: .14em; text-decoration: none; text-transform: uppercase; }
+.logo span { color: var(--brass); }
+nav.anchors { display: flex; gap: 28px; font-size: 15px; }
+nav.anchors a { text-decoration: none; color: var(--ash); transition: color .2s; }
+nav.anchors a:hover { color: var(--bone); }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 26px; border: 1.5px solid var(--brass); background: var(--brass); color: var(--ink); font: 600 16px/1 var(--head); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background .25s, color .25s; }
+.btn:hover { background: transparent; color: var(--brass); }
+.btn.ghost { background: transparent; color: var(--bone); border-color: var(--bone); }
+.btn.ghost:hover { background: var(--bone); color: var(--ink); }
+
+/* перший екран: фото відкривається шторкою */
+.hero { position: relative; min-height: 100vh; min-height: 100svh; display: grid; align-items: end; overflow: hidden; isolation: isolate; }
+.hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transform: scale(1.08); }
+.js .hero img { clip-path: inset(0 0 100% 0); }
+.hero.go img { clip-path: inset(0 0 0 0); transform: scale(1); transition: clip-path 1.4s cubic-bezier(.7,0,.2,1), transform 2.4s cubic-bezier(.2,.7,.2,1); }
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, var(--ink) 2%, rgba(14,14,13,.55) 45%, rgba(14,14,13,.35)); }
+.hero .wrap { width: 100%; padding-block: 140px 70px; }
+.hero h1 { font-size: clamp(76px, 15vw, 230px); line-height: .84; }
+.hero h1 span { display: block; overflow: hidden; }
+.hero h1 span i { display: block; font-style: normal; }
+.js .hero h1 span i { transform: translateY(105%); }
+.hero.go h1 span i { transform: none; transition: transform 1s cubic-bezier(.2,.8,.2,1) .5s; }
+.hero.go h1 span + span i { transition-delay: .65s; color: var(--brass); }
+.hero .lede { display: grid; grid-template-columns: minmax(0, 520px) auto; justify-content: space-between; align-items: end; gap: 24px; margin-top: 30px; }
+.hero p { margin: 0; font-size: clamp(18px, 1.8vw, 21px); color: #d8d2c6; }
+.hero .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* послуги: список, при наведенні виїжджає фото */
+.services { padding: 120px 0 100px; }
+.services .head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: 20px 40px; align-items: end; margin-bottom: 40px; }
+.services h2 { font-size: clamp(52px, 7vw, 110px); }
+.services .head p { margin: 0; color: var(--ash); }
+.list { border-top: 1px solid var(--line); position: relative; }
+.svc { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto auto; gap: 18px; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--line); position: relative; }
+.svc .no { font: 500 16px/1 var(--head); color: var(--ash); }
+.svc h3 { font-size: clamp(28px, 3.4vw, 48px); transition: color .25s, transform .4s cubic-bezier(.2,.7,.2,1); }
+.svc small { display: block; font: 400 15px/1.4 var(--sans); text-transform: none; color: var(--ash); margin-top: 6px; letter-spacing: 0; }
+.svc .time { color: var(--ash); font-size: 15px; white-space: nowrap; }
+.svc .price { font: 600 clamp(24px, 2.4vw, 32px)/1 var(--head); white-space: nowrap; min-width: 4.5ch; text-align: right; }
+.svc button { all: unset; position: absolute; inset: 0; cursor: pointer; }
+.svc button:focus-visible { outline: 2px solid var(--brass); outline-offset: -2px; }
+.svc:hover h3 { color: var(--brass); transform: translateX(10px); }
+.peek { position: fixed; z-index: 5; width: 260px; aspect-ratio: 3 / 4; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(.9) rotate(-3deg); transition: opacity .3s, transform .35s; overflow: hidden; }
+.peek.on { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-3deg); }
+.peek img { width: 100%; height: 100%; object-fit: cover; }
+.note { margin-top: 22px; color: var(--ash); font-size: 14px; }
+
+/* стрічка фото, що їде вбік від прокрутки */
+.strip { overflow: hidden; padding: 30px 0 110px; }
+.strip .row { display: flex; gap: 18px; width: max-content; will-change: transform; }
+.strip img { height: clamp(240px, 36vw, 460px); width: auto; aspect-ratio: 4 / 5; object-fit: cover; filter: grayscale(.35) contrast(1.05); transition: filter .4s; }
+.strip img:hover { filter: none; }
+
+/* майстри */
+.crew { padding: 0 0 120px; }
+.crew h2 { font-size: clamp(48px, 6vw, 92px); margin-bottom: 36px; }
+.crew .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.m { background: var(--coal); padding: 26px; display: grid; gap: 10px; border-top: 3px solid var(--brass); }
+.m h3 { font-size: 34px; }
+.m p { margin: 0; color: var(--ash); font-size: 15px; }
+.m .tag { font: 500 15px/1.2 var(--sans); color: var(--brass); }
+
+/* запис */
+.book { background: var(--coal); padding: 110px 0; border-top: 1px solid var(--line); }
+.book .grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 60px; align-items: start; }
+.book h2 { font-size: clamp(52px, 6.5vw, 100px); }
+.book .intro p { color: var(--ash); margin: 20px 0 0; max-width: 40ch; }
+.form { display: grid; gap: 28px; }
+.step h3 { font: 600 18px/1 var(--head); letter-spacing: .08em; color: var(--ash); margin-bottom: 12px; }
+.step h3 b { color: var(--brass); font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { min-height: 46px; padding: 0 16px; background: transparent; border: 1.5px solid #3e3c37; cursor: pointer; font-size: 15px; transition: border-color .2s, background .2s, color .2s; }
+.chips button:hover { border-color: var(--bone); }
+.chips button[aria-pressed="true"] { background: var(--bone); color: var(--ink); border-color: var(--bone); font-weight: 700; }
+.chips button:disabled { opacity: .3; cursor: not-allowed; text-decoration: line-through; }
+.days button { display: grid; gap: 2px; padding: 8px 14px; min-width: 64px; text-align: center; line-height: 1.2; }
+.days small { font-size: 12px; color: inherit; opacity: .7; }
+.summary { border: 1.5px solid var(--brass); padding: 20px 22px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+.summary p { margin: 0; }
+.summary b { font: 600 22px/1.2 var(--head); text-transform: uppercase; display: block; }
+.summary .ok { grid-column: 1 / -1; color: var(--brass); font-size: 14px; display: none; }
+.summary.sent .ok { display: block; }
+
+/* контакти */
+.visit { padding: 110px 0 70px; }
+.visit .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; border-top: 1px solid var(--line); padding-top: 30px; }
+.visit h2 { font-size: clamp(48px, 6vw, 92px); margin-bottom: 40px; }
+.visit .c { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; }
+.visit svg { width: 22px; height: 22px; stroke: var(--brass); fill: none; stroke-width: 1.6; margin-top: 2px; }
+.visit .c b { display: block; }
+.visit .c span { color: var(--ash); font-size: 15px; }
+footer { padding: 30px 0 50px; font-size: 14px; color: var(--ash); border-top: 1px solid var(--line); }
+footer .wrap { display: flex; justify-content: space-between; gap: 10px 30px; flex-wrap: wrap; }
+
+.js .rv { opacity: 0; transform: translateY(30px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  nav.anchors { display: none; }
+  .hero .lede, .services .head, .book .grid { grid-template-columns: 1fr; }
+  .svc { grid-template-columns: 34px minmax(0, 1fr) auto; gap: 6px 12px; }
+  .svc .time { grid-column: 2; grid-row: 2; }
+  .svc .price { grid-row: 1 / 3; grid-column: 3; }
+  .crew .grid, .visit .grid { grid-template-columns: 1fr; }
+  .peek { display: none; }
+  header.top .btn { padding: 0 16px; min-height: 44px; font-size: 14px; }
+  .summary { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; }
+  .js .rv, .js .hero h1 span i { opacity: 1; transform: none; } .js .hero img { clip-path: none; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo" id="demo"><div class="wrap"><span>Концепт-сайт від <b>Arvis</b>: такого барбершопу немає, це приклад нашої роботи.</span><a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div></div>
+
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="#">Брит<span>ва</span></a>
+    <nav class="anchors" aria-label="Розділи"><a href="#services">Послуги</a><a href="#crew">Майстри</a><a href="#visit">Контакти</a></nav>
+    <a class="btn" href="#book">Записатися</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <img src="img/chair.jpg" alt="Чорні шкіряні крісла барбершопу перед дзеркалами і цегляною стіною" fetchpriority="high">
+    <div class="wrap">
+      <h1><span><i>Стрижка</i></span><span><i>без черги</i></span></h1>
+      <div class="lede">
+        <p>Чоловічі стрижки, борода й гоління небезпечною бритвою. Записуєтесь за хвилину, приходите у свій час, сідаєте в крісло одразу.</p>
+        <div class="cta"><a class="btn" href="#book">Обрати час</a><a class="btn ghost" href="#services">Ціни</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="head">
+        <h2 class="rv">Послуги</h2>
+        <p class="rv" style="--d:.1s">Натисніть на послугу, і вона одразу підставиться в запис.</p>
+      </div>
+      <div class="list" id="list"></div>
+      <p class="note">Приклад цін: тут будуть ваші послуги й ціни.</p>
+    </div>
+  </section>
+
+  <div class="strip" aria-hidden="true"><div class="row" id="row">
+    <img src="img/razor.jpg" alt="" loading="lazy"><img src="img/client.jpg" alt="" loading="lazy"><img src="img/tools.jpg" alt="" loading="lazy"><img src="img/dryer.jpg" alt="" loading="lazy"><img src="img/room.jpg" alt="" loading="lazy"><img src="img/razor.jpg" alt="" loading="lazy">
+  </div></div>
+
+  <section class="crew" id="crew">
+    <div class="wrap">
+      <h2 class="rv">Майстри</h2>
+      <div class="grid">
+        <article class="m rv"><span class="tag">Класика й фейди</span><h3>Майстер 1</h3><p>Тут буде ім'я, фото й пара слів про майстра: що любить робити найбільше.</p></article>
+        <article class="m rv" style="--d:.1s"><span class="tag">Борода й гоління</span><h3>Майстер 2</h3><p>Імена й фото майстрів вставимо ваші. Вигаданих людей на сайті не буде.</p></article>
+        <article class="m rv" style="--d:.2s"><span class="tag">Дитячі стрижки</span><h3>Майстер 3</h3><p>Клієнт обирає майстра прямо в записі, і запис іде саме йому.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="book">
+    <div class="wrap grid">
+      <div class="intro">
+        <h2 class="rv">Запис</h2>
+        <p class="rv" style="--d:.1s">Чотири кроки, без дзвінків і переписок. На справжньому сайті запис одразу прийде майстру в Telegram.</p>
+      </div>
+      <div class="form">
+        <div class="step"><h3><b>01</b> Послуга</h3><div class="chips" id="f-svc"></div></div>
+        <div class="step"><h3><b>02</b> Майстер</h3><div class="chips" id="f-who"></div></div>
+        <div class="step"><h3><b>03</b> День</h3><div class="chips days" id="f-day"></div></div>
+        <div class="step"><h3><b>04</b> Час</h3><div class="chips" id="f-time"></div></div>
+        <div class="summary" id="sum" aria-live="polite">
+          <p><b id="sum-t">Оберіть послугу і час</b><span id="sum-s" style="color:var(--ash);font-size:15px"></span></p>
+          <button class="btn" type="button" id="sum-go">Записатися</button>
+          <p class="ok">Це концепт, тому запис нікуди не пішов. На вашому сайті тут буде справжнє підтвердження.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap">
+      <h2 class="rv">Де ми</h2>
+      <div class="grid">
+        <div class="c rv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><div><b>Тут буде ваша адреса</b><span>і кнопка маршруту в Google Картах</span></div></div>
+        <div class="c rv" style="--d:.1s"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>Пн–Сб 10:00–20:00</b><span>Нд 10:00–16:00 (приклад)</span></div></div>
+        <div class="c rv" style="--d:.2s"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><div><b>Тут буде ваш номер</b><span>натиснув — і дзвінок</span></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="peek" id="peek" aria-hidden="true"><img alt="" id="peek-img"></div>
+
+<footer><div class="wrap"><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>Фото: Unsplash — @onatecan, @seteph, @agustinfernandez, @andreadonato, @delfipan, @tanyabarrow</span></div></footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const svc = [
+    ['Чоловіча стрижка', 'Миття, стрижка, укладка', 45, 350, 'client'],
+    ['Фейд', 'Плавний перехід машинкою', 60, 400, 'dryer'],
+    ['Борода', 'Форма, контур, гарячий рушник', 30, 250, 'tools'],
+    ['Гоління бритвою', 'Класичне, з компресом', 40, 300, 'razor'],
+    ['Стрижка + борода', 'Усе разом, вигідніше', 75, 550, 'room'],
+    ['Дитяча стрижка', 'До 12 років', 30, 250, 'chair'],
+  ];
+  const who = ['Будь-хто вільний', 'Майстер 1', 'Майстер 2', 'Майстер 3'];
+  const st = { s: null, w: 0, d: 0, t: null };
+
+  /* список послуг */
+  const list = document.getElementById('list');
+  list.innerHTML = svc.map((s, i) => `<div class="svc rv" style="--d:${i * 0.05}s" data-i="${i}"><span class="no">0${i + 1}</span><h3>${s[0]}<small>${s[1]}</small></h3><span class="time">${s[2]} хв</span><span class="price">${s[3]} ₴</span><button type="button" aria-label="Записатися: ${s[0]}, ${s[3]} гривень"></button></div>`).join('');
+  list.addEventListener('click', e => { const r = e.target.closest('.svc'); if (!r) return; st.s = +r.dataset.i; st.t = null; draw(); document.getElementById('book').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); });
+
+  /* фото, що пливе за курсором */
+  const peek = document.getElementById('peek'), pimg = document.getElementById('peek-img');
+  list.addEventListener('mousemove', e => { const r = e.target.closest('.svc'); if (!r) { peek.classList.remove('on'); return; } pimg.src = 'img/' + svc[r.dataset.i][4] + '.jpg'; peek.style.left = e.clientX + 'px'; peek.style.top = e.clientY + 'px'; peek.classList.add('on'); });
+  list.addEventListener('mouseleave', () => peek.classList.remove('on'));
+
+  /* запис */
+  const days = []; const base = new Date(); base.setHours(0, 0, 0, 0);
+  const dn = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+  for (let i = 0; i < 7; i++) { const d = new Date(base.getTime() + i * 864e5); days.push(d); }
+  const closeAt = d => d.getDay() === 0 ? 16 : 20;
+  /* «зайняті» слоти — щоб було видно, як це виглядає; на справжньому сайті — з розкладу */
+  const busy = (d, h) => ((d.getDate() * 7 + h * 3) % 5) === 0;
+  const $ = id => document.getElementById(id);
+  function chips(el, arr, cur, attr) { el.innerHTML = arr.map((a, i) => `<button type="button" data-v="${i}" aria-pressed="${i === cur}"${a.off ? ' disabled' : ''}>${a.html}</button>`).join(''); }
+  function draw() {
+    chips($('f-svc'), svc.map(s => ({ html: `${s[0]} · ${s[3]} ₴` })), st.s);
+    chips($('f-who'), who.map(w => ({ html: w })), st.w);
+    chips($('f-day'), days.map((d, i) => ({ html: `${i === 0 ? 'Сьогодні' : i === 1 ? 'Завтра' : dn[d.getDay()]}<small>${d.getDate()}.${String(d.getMonth() + 1).padStart(2, '0')}</small>` })), st.d);
+    const d = days[st.d], now = new Date(), times = [];
+    for (let h = 10; h < closeAt(d); h++) for (const m of [0, 30]) {
+      const t = new Date(d); t.setHours(h, m);
+      times.push({ html: `${h}:${m ? '30' : '00'}`, off: t < now || busy(d, h + m / 60 + st.w) });
+    }
+    chips($('f-time'), times, st.t);
+    const s = svc[st.s];
+    if (s && st.t != null) { $('sum-t').textContent = `${s[0]}, ${s[3]} ₴`; $('sum-s').textContent = `${who[st.w]} · ${st.d === 0 ? 'сьогодні' : st.d === 1 ? 'завтра' : dn[d.getDay()] + ' ' + d.getDate() + '.' + String(d.getMonth() + 1).padStart(2, '0')} о ${times[st.t].html} · ${s[2]} хв`; }
+    else { $('sum-t').textContent = !s ? 'Оберіть послугу' : 'Оберіть час'; $('sum-s').textContent = times.every(t => t.off) ? 'На цей день вільного часу вже немає, оберіть інший.' : ''; }
+    $('sum').classList.remove('sent');
+  }
+  const pick = (id, k) => $(id).addEventListener('click', e => { const b = e.target.closest('button'); if (!b || b.disabled) return; st[k] = +b.dataset.v; if (k !== 't') st.t = null; draw(); });
+  pick('f-svc', 's'); pick('f-who', 'w'); pick('f-day', 'd'); pick('f-time', 't');
+  $('sum-go').addEventListener('click', () => { if (svc[st.s] && st.t != null) $('sum').classList.add('sent'); else $((st.s == null ? 'f-svc' : 'f-time')).querySelector('button:not(:disabled)')?.focus(); });
+  draw();
+
+  /* шапка й стрічка фото */
+  const top = $('top'), demo = $('demo'), row = $('row'), hero = $('hero');
+  function onScroll() {
+    const dh = demo.offsetHeight;
+    top.style.setProperty('--off', Math.max(0, dh - scrollY) + 'px');
+    top.classList.toggle('solid', scrollY > hero.offsetHeight - 120);
+    if (reduce) return;
+    const r = row.parentElement.getBoundingClientRect();
+    if (r.bottom > 0 && r.top < innerHeight) { const p = (innerHeight - r.top) / (innerHeight + r.height); row.style.transform = `translateX(${-p * Math.max(0, row.scrollWidth - innerWidth)}px)`; }
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  requestAnimationFrame(() => requestAnimationFrame(() => hero.classList.add('go')));
+
+  if ('IntersectionObserver' in window) {
+    const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+  } else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
+})();
+</script>
+</body>
+</html>

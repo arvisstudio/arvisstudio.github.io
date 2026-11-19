@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geologica:wght,SHRP@300..800,0..100&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261119">
   <script>
     // Заставка с логотипом — только при обычном заходе: не по ссылке на раздел и не при «меньше движения».
     // Запускает её main.js, когда загрузятся шрифты; если что-то пошло не так — через 1.5 с сама.
@@ -42,6 +42,7 @@
       <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#atom"/></svg><span class="brand-name">arvis</span></a>
       <nav class="nav" aria-label="Розділи" data-i18n-aria="nav.label">
         <a href="#services" data-i18n="nav.services">Послуги</a>
+        <a href="portfolio/" data-i18n="nav.works">Роботи</a>
         <a href="#process" data-i18n="nav.process">Як працюємо</a>
         <a href="#contact" data-i18n="nav.contact">Контакти</a>
       </nav>
@@ -249,6 +250,7 @@
           </div>
         </div>
 
+        <p class="works-link"><a href="portfolio/"><span data-i18n="svc.works">Подивитися наші сайти</span> <span aria-hidden="true">→</span></a></p>
         <p class="terms" data-i18n="svc.terms">Передоплата 50%, решта — після здачі. Дві правки безкоштовно. Місяць підтримки в подарунок.</p>
       </div>
     </section>
@@ -285,7 +287,7 @@
     </div>
   </footer>
 
-  <script src="main.js"></script>
+  <script src="main.js?v=20261119"></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3556046dccae470a8d703f119cfbdda8"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
