@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Глазур — пончикова</title>
+<meta name="description" content="Концепт-сайт пончикової від Arvis: 3D-пончик летить сторінкою, глазур змінює смак, коробку можна зібрати самому.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Глазур — концепт сайту пончикової від Arvis">
+<meta property="og:description" content="3D-пончик летить сторінкою, глазур змінює смак, коробку збираєш сам.">
+<meta property="og:url" content="https://arvisstudio.github.io/portfolio/glazur/">
+<meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/glazur-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Manrope:wght@400;500;700;800&display=swap">
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<style>
+:root {
+  --cream: #fbf1e4;
+  --choc: #2b1610;
+  --muted: #7d5f52;
+  --line: rgba(43,22,16,.14);
+  --glaze: #f27aa0;
+  --tint: #fbe6ea;
+  --head: "Dela Gothic One", "Arial Black", sans-serif;
+  --sans: "Manrope", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--tint); color: var(--choc); font: 500 17px/1.6 var(--sans); overflow-x: hidden; transition: background-color 1s ease; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--choc); outline-offset: 3px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: max(18px, env(safe-area-inset-left, 0px)); }
+h1, h2, h3 { margin: 0; font-family: var(--head); font-weight: 400; line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
+
+/* 3D-сцена позаду тексту, але попереду величезних слів на фоні */
+#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100lvh; z-index: 1; pointer-events: none; }
+.demo, footer { position: relative; z-index: 2; }
+main > section { position: relative; }
+main > section > .wrap { position: relative; z-index: 2; }
+.bgword { position: absolute; z-index: 0; left: 50%; transform: translateX(-50%); font: 400 clamp(110px, 24vw, 380px)/.8 var(--head); color: transparent; -webkit-text-stroke: 2px rgba(43,22,16,.13); white-space: nowrap; pointer-events: none; user-select: none; }
+
+.demo { background: var(--choc); color: var(--cream); font-size: 14px; padding: 9px 0; }
+.demo .wrap { display: flex; gap: 6px 14px; flex-wrap: wrap; justify-content: space-between; }
+.demo a { color: #ffc2d4; font-weight: 700; }
+
+header.top { position: sticky; top: 0; z-index: 5; background: var(--tint); transition: background-color 1s ease; }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 68px; }
+.logo { font: 400 26px/1 var(--head); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo i { width: 22px; height: 22px; border-radius: 50%; border: 7px solid var(--glaze); transition: border-color 1s; }
+.pill { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 24px; border-radius: 999px; border: 2px solid var(--choc); background: var(--choc); color: var(--cream); font-weight: 800; font-size: 15px; text-decoration: none; cursor: pointer; transition: transform .2s, background .3s, color .3s; }
+.pill:hover { transform: translateY(-2px); }
+.pill.light { background: rgba(251,241,228,.7); color: var(--choc); }
+.pill.light:hover { background: var(--choc); color: var(--cream); }
+
+/* перший екран */
+.hero { min-height: calc(100vh - 106px); min-height: calc(100svh - 106px); display: grid; align-content: end; padding-bottom: 54px; overflow: hidden; }
+.hero .bgword { top: 4%; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 560px) auto; justify-content: space-between; align-items: end; gap: 24px; width: 100%; }
+.hero h1 { font-size: clamp(42px, 5.6vw, 82px); }
+.hero p { margin: 18px 0 26px; font-size: clamp(17px, 1.6vw, 20px); max-width: 40ch; }
+.hero .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.now { text-align: right; font-weight: 700; }
+.now small { display: block; color: var(--muted); font-weight: 500; font-size: 14px; }
+.now b { font: 400 clamp(26px, 3vw, 40px)/1 var(--head); display: block; margin-top: 6px; transition: color .6s; }
+
+/* смаки */
+.flavors { padding: 120px 0; overflow: hidden; }
+.flavors .bgword { top: 30px; }
+.flavors .grid { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 40px; }
+.flavors h2, .how h2, .box h2, .visit h2 { font-size: clamp(44px, 6vw, 92px); margin-bottom: 18px; }
+.lead { color: var(--muted); margin: 0 0 30px; max-width: 46ch; }
+.list { display: grid; gap: 10px; }
+.fl { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto auto; gap: 14px; align-items: center; padding: 12px 12px 12px 14px; border-radius: 22px; background: rgba(251,241,228,.82); border: 2px solid transparent; cursor: pointer; transition: border-color .3s, transform .3s; text-align: left; width: 100%; }
+.fl:hover { transform: translateX(6px); }
+.fl[aria-pressed="true"] { border-color: var(--choc); }
+.fl .dot { width: 40px; height: 40px; border-radius: 50%; background: radial-gradient(circle, transparent 0 7px, var(--c) 8px 100%); box-shadow: inset 0 -5px 0 rgba(0,0,0,.12); }
+.fl b { display: block; font-size: 18px; }
+.fl span { color: var(--muted); font-size: 14px; font-weight: 500; }
+.fl .pr { font-weight: 800; white-space: nowrap; }
+.fl .add { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--choc); display: grid; place-items: center; font-size: 22px; line-height: 1; background: transparent; transition: background .2s, color .2s; }
+.fl .add:hover { background: var(--choc); color: var(--cream); }
+.note { color: var(--muted); font-size: 14px; margin-top: 16px; }
+
+/* як робимо */
+.how { padding: 140px 0; overflow: hidden; }
+.how .bgword { top: 60px; }
+.how .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 560px); gap: 40px; }
+.steps { display: grid; gap: 14px; counter-reset: s; }
+.step { background: rgba(251,241,228,.86); border-radius: 26px; padding: 26px 28px; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; align-items: start; }
+.step::before { counter-increment: s; content: counter(s); width: 52px; height: 52px; border-radius: 50%; background: var(--choc); color: var(--cream); display: grid; place-items: center; font: 400 22px/1 var(--head); }
+.step h3 { font-size: 26px; margin-bottom: 6px; }
+.step p { margin: 0; color: var(--muted); }
+
+/* коробка */
+.box { padding: 120px 0; }
+.box .card { background: var(--choc); color: var(--cream); border-radius: 36px; padding: clamp(26px, 4vw, 54px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.box h2 { color: var(--cream); }
+.box .lead { color: #d8c2b6; }
+.tray { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; background: #3d2219; border-radius: 26px; padding: 18px; aspect-ratio: 3 / 2; }
+.slot { border-radius: 50%; border: 2px dashed rgba(251,241,228,.25); display: grid; place-items: center; background: transparent; cursor: pointer; padding: 0; position: relative; }
+.slot.full { border: 0; background: radial-gradient(circle, #3d2219 0 17%, var(--c) 18% 62%, #d6a06a 63% 70%, transparent 71%); animation: drop .5s cubic-bezier(.3,1.5,.5,1); }
+.slot.full::after { content: "×"; position: absolute; top: 4%; right: 4%; width: 26px; height: 26px; border-radius: 50%; background: var(--cream); color: var(--choc); font-weight: 800; display: grid; place-items: center; opacity: 0; transition: opacity .2s; }
+.slot.full:hover::after { opacity: 1; }
+@keyframes drop { from { transform: translateY(-30px) scale(.6); opacity: 0; } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0; }
+.chips button { min-height: 44px; padding: 0 16px 0 10px; border-radius: 999px; border: 0; background: rgba(251,241,228,.1); color: var(--cream); cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; transition: background .2s; }
+.chips button:hover { background: rgba(251,241,228,.2); }
+.chips i { width: 18px; height: 18px; border-radius: 50%; background: var(--c); }
+.total { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid rgba(251,241,228,.18); padding-top: 20px; }
+.total b { font: 400 34px/1 var(--head); }
+.total small { display: block; color: #d8c2b6; font-size: 14px; }
+.box .pill { background: var(--glaze); border-color: var(--glaze); color: var(--choc); transition: background 1s, border-color 1s, transform .2s; }
+.done { margin: 14px 0 0; color: #ffc2d4; font-size: 14px; display: none; }
+.done.on { display: block; }
+
+/* контакти */
+.visit { padding: 100px 0 140px; overflow: hidden; }
+.visit .grid { display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 40px; }
+.visit dl { margin: 0; display: grid; gap: 10px; }
+.visit dl div { background: rgba(251,241,228,.86); border-radius: 22px; padding: 18px 20px; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; }
+.visit svg { width: 22px; height: 22px; stroke: var(--choc); fill: none; stroke-width: 1.8; margin-top: 2px; }
+.visit dd { margin: 0; font-weight: 700; }
+.visit dd small { display: block; color: var(--muted); font-weight: 500; font-size: 14px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+footer { padding: 24px 0 40px; font-size: 14px; color: var(--muted); }
+footer .wrap { display: flex; gap: 8px 30px; flex-wrap: wrap; justify-content: space-between; }
+
+.js .rv { opacity: 0; transform: translateY(34px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .hero { align-content: end; padding-bottom: 34px; }
+  .hero .bgword { top: 2%; font-size: 30vw; }
+  .hero .wrap, .flavors .grid, .how .grid, .box .card, .visit .grid { grid-template-columns: minmax(0, 1fr); }
+  .now { text-align: left; }
+  .flavors, .how, .box { padding: 80px 0; }
+  .how .grid > div:first-child { display: none; }
+  .fl { grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .fl .pr { grid-column: 2; grid-row: 2; font-size: 15px; }
+  .fl .add { grid-row: 1 / 3; grid-column: 3; }
+  header.top .pill { min-height: 44px; padding: 0 16px; font-size: 14px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } .js .rv { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="demo"><div class="wrap"><span>Концепт-сайт від <b>Arvis</b>: такої пончикової немає, це приклад нашої роботи.</span><a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><i></i>Глазур</a>
+    <a class="pill" href="#box">Зібрати коробку</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" data-d="hero">
+    <div class="bgword" aria-hidden="true">ГЛАЗУР</div>
+    <div class="wrap">
+      <div>
+        <h1 class="rv">Пончики, які видно здалеку</h1>
+        <p class="rv" style="--d:.1s">Печемо щоранку й одразу вкриваємо глазур'ю. Шість смаків, коробка на шість штук і посипка, яка хрумтить.</p>
+        <div class="cta rv" style="--d:.2s"><a class="pill" href="#flavors">Обрати смак</a><a class="pill light" href="#visit">Де ми</a></div>
+      </div>
+      <div class="now rv" style="--d:.3s" aria-live="polite"><small>На пончику зараз</small><b id="now">Полуниця</b></div>
+    </div>
+  </section>
+
+  <section class="flavors" id="flavors" data-d="flavors">
+    <div class="bgword" aria-hidden="true">СМАКИ</div>
+    <div class="wrap grid">
+      <div>
+        <h2 class="rv">Шість смаків</h2>
+        <p class="lead rv" style="--d:.1s">Натисніть на смак, і пончик перевдягнеться. Плюсик кладе його в коробку.</p>
+        <div class="list" id="list"></div>
+        <p class="note">Приклад меню: тут будуть ваші смаки й ціни.</p>
+      </div>
+      <div></div>
+    </div>
+  </section>
+
+  <section class="how" data-d="how">
+    <div class="bgword" aria-hidden="true">ТІСТО</div>
+    <div class="wrap grid">
+      <div></div>
+      <div>
+        <h2 class="rv">Як ми їх робимо</h2>
+        <div class="steps">
+          <div class="step rv"><div><h3>Тісто з вечора</h3><p>Опара стоїть ніч, тому пончик виходить легкий, а не гумовий.</p></div></div>
+          <div class="step rv" style="--d:.1s"><div><h3>Смажимо о 6:30</h3><p>Невеликими партіями, щоб олія не остигала і нічого не просочувалось.</p></div></div>
+          <div class="step rv" style="--d:.2s"><div><h3>Глазур поки теплий</h3><p>Тоді вона лягає тонко й блищить. Посипка — останньою, руками.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="box" id="box" data-d="box">
+    <div class="wrap">
+      <div class="card">
+        <div>
+          <h2 class="rv">Збери коробку</h2>
+          <p class="lead">Шість місць. Додавайте смаки кнопками, натисніть на пончик у коробці, щоб прибрати.</p>
+          <div class="chips" id="chips"></div>
+          <div class="total"><div><b id="sum">0 ₴</b><small id="cnt">Коробка порожня</small></div><button class="pill" type="button" id="order">Замовити</button></div>
+          <p class="done" id="done">Це концепт: на справжньому сайті замовлення прийде в Telegram, і коробку зберуть до вашого приходу.</p>
+        </div>
+        <div class="tray" id="tray" aria-label="Коробка на шість пончиків"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit" data-d="visit">
+    <div class="bgword" aria-hidden="true">ЧЕКАЄМО</div>
+    <div class="wrap grid">
+      <div>
+        <h2 class="rv">Заходьте теплими</h2>
+        <dl class="rv" style="--d:.1s">
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="sr">Адреса</span></dt><dd>Тут буде ваша адреса<small>з маршрутом у Google Картах</small></dd></div>
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="sr">Години</span></dt><dd>Щодня 7:00–19:00<small>(приклад) — або поки не скінчаться</small></dd></div>
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span class="sr">Телефон</span></dt><dd>Тут буде ваш номер<small>натиснув — і дзвінок</small></dd></div>
+        </dl>
+      </div>
+      <div></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>Пончик — 3D прямо в браузері, без жодного фото</span></div></footer>
+
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+<script>
+/* смаки, коробка, появи — працює й без 3D */
+window.FLAVORS = [
+  ['Полуниця', 'рожева глазур, біла посипка', 45, '#f27aa0', '#fbe6ea'],
+  ['Шоколад', 'темний шоколад, горішки', 50, '#5b2d1e', '#f1e2d6'],
+  ['Фісташка', 'фісташковий крем', 55, '#a9c46c', '#eef1dc'],
+  ['Ваніль', 'біла глазур, кольорова посипка', 45, '#f6ead6', '#fbf1e4'],
+  ['Карамель', 'солона карамель', 50, '#d98f3a', '#f8e7d0'],
+  ['Чорниця', 'ягідна глазур', 50, '#6c4b9b', '#ece4f2'],
+];
+(() => {
+  const F = window.FLAVORS, $ = id => document.getElementById(id);
+  let cur = 0, picked = false;
+  window.setFlavor = (i, byUser) => {
+    if (byUser) picked = true;
+    cur = i;
+    document.documentElement.style.setProperty('--glaze', F[i][3]);
+    document.documentElement.style.setProperty('--tint', F[i][4]);
+    $('now').textContent = F[i][0];
+    $('now').style.color = i === 3 ? 'var(--choc)' : F[i][3];
+    document.querySelectorAll('.fl').forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
+    window.onFlavor && window.onFlavor(F[i][3]);
+  };
+  $('list').innerHTML = F.map((f, i) => `<div class="fl rv" role="button" tabindex="0" aria-pressed="${i === 0}" data-i="${i}" style="--c:${f[3]};--d:${i * .05}s"><span class="dot"></span><span><b>${f[0]}</b><span>${f[1]}</span></span><span class="pr">${f[2]} ₴</span><button class="add" type="button" data-add="${i}" aria-label="Додати ${f[0]} в коробку">+</button></div>`).join('');
+  $('list').addEventListener('click', e => {
+    const a = e.target.closest('[data-add]'); if (a) { add(+a.dataset.add); return; }
+    const r = e.target.closest('.fl'); if (r) setFlavor(+r.dataset.i, true);
+  });
+  $('list').addEventListener('keydown', e => { const r = e.target.closest('.fl'); if (r && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); setFlavor(+r.dataset.i, true); } });
+  /* у першому екрані смаки змінюються самі, поки людина нічого не обрала */
+  setInterval(() => { if (!picked && scrollY < innerHeight * .6 && !document.hidden) setFlavor((cur + 1) % F.length); }, 2600);
+
+  /* коробка */
+  const box = [];
+  $('chips').innerHTML = F.map((f, i) => `<button type="button" data-add="${i}" style="--c:${f[3]}"><i></i>${f[0]}</button>`).join('');
+  $('chips').addEventListener('click', e => { const b = e.target.closest('[data-add]'); if (b) add(+b.dataset.add); });
+  $('tray').addEventListener('click', e => { const s = e.target.closest('.slot.full'); if (s) { box.splice(+s.dataset.k, 1); draw(); } });
+  function add(i) { if (box.length >= 6) { $('cnt').textContent = 'Коробка повна — приберіть один, щоб замінити'; return; } box.push(i); setFlavor(i, true); draw(true); }
+  function draw(added) {
+    $('tray').innerHTML = Array.from({ length: 6 }, (_, k) => box[k] != null
+      ? `<button type="button" class="slot full" data-k="${k}" style="--c:${F[box[k]][3]};${added && k === box.length - 1 ? '' : 'animation:none'}" aria-label="${F[box[k]][0]}, прибрати"></button>`
+      : `<span class="slot" aria-hidden="true"></span>`).join('');
+    let sum = box.reduce((s, i) => s + F[i][2], 0);
+    const full = box.length === 6, disc = full ? Math.round(sum * .1 / 5) * 5 : 0;
+    $('sum').textContent = (sum - disc) + ' ₴';
+    $('cnt').textContent = !box.length ? 'Коробка порожня' : full ? `Повна коробка: знижка ${disc} ₴` : `${box.length} з 6 · повна коробка мінус 10%`;
+    $('done').classList.remove('on');
+  }
+  $('order').addEventListener('click', () => { if (box.length) $('done').classList.add('on'); else $('cnt').textContent = 'Спершу покладіть хоч один пончик'; });
+  draw();
+
+  if ('IntersectionObserver' in window) {
+    const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+  } else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
+})();
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const canvas = document.getElementById('gl');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let renderer;
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+catch (e) { canvas.remove(); throw e; }
+const weak = (navigator.hardwareConcurrency || 4) <= 4 && Math.min(screen.width, screen.height) < 500;
+renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : 1.75));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
+camera.position.set(0, 0, 9);
+const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(3, 4, 5); scene.add(key);
+scene.add(new THREE.HemisphereLight(0xfff4e6, 0x6b3b2a, 0.6));
+
+/* пончик: тісто, глазур з хвилястим краєм і посипка — усе зібрано з коду */
+const R = 1, r = 0.46, TS = weak ? 120 : 200, RS = weak ? 48 : 72;
+const donut = new THREE.Group(), spin = new THREE.Group();
+donut.add(spin); scene.add(donut);
+const dough = new THREE.Mesh(new THREE.TorusGeometry(R, r, RS, TS), new THREE.MeshStandardMaterial({ color: 0xd9965a, roughness: 0.78 }));
+spin.add(dough);
+const edge = u => -0.12 + 0.13 * Math.sin(5 * u) + 0.06 * Math.sin(11 * u + 1.3) + 0.03 * Math.sin(23 * u);
+const gGeo = new THREE.TorusGeometry(R, r, RS, TS), P = gGeo.attributes.position, v3 = new THREE.Vector3();
+for (let i = 0; i < P.count; i++) {
+  v3.fromBufferAttribute(P, i);
+  const u = Math.atan2(v3.y, v3.x), cx = R * Math.cos(u), cy = R * Math.sin(u);
+  const nx = v3.x - cx, ny = v3.y - cy, nz = v3.z, len = Math.hypot(nx, ny, nz);
+  const s = nz / len, e = edge(u);
+  const k = THREE.MathUtils.smoothstep(s, e - 0.02, e + 0.14);
+  const rad = THREE.MathUtils.lerp(r - 0.05, r + 0.035, k) + k * 0.012 * Math.sin(9 * u + 3 * s);
+  P.setXYZ(i, cx + nx / len * rad, cy + ny / len * rad, nz / len * rad);
+}
+gGeo.computeVertexNormals();
+const glazeMat = new THREE.MeshPhysicalMaterial({ color: 0xf27aa0, roughness: 0.18, clearcoat: 1, clearcoatRoughness: 0.08 });
+spin.add(new THREE.Mesh(gGeo, glazeMat));
+
+const N = weak ? 110 : 170;
+const sprGeo = new THREE.CapsuleGeometry(0.022, 0.085, 3, 6);
+const spr = new THREE.InstancedMesh(sprGeo, new THREE.MeshStandardMaterial({ roughness: 0.45 }), N);
+const pal = [0xffffff, 0xffd34d, 0x6cc4ff, 0xff8fb1, 0x8bd17c, 0xff7a45].map(c => new THREE.Color(c));
+const base = [];
+const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), scl = new THREE.Vector3(1, 1, 1);
+for (let i = 0; i < N; i++) {
+  let u, s;
+  do { u = Math.random() * Math.PI * 2; s = Math.random(); } while (s < edge(u) + 0.2);
+  const vv = Math.asin(s), c = new THREE.Vector3(R * Math.cos(u), R * Math.sin(u), 0);
+  const n = new THREE.Vector3(Math.cos(vv) * Math.cos(u), Math.cos(vv) * Math.sin(u), Math.sin(vv));
+  const t = new THREE.Vector3().crossVectors(n, new THREE.Vector3(Math.random() - .5, Math.random() - .5, Math.random() - .5)).normalize();
+  base.push({ c, n, q: new THREE.Quaternion().setFromUnitVectors(up, t), f: 0.4 + Math.random() * 0.9 });
+  spr.setColorAt(i, pal[i % pal.length]);
+}
+spin.add(spr);
+function placeSprinkles(burst) {
+  const p = new THREE.Vector3();
+  base.forEach((b, i) => { p.copy(b.n).multiplyScalar(r + 0.05 + burst * b.f).add(b.c); m4.compose(p, b.q, scl); spr.setMatrixAt(i, m4); });
+  spr.instanceMatrix.needsUpdate = true;
+}
+placeSprinkles(0);
+
+/* куди летить пончик у кожному розділі: x, y — частка екрана, s — розмір, tilt — нахил, burst — посипка розлітається */
+const mobile = () => innerWidth < 900;
+const poses = {
+  hero:    () => mobile() ? { x: 0, y: .36, s: .7, tilt: -.95, burst: 0 } : { x: .32, y: .12, s: 1.45, tilt: -.9, burst: 0 },
+  flavors: () => mobile() ? { x: .58, y: .62, s: .42, tilt: -.6, burst: 0 } : { x: .5, y: 0, s: 1.15, tilt: -.5, burst: 0 },
+  how:     () => mobile() ? { x: -.55, y: .64, s: .42, tilt: -1.4, burst: .25 } : { x: -.48, y: 0, s: 1.05, tilt: -1.55, burst: .55 },
+  box:     () => mobile() ? { x: .6, y: .66, s: .36, tilt: -.7, burst: 0 } : { x: .62, y: .55, s: .55, tilt: -.7, burst: 0 },
+  visit:   () => mobile() ? { x: .55, y: .6, s: .45, tilt: -.9, burst: 0 } : { x: .48, y: -.05, s: 1.25, tilt: -.85, burst: .1 },
+};
+const secs = [...document.querySelectorAll('[data-d]')];
+const lerp = THREE.MathUtils.lerp, ease = t => t * t * (3 - 2 * t);
+function target() {
+  const y = scrollY, anchors = secs.map(s => s.offsetTop + s.offsetHeight / 2 - innerHeight / 2);
+  let i = 0; while (i < anchors.length - 1 && y > anchors[i + 1]) i++;
+  const a = poses[secs[i].dataset.d](), b = poses[secs[Math.min(i + 1, secs.length - 1)].dataset.d]();
+  const k = i === anchors.length - 1 ? 0 : ease(Math.min(1, Math.max(0, (y - anchors[i]) / (anchors[i + 1] - anchors[i]))));
+  const o = {}; for (const p in a) o[p] = lerp(a[p], b[p], k);
+  if (y < anchors[0]) Object.assign(o, a);
+  return o;
+}
+const st = target();
+
+/* колір глазурі переливається до нового смаку */
+const want = new THREE.Color(0xf27aa0);
+window.onFlavor = hex => want.set(hex);
+
+let mx = 0, my = 0;
+addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; }, { passive: true });
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+let visible = true, last = performance.now(), burstNow = 0;
+document.addEventListener('visibilitychange', () => { visible = !document.hidden; if (visible) { last = performance.now(); requestAnimationFrame(frame); } });
+function frame(now) {
+  if (!visible) return;
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  const t = target(), damp = 1 - Math.pow(0.0025, dt);
+  for (const p in t) st[p] += (t[p] - st[p]) * damp;
+  const H = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), W = H * camera.aspect;
+  donut.position.set(st.x * W / 2, st.y * H / 2, 0);
+  donut.scale.setScalar(st.s);
+  donut.rotation.x = st.tilt + my * .25;
+  donut.rotation.y = mx * .35 + Math.sin(now / 2400) * .12;
+  if (!reduce) spin.rotation.z += dt * (.35 + Math.abs(t.burst - st.burst) * 4);
+  if (Math.abs(st.burst - burstNow) > .002) { burstNow = st.burst; placeSprinkles(burstNow); }
+  glazeMat.color.lerp(want, 1 - Math.pow(0.02, dt));
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
