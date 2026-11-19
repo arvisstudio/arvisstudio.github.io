@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3D-студія — Arvis</title>
+<meta name="description" content="3D-сцени Arvis для сайтів: живуть у браузері, змінюються, поки гортаєш, і не гальмують на телефоні.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="3D-студія Arvis — сцени для сайтів">
+<meta property="og:description" content="Пончик, квітка, механізм, діамант, частинки, шовк — усе живе 3D прямо в браузері.">
+<meta property="og:url" content="https://arvisstudio.github.io/portfolio/3d/">
+<meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/3d-og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;600;800&family=Space+Grotesk:wght@600&display=swap">
+<style>
+:root { --ink: #000; --paper: #fff; --grey: #5e5e5e; --soft: #d6d6d6; --wash: #f2f2f0; --font: "Geologica", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.55 var(--font); }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: max(18px, env(safe-area-inset-left, 0px)); }
+header .wrap { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font: 600 22px/1 "Space Grotesk", var(--font); }
+.brand svg { width: 30px; height: 30px; }
+.back { font-size: 15px; color: var(--grey); text-decoration: none; }
+.back:hover { color: var(--ink); }
+h1 { margin: 26px 0 10px; font-size: clamp(54px, 10vw, 150px); line-height: .85; letter-spacing: -.05em; font-weight: 800; }
+.lead { margin: 0 0 30px; max-width: 60ch; color: var(--grey); }
+.studio { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 18px; padding-bottom: 60px; }
+.list { display: grid; gap: 8px; align-content: start; }
+.list button { text-align: left; border: 1.5px solid var(--soft); background: var(--paper); border-radius: 16px; padding: 14px 16px; cursor: pointer; transition: border-color .2s, background .2s; display: grid; gap: 2px; }
+.list button:hover { border-color: var(--ink); }
+.list button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.list b { font-weight: 600; }
+.list small { color: var(--grey); font-size: 13px; }
+.list button[aria-pressed="true"] small { color: #bdbdbd; }
+.view { position: relative; background: var(--wash); border-radius: 26px; overflow: hidden; min-height: 620px; display: grid; }
+.view canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.panel { position: absolute; left: 16px; right: 16px; bottom: 16px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 20px; align-items: end; pointer-events: none; }
+.panel > * { pointer-events: auto; }
+.about { background: rgba(255,255,255,.88); border-radius: 18px; padding: 16px 18px; max-width: 520px; }
+.about h2 { margin: 0 0 4px; font-size: 26px; letter-spacing: -.02em; }
+.about p { margin: 0; font-size: 15px; }
+.about .for { color: var(--grey); font-size: 13px; margin-top: 6px; }
+.ctrl { background: rgba(255,255,255,.88); border-radius: 18px; padding: 14px 16px; display: grid; gap: 10px; min-width: 240px; }
+.ctrl label { display: grid; gap: 4px; font-size: 13px; color: var(--grey); }
+.ctrl input[type=range] { width: 100%; accent-color: #000; }
+.sw { display: flex; gap: 8px; }
+.sw button { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; outline: 1.5px solid var(--soft); background: var(--c); cursor: pointer; }
+.sw button[aria-pressed="true"] { outline: 2px solid var(--ink); }
+.auto { display: flex !important; grid-template-columns: none; align-items: center; gap: 8px !important; color: var(--ink) !important; font-size: 14px !important; }
+.hint { position: absolute; top: 16px; left: 18px; font-size: 13px; color: var(--grey); }
+footer { border-top: 1px solid var(--soft); padding: 24px 0 40px; font-size: 14px; color: var(--grey); }
+footer .wrap { display: flex; justify-content: space-between; gap: 10px 30px; flex-wrap: wrap; }
+.order { display: inline-flex; align-items: center; min-height: 46px; padding: 0 20px; border-radius: 999px; background: var(--ink); color: var(--paper); text-decoration: none; font-weight: 600; }
+@media (max-width: 900px) {
+  .studio { grid-template-columns: minmax(0, 1fr); }
+  .list { grid-auto-flow: column; grid-auto-columns: minmax(160px, 1fr); overflow-x: auto; padding-bottom: 6px; order: 2; }
+  .view { min-height: 78svh; }
+  .panel { grid-template-columns: minmax(0, 1fr); }
+  .about { display: none; }
+}
+body.shot header, body.shot h1, body.shot .lead, body.shot .list, body.shot .panel, body.shot footer, body.shot .hint { display: none; }
+body.shot .studio { display: block; padding: 0; }
+body.shot .wrap { max-width: none; padding: 0; }
+body.shot .view { border-radius: 0; min-height: 100vh; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="atom" viewBox="0 0 120 120"><g fill="none" stroke="currentColor" stroke-width="5"><circle cx="60" cy="60" r="27"/><circle cx="60" cy="60" r="49"/></g><circle cx="60" cy="60" r="11" fill="currentColor"/><circle cx="79.1" cy="40.9" r="7" fill="currentColor"/><circle cx="25.4" cy="94.6" r="7.5" fill="currentColor"/></symbol></defs></svg>
+<header><div class="wrap"><a class="brand" href="../../"><svg aria-hidden="true"><use href="#atom"/></svg>arvis</a><a class="back" href="../">← Усі роботи</a></div></header>
+<main class="wrap">
+  <h1>3D-студія</h1>
+  <p class="lead">Живі 3D-сцени для сайтів. Не картинка і не відео: модель зібрана з коду, крутиться за курсором і змінюється, поки людина гортає сторінку. Посуньте «прокрутку», щоб побачити.</p>
+  <div class="studio">
+    <div class="list" id="list" role="group" aria-label="Сцени"></div>
+    <div class="view" id="view">
+      <canvas id="c" aria-label="3D-сцена"></canvas>
+      <span class="hint">Поведіть мишкою або пальцем</span>
+      <div class="panel">
+        <div class="about"><h2 id="nm"></h2><p id="idea"></p><p class="for" id="for"></p></div>
+        <div class="ctrl">
+          <label>Прокрутка сторінки<input type="range" id="p" min="0" max="1" step="0.001" value="0"></label>
+          <label class="auto"><input type="checkbox" id="auto" checked> Гортати самій</label>
+          <div class="sw" id="sw" aria-label="Колір"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<footer><div class="wrap"><span>3D, що не гальмує: на слабких телефонах сцена сама спрощується, у фоні — ставиться на паузу.</span><a class="order" href="https://t.me/arvisstudio_bot">Хочу 3D на свій сайт</a></div></footer>
+
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+<script type="module">
+import { mountStage } from './stage.js';
+const q = new URLSearchParams(location.search);
+if (q.has('shot')) document.body.classList.add('shot');
+const ids = await (await fetch('models.json', { cache: 'no-store' })).json();
+const draft = q.get('draft'); if (draft && /^[a-z0-9-]+$/.test(draft) && !ids.includes(draft)) ids.push(draft); // черновик 3D-мастра — видно тільки за посиланням
+const mods = {};
+for (const id of ids) { try { mods[id] = await import(`./models/${id}.js`); } catch (e) { console.error('модель не завантажилась:', id, e); } }
+const list = document.getElementById('list'), pIn = document.getElementById('p'), auto = document.getElementById('auto');
+const ok = ids.filter(id => mods[id]);
+list.innerHTML = ok.map(id => `<button type="button" data-id="${id}"><b>${mods[id].meta.name}</b><small>${mods[id].meta.for.split(',').slice(0, 2).join(',')}</small></button>`).join('');
+let stage = null, t0 = performance.now();
+if (q.has('p')) { pIn.value = q.get('p'); auto.checked = false; }
+const progress = () => {
+  if (auto.checked) { const v = (Math.sin((performance.now() - t0) / 2600 - Math.PI / 2) + 1) / 2; pIn.value = v; return v; }
+  return +pIn.value;
+};
+async function show(id) {
+  const m = mods[id]; if (!m) return;
+  history.replaceState(null, '', '?model=' + id + (q.has('shot') ? '&shot' : '') + (q.has('p') ? '&p=' + q.get('p') : ''));
+  list.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.id === id)));
+  document.getElementById('nm').textContent = m.meta.name;
+  document.getElementById('idea').textContent = m.meta.idea;
+  document.getElementById('for').textContent = 'Для: ' + m.meta.for;
+  document.getElementById('sw').innerHTML = (m.meta.colors || []).map((c, i) => `<button type="button" style="--c:${c}" data-c="${c}" aria-label="Колір ${c}" aria-pressed="${i === 0}"></button>`).join('');
+  if (stage) stage.stop();
+  const old = document.getElementById('c'), c = old.cloneNode(); old.replaceWith(c);
+  stage = await mountStage(c, m, { fill: 'parent', progress, z: m.meta.z || 7.5, instant: q.has('shot') });
+  window.__ready = true;
+}
+document.getElementById('sw').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (!b || !stage) return; stage.setColor(b.dataset.c); document.querySelectorAll('#sw button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+list.addEventListener('click', e => { const b = e.target.closest('[data-id]'); if (b) show(b.dataset.id); });
+pIn.addEventListener('input', () => { auto.checked = false; });
+new ResizeObserver(() => stage && stage.resize()).observe(document.getElementById('view'));
+show(ok.includes(q.get('model')) ? q.get('model') : (draft && ok.includes(draft) ? draft : ok[0]));
+</script>
+</body>
+</html>
