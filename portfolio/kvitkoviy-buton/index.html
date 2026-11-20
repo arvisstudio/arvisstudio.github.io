@@ -71,7 +71,7 @@ h2 { font-size: clamp(42px, 5.4vw, 80px); }
 .hero .split { align-items: stretch; min-height: inherit; }
 .hero .txt { align-self: center; padding: 60px 0; }
 .hero .stage { position: relative; top: 0; height: auto; min-height: 520px; }
-.hero h1 { font-size: clamp(46px, 6.6vw, 104px); }
+.hero h1 { font-size: clamp(46px, 5vw, 76px); }
 .hero .cta { display: flex; gap: 10px; flex-wrap: wrap; }
 .nw { white-space: nowrap; }
 .scroll { margin-top: 38px; font-size: 16px; font-weight: 700; color: var(--mut); display: flex; align-items: center; gap: 10px; }
@@ -99,9 +99,9 @@ h2 { font-size: clamp(42px, 5.4vw, 80px); }
 .band { position: relative; height: 92vh; height: 92svh; min-height: 520px; overflow: hidden; z-index: 2; background: var(--bg); }
 .band img { position: absolute; left: 0; top: -12%; width: 100%; height: 124%; object-fit: cover; will-change: transform; }
 /* м'які краї: зверху фото тане в персиковий фон сезону, знизу — у сливовий фон доставки */
-.band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#FFD6C9 0%, rgba(255,214,201,.85) 7%, rgba(255,214,201,.45) 15%, rgba(255,214,201,0) 25%, rgba(43,29,43,.12) 40%, rgba(43,29,43,.25) 62%, rgba(43,29,43,.72) 86%, #2B1D2B 100%); }
+.band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(#FFD6C9 0%, rgba(255,214,201,.85) 7%, rgba(255,214,201,.45) 15%, rgba(255,214,201,0) 24%, rgba(43,29,43,.16) 36%, rgba(43,29,43,.5) 50%, rgba(43,29,43,.66) 64%, rgba(43,29,43,.76) 80%, #2B1D2B 100%); }
 .band .wrap { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 60px; color: var(--cream); }
-.band h2 { font-size: clamp(48px, 9vw, 150px); max-width: 11ch; will-change: transform; }
+.band h2 { font-size: clamp(48px, 9vw, 150px); max-width: 11ch; will-change: transform; text-shadow: 0 2px 28px rgba(43,29,43,.55); }
 .band small { display: block; margin-top: 14px; font-size: 16px; opacity: .9; }
 
 /* доставка */
@@ -119,7 +119,7 @@ h2 { font-size: clamp(42px, 5.4vw, 80px); }
 .build .bgword { top: 20px; }
 .bgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); gap: 48px; align-items: start; margin-top: 40px; }
 .side { position: sticky; top: 86px; display: grid; gap: 14px; }
-.viz { position: relative; background: radial-gradient(circle at 50% 30%, #3d2a3c, var(--plum) 70%); border-radius: 32px; padding: 14px; }
+.viz { position: relative; }
 .vsum { display: none; position: absolute; left: 16px; bottom: 16px; background: var(--peach); color: var(--plum); border-radius: 99px; padding: 6px 14px; font-weight: 800; font-size: 16px; }
 .viz svg { width: 100%; height: auto; display: block; max-height: 62vh; }
 .pop { transform-box: fill-box; transform-origin: center bottom; animation: pop .55s cubic-bezier(.3,1.6,.5,1); }
@@ -127,7 +127,7 @@ h2 { font-size: clamp(42px, 5.4vw, 80px); }
 .items { display: grid; }
 .it { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto auto; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1.5px solid rgba(43,29,43,.14); }
 .it:first-child { border-top: 1.5px solid var(--ink); }
-.it svg { width: 52px; height: 52px; background: var(--plum); border-radius: 50%; }
+.it svg { width: 52px; height: 52px; background: var(--peach); border-radius: 50%; }
 .it b { display: block; font-size: 18px; }
 .it span { color: var(--mut); font-size: 16px; }
 .it .pr { font-weight: 800; white-space: nowrap; }
@@ -169,8 +169,11 @@ footer .wrap { display: flex; gap: 8px 30px; flex-wrap: wrap; justify-content: s
 footer a { color: var(--peach); font-weight: 700; }
 
 @media (min-width: 900px) {
-  /* «бутон» на фоні — праворуч унизу, за квіткою, не під заголовком */
-  .hero .bgword { top: auto; bottom: 2%; left: auto; right: 0; transform: none; font-size: clamp(120px, 15vw, 230px); opacity: .09; }
+  /* «бутон» на фоні — ліворуч унизу, під текстом: не перетинає стебло квітки */
+  .hero { overflow: hidden; }
+  .hero .split { gap: 88px; }
+  .hero .txt { padding: 60px 0 150px; }
+  .hero .bgword { top: auto; bottom: -.06em; left: max(16px, calc(50% - 604px)); right: auto; transform: none; font-size: clamp(110px, 11vw, 170px); opacity: .09; }
 }
 .js .rv { opacity: 0; transform: translateY(34px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
 .js .rv.in { opacity: 1; transform: none; }
@@ -182,7 +185,19 @@ footer a { color: var(--peach); font-weight: 700; }
   .split .stage { position: relative; top: 0; height: 56vh; height: 56svh; min-height: 300px; }
   .hero { min-height: 0; }
   .hero .split { gap: 0; }
-  .hero .stage { min-height: 0; height: 32vh; height: 32svh; }
+  .hero .stage { min-height: 0; height: 34vh; height: 34svh; }
+  /* «2 год» на телефоні лягало під кікер і заголовок — прибираємо */
+  .deliv .bgword { display: none; }
+  /* фінал: заголовок → розкрита півонія → контакти → відгуки */
+  .final .split { gap: 0; }
+  .final .txt { display: contents; }
+  .final .txt > .kick, .final .txt > h2 { order: -2; }
+  .final .stage { order: -1; height: 44vh; height: 44svh; min-height: 280px; }
+  .final dl { order: 1; margin-top: 0; }
+  .final .revs { order: 2; }
+  /* кікер — два окремі рядки без крапки */
+  .hero .kick .nw { display: block; }
+  .hero .kick .dot { display: none; }
   /* головна дія видна без прокрутки: кнопки одразу під заголовком, опис — нижче */
   .hero .txt { padding: 0 0 46px; display: flex; flex-direction: column; }
   .hero h1 { font-size: clamp(38px, 10.4vw, 56px); }
@@ -190,8 +205,17 @@ footer a { color: var(--peach); font-weight: 700; }
   .hero .cta { order: 1; margin-top: 20px; }
   .hero .lead { order: 2; margin: 24px 0 0; }
   .hero .scroll { order: 3; }
-  .hero .bgword { top: 3%; font-size: 34vw; }
+  /* «бутон» тихіше й нижче — не з'їдає квітку */
+  .hero .bgword { top: auto; bottom: 2%; font-size: 30vw; opacity: .06; }
   .split .stage.after { order: -1; }
+  /* сезон: заголовок → квітка → відтінки одразу під нею → календар; нічого не налазить на сцену */
+  .season .split { gap: 0; }
+  .season .txt { display: contents; }
+  .season .txt > .kick, .season .txt > h2, .season .txt > .lead { order: -2; }
+  .season .stage { height: 46vh; height: 46svh; }
+  .season .hue { order: 0; margin-top: 8px; }
+  .season .cal { order: 1; margin-top: 32px; }
+  .season .lead { margin-bottom: 12px; }
   .cal li { grid-template-columns: minmax(0, 1fr); padding: 16px 0; }
   .steps li { grid-template-columns: 70px minmax(0, 1fr); }
   .side { display: contents; }
@@ -239,13 +263,13 @@ footer a { color: var(--peach); font-weight: 700; }
     <div class="bgword" aria-hidden="true">бутон</div>
     <div class="wrap split">
       <div class="txt">
-        <p class="kick rv">Квіткова майстерня <span class="nw">· доставка за 2&nbsp;години</span></p>
+        <p class="kick rv">Квіткова майстерня <span class="nw"><span class="dot">· </span>доставка за 2&nbsp;години</span></p>
         <h1 class="rv" style="--d:.08s">Квіти, що <em>розкриваються</em> у вас на очах</h1>
         <p class="lead rv" style="--d:.16s">Гортайте — і бутон відкриється пелюстка за пелюсткою. А наприкінці зберіть свій букет: півонії, троянди, евкаліпт. Ціну й час доставки видно одразу.</p>
         <div class="cta rv" style="--d:.24s"><a class="pill fill" href="#build">Зібрати букет</a><a class="pill" href="#season">Що зараз цвіте</a></div>
         <div class="scroll rv" style="--d:.32s" aria-hidden="true"><i></i>гортайте, бутон чекає</div>
       </div>
-      <div class="stage after" data-k="1.42" data-dy=".17" aria-hidden="true"></div>
+      <div class="stage after" data-k="1" data-dy=".02" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -253,7 +277,7 @@ footer a { color: var(--peach); font-weight: 700; }
     <div class="bgword" aria-hidden="true">сезон</div>
     <div class="wrap split">
       <div class="stage after" aria-hidden="true"></div>
-      <div>
+      <div class="txt">
         <p class="kick rv">Розкривається</p>
         <h2 class="rv">Що цвіте <em style="--acc:#c0392b">зараз</em></h2>
         <p class="lead rv">Беремо квіти в сезон: тоді вони стоять довше й пахнуть сильніше. Поточний сезон сайт підсвічує сам.</p>
@@ -319,7 +343,7 @@ footer a { color: var(--peach); font-weight: 700; }
     <div class="bgword" aria-hidden="true">до зустрічі</div>
     <div class="wrap split">
       <div class="stage after" aria-hidden="true"></div>
-      <div>
+      <div class="txt">
         <p class="kick rv">Заходьте понюхати</p>
         <h2 class="rv">Майстерня, де <em style="--acc:#c0392b">пахне</em> півоніями</h2>
         <dl class="rv">
@@ -335,7 +359,7 @@ footer a { color: var(--peach); font-weight: 700; }
 
 <div class="bar" id="bar"><div><b id="bSum">150 ₴</b><small>Приклад цін</small></div><button class="pill" type="button" id="bOrder">Замовити</button><p id="bMsg" aria-live="polite"></p></div>
 
-<footer><div class="wrap"><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>3D-півонія — без жодного фото</span></div></footer>
+<footer><div class="wrap"><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>Півонія — у 3D, фото — лише для прикладу</span></div></footer>
 
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
 <script>
@@ -362,19 +386,15 @@ footer a { color: var(--peach); font-weight: 700; }
     window.onHue && window.onHue(hue); draw(); icons();
   });
 
-  /* малюнки квітів для букета (SVG): пелюстки-краплі з градієнтом від темної основи до світлого краю,
-     тінь під квіткою й відблиск зверху — щоб був об'єм поруч із 3D-півонією */
+  /* малюнки квітів для букета (SVG): плоскі кольори з палітри сайту й тонкий темний контур —
+     як графічна версія 3D-півонії (той самий відтінок, ті самі бірюзові листки), без градієнтів і тіней */
   const pet = (r, w, n) => `M0 0C${-w} ${-r * .25} ${-w * 1.1} ${-r * .9} ${-w * .45} ${-r}Q0 ${-r * (1.08 - n)} ${w * .45} ${-r}C${w * 1.1} ${-r * .9} ${w} ${-r * .25} 0 0Z`;
-  const lg = (id, a, b, c) => `<linearGradient id="${id}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${a}"/><stop offset=".55" stop-color="${b}"/><stop offset="1" stop-color="${c}"/></linearGradient>`;
-  const defs = () => `<defs><filter id="fs" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#120a12" flood-opacity=".5"/></filter>`
-    + lg('gP', mix(hue, '#2B1D2B', .35), hue, mix(hue, '#ffffff', .4)) + lg('gP2', mix(hue, '#2B1D2B', .5), mix(hue, '#ffffff', .12), mix(hue, '#ffffff', .6))
-    + lg('gRp', '#8E2440', '#E2506A', '#F9A0B0') + lg('gT', '#D9622D', '#FFA36B', '#FFDDB8')
-    + '<radialGradient id="gHi" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></radialGradient>'
-    + '<radialGradient id="gIn"><stop offset="0" stop-color="#2B1D2B" stop-opacity=".5"/><stop offset="1" stop-color="#2B1D2B" stop-opacity="0"/></radialGradient>'
-    + '<radialGradient id="gR" cx=".4" cy=".35" r=".7"><stop offset="0" stop-color="#F7889C"/><stop offset=".7" stop-color="#D9435F"/><stop offset="1" stop-color="#9E2A44"/></radialGradient>'
-    + '<radialGradient id="gU" cx=".45" cy=".4" r=".65"><stop offset="0" stop-color="#FFF1EA"/><stop offset=".6" stop-color="#FFC9B8"/><stop offset="1" stop-color="#F0857A"/></radialGradient>'
-    + '<radialGradient id="gG" cx=".35" cy=".35"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#dccbc0"/></radialGradient>'
-    + '<linearGradient id="gL" x2="1" y2="1"><stop offset="0" stop-color="#B4E3D5"/><stop offset="1" stop-color="#4f9c89"/></linearGradient></defs>';
+  const fc = (id, c, o = 1) => `<linearGradient id="${id}"><stop stop-color="${c}" stop-opacity="${o}"/></linearGradient>`;
+  const defs = () => '<defs>'
+    + fc('gP', hue) + fc('gP2', mix(hue, '#FFF8F2', .4))
+    + fc('gRp', '#E2506A') + fc('gR', '#B83A55') + fc('gT', '#FF9F7A')
+    + fc('gHi', '#fff', 0) + fc('gIn', mix(hue, '#2B1D2B', .45), .55)
+    + fc('gU', '#FFD6C9') + fc('gG', '#FFF8F2') + fc('gL', '#14B8A6') + '</defs>';
   const DRAW = {
     peony: (k = 0) => {
       const d = mix(hue, '#2B1D2B', .35); let s = '';
@@ -386,14 +406,14 @@ footer a { color: var(--peach); font-weight: 700; }
     },
     rose: (k = 0) => { let s = ''; for (let i = 0; i < 6; i++) s += `<path d="${pet(18 + i % 2 * 2, 12, .08)}" transform="rotate(${i * 60 + k * 9})" fill="url(#gRp)" stroke="#8E2440" stroke-width=".7"/>`; return s + '<circle r="12.5" fill="url(#gR)"/><path d="M0 0a3.5 3.5 0 1 1 5 3 8 8 0 1 1-11-6 12 12 0 1 1 17 13" fill="none" stroke="#8E2440" stroke-width="2" stroke-linecap="round" opacity=".8"/><circle r="20" fill="url(#gHi)"/>'; },
     ranun: () => [18, 14.5, 11, 7.5, 4].map((r, i) => `<circle cy="${-i * .9}" r="${r}" fill="url(#gU)" stroke="#E8776E" stroke-width="${1.3 - i * .15}"/>`).join('') + '<circle cy="-3.6" r="2.2" fill="#14B8A6"/><circle r="18" fill="url(#gHi)"/>',
-    tulip: () => '<path d="M-15-2C-17-24-7-30 0-21 7-30 17-24 15-2 11 10-11 10-15-2Z" fill="url(#gT)" stroke="#C9622F"/><path d="M-15-2C-16-18-12-26-6-25-9-16-8-6-4 6-10 7-14 3-15-2Z" fill="#E4773F" opacity=".6"/><path d="M-6 2C-7-16-2-26 0-27 2-26 7-16 6 2Z" fill="url(#gT)" stroke="#C9622F" stroke-width=".8"/><ellipse cx="-3" cy="-15" rx="2.2" ry="7" fill="#fff" opacity=".35"/>',
-    gyps: () => [[0, 0], [9, -6], [-9, -5], [4, -14], [-5, -15], [13, 4], [-12, 6], [3, 10], [-3, -24], [11, -19], [-14, -12], [7, -24]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${2.6 + i % 3 * .6}" fill="url(#gG)" stroke="#cdb8ab" stroke-width=".6"/>`).join(''),
+    tulip: () => '<path d="M-15-2C-17-24-7-30 0-21 7-30 17-24 15-2 11 10-11 10-15-2Z" fill="url(#gT)" stroke="#C9622F"/><path d="M-15-2C-16-18-12-26-6-25-9-16-8-6-4 6-10 7-14 3-15-2Z" fill="#E8775A"/><path d="M-6 2C-7-16-2-26 0-27 2-26 7-16 6 2Z" fill="url(#gT)" stroke="#C9622F" stroke-width=".8"/>',
+    gyps: () => [[0, 0], [9, -6], [-9, -5], [4, -14], [-5, -15], [13, 4], [-12, 6], [3, 10], [-3, -24], [11, -19], [-14, -12], [7, -24]].map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${2.6 + i % 3 * .6}" fill="url(#gG)" stroke="#a88f86" stroke-width=".7"/>`).join(''),
   };
   const ITEMS = [['peony', 'Півонія', 'пишна, пахне медом', 120, 1.25], ['rose', 'Троянда', 'кущова, глибокий рожевий', 75, .95], ['ranun', 'Ранункулюс', 'сто пелюсток, як шовк', 90, 1], ['tulip', 'Тюльпан', 'персиковий, весняний', 55, 1], ['euca', 'Евкаліпт', 'гілка, сріблясто-бірюзова', 45], ['gyps', 'Гіпсофіла', 'хмаринка дрібних квіточок', 40, 1.1]];
   const I = Object.fromEntries(ITEMS.map(x => [x[0], x]));
-  const leaf = (x, y, r = 8) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#gL)" stroke="#4f8f80" stroke-width=".8"/><circle cx="${x - r * .3}" cy="${y - r * .3}" r="${r * .35}" fill="#fff" opacity=".18"/>`;
+  const leaf = (x, y, r = 8) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#gL)" stroke="#0f6f64" stroke-width=".8"/>`;
   function branch(T, E, r = 8) {
-    let s = `<path d="M${T[0]} ${T[1]}L${E[0]} ${E[1]}" stroke="#4f8f80" stroke-width="2.5"/>`;
+    let s = `<path d="M${T[0]} ${T[1]}L${E[0]} ${E[1]}" stroke="#13897c" stroke-width="2.5"/>`;
     const dx = E[0] - T[0], dy = E[1] - T[1], L = Math.hypot(dx, dy), nx = -dy / L, ny = dx / L;
     for (let k = 0, t = .35; t <= 1.001; t += .13, k++) { const o = (k % 2 ? 1.25 : -1.25) * r; s += leaf(T[0] + dx * t + nx * o, T[1] + dy * t + ny * o, r * (.85 + .15 * (k % 3) / 2)); }
     return s;
@@ -415,14 +435,14 @@ footer a { color: var(--peach); font-weight: 700; }
     const list = slots.map((id, i) => id && { id, i }).filter(Boolean).sort((a, b) => (a.id === 'gyps' ? -1 : 0) - (b.id === 'gyps' ? -1 : 0) || S[a.i][1] - S[b.i][1]);
     list.forEach(({ id, i }) => {
       const [x, y] = S[i], r = (i * 47 % 40) - 20;
-      stems += `<path d="M${x} ${y}L${T[0]} ${T[1]}" stroke="#3f8f6b" stroke-width="3"/>`;
-      fl += `<g transform="translate(${x} ${y}) rotate(${r}) scale(${I[id][4]})" filter="url(#fs)"><g class="${i === fresh ? 'pop' : ''}">${DRAW[id](i)}</g></g>`;
+      stems += `<path d="M${x} ${y}L${T[0]} ${T[1]}" stroke="#13897c" stroke-width="3"/>`;
+      fl += `<g transform="translate(${x} ${y}) rotate(${r}) scale(${I[id][4]})"><g class="${i === fresh ? 'pop' : ''}">${DRAW[id](i)}</g></g>`;
     });
     const any = list.length || greens.some(Boolean);
-    stems += [-12, -5, 2, 9].map(d => `<path d="M${T[0]} ${T[1]}L${T[0] + d} 462" stroke="#3f8f6b" stroke-width="3"/>`).join('');
+    stems += [-12, -5, 2, 9].map(d => `<path d="M${T[0]} ${T[1]}L${T[0] + d} 462" stroke="#13897c" stroke-width="3"/>`).join('');
     const front = w[4] ? `<path d="M92 228Q200 288 308 228L250 458H150Z" fill="${w[4]}"/><path d="M200 272V458" stroke="${w[3]}" stroke-width="2"/>` : '';
     const bow = `<g transform="translate(${T[0]} ${T[1]})"><path d="M-3 4L-16 40M3 4L18 38" stroke="#FF7A7A" stroke-width="6" stroke-linecap="round"/><ellipse cx="-15" rx="16" ry="9" transform="rotate(-20 -15 0)" fill="#FF7A7A"/><ellipse cx="15" rx="16" ry="9" transform="rotate(20 15 0)" fill="#FF7A7A"/><circle r="6" fill="#E25F5F"/></g>`;
-    const empty = any ? '' : '<text x="200" y="150" text-anchor="middle" fill="#FFD6C9" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="24">Тут з’явиться ваш букет</text>';
+    const empty = any ? '' : '<text x="200" y="150" text-anchor="middle" fill="#6e5a64" font-family="Fraunces, Georgia, serif" font-style="italic" font-size="24">Тут з’явиться ваш букет</text>';
     $('bq').innerHTML = defs() + back + gr + stems + fl + front + bow + empty;
     fresh = freshG = -1;
     total();
@@ -507,8 +527,10 @@ footer a { color: var(--peach); font-weight: 700; }
     for (const x of secs) { const r = x.getBoundingClientRect(); if ((x === band ? r.top + r.height / 2 : r.top) < mid) s = x; }
     if (s.dataset.bg !== curBg) { curBg = s.dataset.bg; root.style.setProperty('--pg', curBg); root.style.setProperty('--hink', s.dataset.ink); }
     // смужка з сумою: поки гортаєш конструктор, але не коли вже видно сам підсумок
-    const bR = $('build').getBoundingClientRect(), sR = document.querySelector('.sum').getBoundingClientRect();
-    $('bar').classList.toggle('on', bR.top < innerHeight * .5 && bR.bottom > innerHeight * .9 && !(sR.top < innerHeight - 40 && sR.bottom > 0));
+    // і ніколи поверх рядків зі списком квітів — назви пунктів не обрізаються
+    const bR = $('build').getBoundingClientRect(), sR = document.querySelector('.sum').getBoundingClientRect(), iR = $('items').getBoundingClientRect(), bh = $('bar').offsetHeight || 90;
+    const overItems = iR.top < innerHeight && iR.bottom > innerHeight - bh - 12;
+    $('bar').classList.toggle('on', bR.top < innerHeight * .5 && bR.bottom > innerHeight * .9 && !overItems && !(sR.top < innerHeight - 40 && sR.bottom > 0));
     if (!reduce && !still) {
       const r = band.getBoundingClientRect();
       if (r.bottom > 0 && r.top < innerHeight) {
@@ -527,21 +549,72 @@ footer a { color: var(--peach); font-weight: 700; }
 <script type="module">
 import { mountStage } from '../3d/stage.js';
 
-/* Півонія для цього сайту: закрита — кругла куля з пелюсток «черепицею», чашолистки сховані під нею;
-   поки гортаєш, п'ять кіл пелюсток розкриваються ззовні всередину в пишну чашу з золотою серцевиною. */
+/* Півонія для цього сайту. Кожна пелюстка — гнучка смужка, форму якої рахуємо формулою від «розкритості» e:
+   e=0 — пелюстки лежать точно на вкладених кулях бутона, черепицею (тугий круглий бутон без дірок і проколів);
+   e=1 — пишна чаша ярусами навколо золотої серцевини. Між ними — та сама смужка, лише інакше вигнута,
+   тож пелюстка ніде не мнеться й не ламається. */
 const model = { meta: { id: 'pivoniya-buton', color: '#FF7A7A' }, create(T, { weak = false, color = '#FF7A7A' } = {}) {
-  const cl = x => Math.max(0, Math.min(1, x)), sm = x => (x = cl(x), x * x * (3 - 2 * x));
-  const seg = weak ? 9 : 14, ws = weak ? 10 : 16, C0 = .91, PI = Math.PI;
+  const cl = x => Math.max(0, Math.min(1, x)), sm = x => (x = cl(x), x * x * (3 - 2 * x)), mx_ = (a, b, t) => a + (b - a) * t;
+  const hs = x => { const s = Math.sin(x * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+  const seg = weak ? 10 : 16, ws = weak ? 7 : 12, PI = Math.PI, HC = .45; // HC — висота центру кулі бутона
   const root = new T.Group(), plant = new T.Group(), head = new T.Group();
   plant.position.y = -1.75; head.position.y = 2.05; root.add(plant); plant.add(head);
-  // матова, оксамитова пелюстка: без дзеркальних відблисків, лише м'який «пушок» по краях
-  const petalMat = new T.MeshPhysicalMaterial({ color, vertexColors: true, side: T.DoubleSide, roughness: .86, specularIntensity: .25, envMapIntensity: .55, sheen: .45, sheenRoughness: .85, sheenColor: new T.Color('#fff1ea') });
+  // оксамитова пелюстка: м'який «пушок» замість дзеркального блиску
+  const petalMat = new T.MeshPhysicalMaterial({ color, vertexColors: true, side: T.DoubleSide, roughness: .86, sheen: .35, sheenRoughness: .7, sheenColor: new T.Color('#ffe4dc'), envMapIntensity: .55 });
   const fallMat = petalMat.clone(); fallMat.transparent = true;
   const leafMat = new T.MeshStandardMaterial({ color: '#14B8A6', vertexColors: true, side: T.DoubleSide, roughness: .7 });
+  // чашолистки матові й темніші за листя — не «пластик»
+  const sepMat = new T.MeshStandardMaterial({ color: '#0f8f80', vertexColors: true, side: T.DoubleSide, roughness: .95, envMapIntensity: .4 });
   const stemMat = new T.MeshStandardMaterial({ color: '#13897c', roughness: .55 });
   const goldMat = new T.MeshStandardMaterial({ color: '#f2c14e', roughness: .4, metalness: .15 });
   const creamMat = new T.MeshStandardMaterial({ color: '#f3d98e', roughness: .6 });
-  const mats = [petalMat, fallMat, leafMat, stemMat, goldMat, creamMat];
+  const carpMat = new T.MeshStandardMaterial({ color: '#c6dd98', roughness: .5 });
+  const mats = [petalMat, fallMat, leafMat, sepMat, stemMat, goldMat, creamMat, carpMat];
+
+  // осьова лінія пелюстки зі сталою кривиною k: відстань від осі d, висота y, нахил t (від вертикалі назовні)
+  const A = { d: 0, y: 0, t: 0 };
+  function arc(s, t0, k) {
+    if (Math.abs(k) < 1e-4) { A.d = s * Math.sin(t0); A.y = s * Math.cos(t0); A.t = t0; return; }
+    const t = t0 + k * s; A.d = (Math.cos(t0) - Math.cos(t)) / k; A.y = (Math.sin(t) - Math.sin(t0)) / k; A.t = t;
+  }
+  // пелюстка або чашолисток: c = { r, y — основа; tip — наскільки близько до осі сходиться в бутоні;
+  // len, th, turn — довжина, нахил біля основи й загальний вигин у розкритому стані; rho — поперечна чашоподібність;
+  // reflex — кінчик відгинається назовні; lift — черепиця; ruf — хвилястий край }
+  function blade(c, mat) {
+    const g = new T.PlaneGeometry(1, 1, c.pointed ? 6 : ws, seg), P = g.attributes.position, n = P.count;
+    const U = new Float32Array(n), V = new Float32Array(n), col = new Float32Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      const u = P.getX(i) * 2, v = P.getY(i) + .5; U[i] = u; V[i] = v;
+      // пелюстка: темна основа, темніші бічні краї й обідок кінчика — у закритому бутоні видно межу кожної пелюстки
+      const k = c.pointed ? (.5 + .16 * v) * (1 - .22 * Math.exp(-u * u / .01))
+        : (c.lo + (1 - c.lo) * sm(v * 1.5)) * c.tint * (1 - .46 * Math.abs(u) ** 1.8) * (1 - .3 * sm((v - .7) / .3));
+      col.set([k, k, k], i * 3);
+    }
+    g.setAttribute('color', new T.BufferAttribute(col, 3));
+    // бутон: смужка лежить на кулі радіуса R (по меридіану й поперек — по великому колу)
+    const R = Math.hypot(c.r, HC - c.y), pb = Math.atan2(c.y - HC, c.r), thC = -pb;
+    const Lc = R * (Math.acos(Math.min(.99, c.tip / R)) - pb);
+    function shape(e) {
+      const t0 = mx_(thC, c.th, e), L = mx_(Lc, c.len, e), k1 = mx_(-1 / R, c.turn / c.len, e), k2 = k1 + (c.reflex || 0) * e;
+      const kx = mx_(1 / R, 1 / c.rho, e), lift = (c.lift || 0) * (1 - .6 * e), ruf = (c.ruf || 0) * L * (.25 + .75 * e), sr = .68 * L;
+      arc(sr, t0, k1); const dr = A.d, yr = A.y, tr = A.t;
+      for (let i = 0; i < n; i++) {
+        const u = U[i], v = V[i];
+        const s = (c.pointed ? v : v * (1 - .3 * u * u * v * v * v)) * L; // округлий верх пелюстки
+        const h = c.wid * .5 * (c.pointed ? Math.pow(Math.sin(PI * v), .7) * (1 - .25 * v) : .2 + .8 * Math.sin(Math.min(1, v / .62) * PI / 2));
+        if (s <= sr) arc(s, t0, k1); else { arc(s - sr, tr, k2); A.d += dr; A.y += yr; }
+        const nz = -Math.cos(A.t), ny = Math.sin(A.t), al = u * h * kx, ca = Math.cos(al), sa = Math.sin(al);
+        const a = sa / kx, b = (1 - ca) / kx;
+        // зсув уздовж нормалі: хвиля краю (тільки в розкритої) і черепиця — правий край лягає на сусідню пелюстку
+        const off = ruf * v * v * v * (Math.sin(u * 6.3 + c.seed) * .8 + Math.sin(u * 11.1 + c.seed * 2.3) * .2) * (.35 + .65 * Math.abs(u) ** .6)
+          - lift * (u + 1) * .5 * Math.min(1, v * 3);
+        P.setXYZ(i, a - sa * off, A.y + ny * (b + ca * off), A.d + nz * (b + ca * off));
+      }
+      P.needsUpdate = true; g.computeVertexNormals();
+    }
+    const m = new T.Mesh(g, mat); m.frustumCulled = false;
+    return { m, shape, le: -1 };
+  }
 
   // листок / чашолисток: загострений, складений по жилці
   function leafGeo(len, wid, cup, fold) {
@@ -553,84 +626,63 @@ const model = { meta: { id: 'pivoniya-buton', color: '#FF7A7A' }, create(T, { we
     }
     g.setAttribute('color', new T.Float32BufferAttribute(col, 3)); g.computeVertexNormals(); return g;
   }
-  // пелюстка: основа — закрита (лежить на кулі бутона), морф — відкрита м'яка чаша з округлим краєм
-  // закритий бутон: усі кола лежать на вкладених кулях зі спільним центром (зовнішнє — найбільше),
-  // кожна пелюстка тягнеться до самої маківки й закручується спіраллю — зверху ні дірки, ні вм'ятини
-  const BR = .555, BH = .437;
-  function petalGeo(rg, ri, seed) {
-    const g = new T.PlaneGeometry(1, 1, ws, seg), P = g.attributes.position, n = P.count;
-    const open = new Float32Array(n * 3), col = new Float32Array(n * 3);
-    const R = BR - ri * .02, th0 = -Math.atan2(BH, rg.r), thT = PI / 2 - .04, ha = PI / rg.n * 1.4, cc = Math.cos(C0), ss = Math.sin(C0);
-    const lift = ri ? .03 : .085; // зовнішні пелюстки помітно лягають одна на одну
-    for (let i = 0; i < n; i++) {
-      const u = P.getX(i) * 2, v = P.getY(i) + .5;
-      const w = .16 + .84 * Math.sqrt(Math.max(0, 1 - ((v - .62) / .62) ** 2));
-      const s = v * (1 - .2 * u * u * v ** 3); // округлий верхній край, без зубців
-      const X = u * rg.wid * .5 * w, Y = s * rg.len;
-      open.set([X, Y, -rg.cup * rg.len * s * s - .7 * X * X / rg.wid + .02 * rg.len * Math.sin(u * 2.6 + seed) * v ** 3], i * 3);
-      // закрита: точка на кулі; правий край піднятий, верхній край трохи відгинається — видно черепицю
-      const th = th0 + v * (thT - th0), a = u * ha * w + .5 * v * v;
-      const Rr = R * (1 + lift * (u + 1) * .5 * Math.min(1, v * 3) * (1 - .5 * v ** 4) + (ri ? 0 : .035 * v ** 5));
-      const py = BH + Rr * Math.sin(th), pz = Rr * Math.cos(th) * Math.cos(a) - rg.r;
-      P.setXYZ(i, Rr * Math.cos(th) * Math.sin(a), py * cc + pz * ss, -py * ss + pz * cc);
-      // тінь під сусідньою пелюсткою зліва, світлий тонкий край справа й зверху — контур кожної пелюстки
-      const eL = Math.exp(-(((u + 1) / .3) ** 2)), eR = Math.exp(-(((1 - u) / .2) ** 2)), eT = Math.exp(-(((1 - v) / .1) ** 2));
-      const c = (.6 + .4 * sm(v * 1.2)) * rg.tint * (1 - .42 * eL) + .14 * eR + .1 * eT; col.set([c, c, c], i * 3);
-    }
-    g.computeVertexNormals();
-    const base = P.array.slice(), nb = g.attributes.normal.array.slice();
-    P.array.set(open); g.computeVertexNormals();
-    const no = g.attributes.normal.array.slice();
-    P.array.set(base); g.attributes.normal.array.set(nb);
-    g.morphAttributes.position = [new T.BufferAttribute(open, 3)];
-    g.morphAttributes.normal = [new T.BufferAttribute(no, 3)];
-    g.setAttribute('color', new T.BufferAttribute(col, 3));
-    return g;
-  }
 
   // стебло, чашечка, листки
   const curve = new T.CatmullRomCurve3([new T.Vector3(0, 0, 0), new T.Vector3(.08, .7, .04), new T.Vector3(-.03, 1.4, 0), new T.Vector3(0, 2, 0)]);
   plant.add(new T.Mesh(new T.TubeGeometry(curve, weak ? 12 : 24, .055, weak ? 6 : 10), stemMat));
-  const recep = new T.Mesh(new T.SphereGeometry(.24, 16, 10), stemMat); recep.scale.y = .6; recep.position.y = -.08; head.add(recep);
+  const recep = new T.Mesh(new T.SphereGeometry(.32, 18, 10), stemMat); recep.scale.y = .5; recep.position.y = -.07; head.add(recep);
   const lg = leafGeo(1.1, .42, -.2, .22), leaves = [];
   [[.8, .3, 1], [.55, 3.5, -1]].forEach(([y, ang, s]) => {
     const piv = new T.Group(); piv.position.copy(curve.getPoint(y / 2)); piv.rotation.y = ang;
     const h = new T.Group(); h.position.z = .08; piv.add(h); h.add(new T.Mesh(lg, leafMat)); plant.add(piv); leaves.push({ h, s, ph: ang });
   });
-  // чашолистки — короткі, низько біля основи, відігнуті вниз: під пелюстками, не крізь них
-  const sg = leafGeo(.42, .34, .25, .06), sepals = [];
+  // чашолистки: у бутоні обіймають нижню половину кулі (трохи ширшої за пелюстки), потім відгинаються вниз
+  const sepals = [];
   for (let i = 0; i < 5; i++) {
-    const piv = new T.Group(); piv.rotation.y = i * 1.2566 + .3;
-    const h = new T.Group(); h.position.set(0, -.1, .17); piv.add(h); h.add(new T.Mesh(sg, leafMat)); head.add(piv); sepals.push(h);
+    const piv = new T.Group(); piv.rotation.y = i * 1.2566 + .3; head.add(piv);
+    const hinge = new T.Group(); hinge.position.set(0, -.07, .32); piv.add(hinge);
+    const b = blade({ pointed: true, r: .32, y: -.07, tip: .6, len: .7, wid: .44, th: 2.1, turn: .45, rho: .55, seed: i }, sepMat);
+    hinge.add(b.m); sepals.push(b);
   }
 
-  // п'ять кіл пелюсток: зовнішні великі й плоскі, внутрішні дрібні й чашею навколо серцевини
-  const rings = [
-    { n: 5, r: .34, len: 1.22, wid: 1.3, cup: .3, o: 1.5, tint: 1 },
-    { n: 7, r: .32, len: 1.06, wid: 1.1, cup: .42, o: 1.22, tint: .97 },
-    { n: 9, r: .3, len: .9, wid: .92, cup: .55, o: .98, tint: .94 },
-    { n: 11, r: .28, len: .74, wid: .76, cup: .68, o: .8, tint: .91 },
-    { n: weak ? 9 : 13, r: .26, len: .58, wid: .6, cup: .8, o: .64, tint: .88 },
+  // кола пелюсток. У бутоні кожне коло лежить на своїй кулі (R), кулі вкладені одна в одну;
+  // розкриті — яруси: зовнішні широкі й майже пласкі з відігнутим краєм, внутрішні вужчі й стоять чашею
+  // шість кіл; у бутоні кожне зовнішнє коло закінчується нижче за внутрішнє (tip більший) — видно черепицю ярусів
+  const RINGS = [
+    // lift (черепиця) тонша за проміжок між кулями (.035) — край пелюстки не врізається в сусіднє коло й не «рветься»
+    { n: 5, r: .37, R: .585, tip: .435, len: 1.38, wid: 1, th: 1.6, turn: -.3, rho: 1.25, reflex: 1, ruf: .03, lift: .02, tint: 1.04, lo: .5 },
+    { n: 7, r: .34, R: .55, tip: .34, len: 1.25, wid: .9, th: 1.45, turn: -.42, rho: 1.1, reflex: .9, ruf: .035, lift: .022, tint: .97, lo: .46 },
+    { n: 9, r: .3, R: .515, tip: .25, len: 1.08, wid: .72, th: 1.25, turn: -.6, rho: .8, reflex: .45, ruf: .04, lift: .02, tint: .9, lo: .44 },
+    { n: 11, r: .26, R: .48, tip: .165, len: .92, wid: .56, th: 1.07, turn: -.75, rho: .6, ruf: .045, lift: .018, tint: .84, lo: .42 },
+    { n: 13, r: .22, R: .445, tip: .085, len: .78, wid: .44, th: .9, turn: -.82, rho: .45, ruf: .05, lift: .015, tint: .78, lo: .4 },
+    { n: weak ? 11 : 15, r: .18, R: .41, tip: .02, len: .64, wid: .34, th: .74, turn: -.85, rho: .34, ruf: .055, lift: .012, tint: .72, lo: .38 },
   ];
+  // у закритому бутоні частина пелюсток уже відхилена — видно, що це пелюстки, а не куля
+  const E0 = [[.3, .16, .38, .22, .12], [.12, 0, .18, 0, .08, 0, .14], [0, .07, 0, 0, .1, 0, 0, .06, 0]];
   const petals = []; let order = 0;
-  rings.forEach((rg, ri) => {
-    const geos = [0, 1].map(k => petalGeo(rg, ri, ri * 2.1 + k * 3.7));
+  RINGS.forEach((rg, ri) => {
+    const y = HC - Math.sqrt(rg.R * rg.R - rg.r * rg.r);
     for (let j = 0; j < rg.n; j++) {
-      const piv = new T.Group(); piv.rotation.y = j / rg.n * PI * 2 + ri * .7;
-      const hinge = new T.Group(); hinge.position.set(0, 0, rg.r); piv.add(hinge); head.add(piv);
-      const m = new T.Mesh(geos[j % 2], petalMat); hinge.add(m);
-      petals.push({ hinge, m, rg, o: rg.o + (j % 2 ? .08 : -.06), order: order++, ph: j * 2.3 + ri, tw: Math.sin(j * 4.1 + ri) * .12, sc: .93 + .14 * Math.abs(Math.sin(j * 12.99 + ri * 78.2)), fall: 0, e0: ri ? 0 : [.3, 0, .2, .26, 0][j] });
+      const h1 = hs(ri * 31 + j), h2 = hs(ri * 17 + j * 7 + 3);
+      const piv = new T.Group(); piv.rotation.y = (j + .25 * (h1 - .5)) / rg.n * PI * 2 + ri * .55; head.add(piv);
+      const hinge = new T.Group(); hinge.position.set(0, y, rg.r); piv.add(hinge);
+      const b = blade({ ...rg, y, th: rg.th + (h2 - .5) * .16, len: rg.len * (.93 + .12 * h1), tint: rg.tint * (.86 + .16 * h2), seed: ri * 2.1 + j * 3.7 }, petalMat);
+      hinge.add(b.m);
+      petals.push({ ...b, hinge, y, r: rg.r, order: order++, ph: j * 2.3 + ri, fall: 0, e0: (E0[ri] || [])[j] || 0 });
     }
   });
   const N = petals.length;
-  petals[1].fall = 1; petals[3].fall = -1; petals[1].m.material = petals[3].m.material = fallMat;
+  // наприкінці зриваються дві зовнішні пелюстки, що дивляться вбік
+  petals[1].fall = 1; petals[4].fall = -1; petals[1].m.material = petals[4].m.material = fallMat;
 
-  // серцевина: золоті тичинки (InstancedMesh) на кремовій подушці
+  // серцевина: золоті тичинки (InstancedMesh) на кремовій подушці й зелені маточки
+  const carpGeo = new T.SphereGeometry(.055, 10, 8), carpels = [];
+  for (let i = 0; i < 4; i++) { const c = new T.Mesh(carpGeo, carpMat); c.scale.set(1, 1.6, 1); head.add(c); carpels.push({ c, a: i / 4 * PI * 2 }); }
   const S = weak ? 160 : 320;
   const filGeo = new T.CylinderGeometry(.008, .012, 1, 4, 1); filGeo.translate(0, .5, 0);
   const antGeo = new T.SphereGeometry(.038, 6, 5); antGeo.scale(.9, 1.4, .9);
   const fil = new T.InstancedMesh(filGeo, creamMat, S), ant = new T.InstancedMesh(antGeo, goldMat, S);
-  const pad = new T.Mesh(new T.SphereGeometry(.22, 18, 8, 0, PI * 2, 0, PI / 2), creamMat); pad.scale.y = .35;
+  const pad = new T.Mesh(new T.SphereGeometry(.2, 18, 8, 0, PI * 2, 0, PI / 2), creamMat); pad.scale.y = .4; pad.position.y = .02;
   head.add(fil, ant, pad);
   const q = new T.Quaternion(), up = new T.Vector3(0, 1, 0), dir = new T.Vector3(), pos = new T.Vector3(), scl = new T.Vector3(), m4 = new T.Matrix4();
   let lastR = -1;
@@ -638,13 +690,14 @@ const model = { meta: { id: 'pivoniya-buton', color: '#FF7A7A' }, create(T, { we
     fil.visible = ant.visible = pad.visible = k > .01;
     if (Math.abs(k - lastR) < 1e-4) return; lastR = k;
     for (let i = 0; i < S; i++) {
-      const f = (i + .5) / S, a = i * 2.39996, r = .04 + .17 * Math.sqrt(f), tilt = .08 + (.15 + .7 * f) * k, L = (.18 + .1 * Math.abs(Math.sin(i * 7.31))) * (.25 + .75 * k);
+      const f = (i + .5) / S, a = i * 2.39996, r = .05 + .12 * Math.sqrt(f), tilt = .06 + (.12 + .5 * f) * k, L = (.17 + .1 * Math.abs(Math.sin(i * 7.31))) * (.25 + .75 * k);
       dir.set(Math.sin(tilt) * Math.cos(a), Math.cos(tilt), Math.sin(tilt) * Math.sin(a)); q.setFromUnitVectors(up, dir);
-      pos.set(Math.cos(a) * r, .03 + .05 * k, Math.sin(a) * r); scl.set(1, L, 1); m4.compose(pos, q, scl); fil.setMatrixAt(i, m4);
+      pos.set(Math.cos(a) * r, .06 + .04 * k, Math.sin(a) * r); scl.set(1, L, 1); m4.compose(pos, q, scl); fil.setMatrixAt(i, m4);
       const z = .5 + .5 * k; pos.addScaledVector(dir, L); scl.set(z, z, z); m4.compose(pos, q, scl); ant.setMatrixAt(i, m4);
     }
     fil.instanceMatrix.needsUpdate = ant.instanceMatrix.needsUpdate = true;
-    pad.position.y = .06 * k;
+    pad.position.y = .02 + .05 * k;
+    carpels.forEach(({ c, a }) => { const w = .15 + .3 * k; c.position.set(Math.cos(a) * .045, .12 + .1 * k, Math.sin(a) * .045); c.rotation.set(Math.sin(a) * w, 0, -Math.cos(a) * w); c.visible = k > .02; });
   }
 
   const want = new T.Color(color); let shown = 0;
@@ -653,21 +706,19 @@ const model = { meta: { id: 'pivoniya-buton', color: '#FF7A7A' }, create(T, { we
     update({ t, dt, p, mx, my, instant }) {
       shown = instant ? cl(p) : shown + (cl(p) - shown) * Math.min(1, dt * 3);
       const openP = cl((shown - .04) / .7), d = sm((shown - .84) / .16); // до p≈.75 розкрито все
-      sepals.forEach((h, i) => h.rotation.x = 2.05 + .3 * sm(shown / .3) + Math.sin(t + i) * .02);
+      const se = sm(shown / .25);
+      sepals.forEach(b => { if (Math.abs(se - b.le) > 4e-4 || instant) { b.shape(se); b.le = se; } });
       leaves.forEach(({ h, s, ph }) => { h.rotation.x = .75 + .35 * shown + Math.sin(t * .9 + ph) * .04; h.rotation.z = s * .15; });
       for (const pt of petals) {
-        // три зовнішні пелюстки вже трохи відігнуті на старті — одразу видно, що це квітка
-        const e = pt.e0 + (1 - pt.e0) * sm((openP - pt.order / (N - 1) * .5) / .5);
-        pt.hinge.rotation.x = C0 + (pt.o - C0) * e + Math.sin(t * 1.6 + pt.ph) * .02 * e;
-        pt.hinge.rotation.z = pt.tw * e;
-        pt.m.morphTargetInfluences[0] = e;
-        let s = 1 + (pt.sc - 1) * e;
+        // дві зовнішні пелюстки вже ледь відхилені на старті — одразу видно, що це квітка
+        const e = pt.e0 + (1 - pt.e0) * sm((openP - pt.order / (N - 1) * .55) / .45);
+        if (Math.abs(e - pt.le) > 4e-4 || instant) { pt.shape(e); pt.le = e; } // форму рахуємо, лише коли вона змінилась
+        pt.hinge.rotation.set(Math.sin(t * 1.6 + pt.ph) * .018 * e, 0, 0);
         if (pt.fall) { // наприкінці дві пелюстки легко злітають убік і вниз
-          pt.hinge.position.set((.4 * pt.fall + Math.sin(t * 1.2 + pt.ph) * .12 * d) * d, -.9 * d, pt.rg.r + .45 * d);
-          pt.hinge.rotation.x += d * .9; pt.hinge.rotation.z += d * .8 * pt.fall;
-          s *= 1 - .4 * d;
+          pt.hinge.position.set((.4 * pt.fall + Math.sin(t * 1.2 + pt.ph) * .12 * d) * d, pt.y - .9 * d, pt.r + .45 * d);
+          pt.hinge.rotation.x += d * .9; pt.hinge.rotation.z = d * .8 * pt.fall;
+          pt.m.scale.setScalar(1 - .4 * d);
         }
-        pt.m.scale.setScalar(s);
       }
       fallMat.opacity = 1 - .5 * d; fallMat.depthWrite = d < .05;
       core(sm((shown - .3) / .42));
