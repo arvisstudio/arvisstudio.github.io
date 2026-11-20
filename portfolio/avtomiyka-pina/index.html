@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Піна — автомийка</title>
+<meta name="description" content="Концепт-сайт автомийки від Arvis: брудне 3D-авто проїжджає мийку, поки ви гортаєте, а калькулятор рахує ціну, час і вільний слот.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Автомийка «Піна» — концепт сайту від Arvis">
+<meta property="og:description" content="Гортаєш — і авто проїжджає мийку: піна, щітки, вода, сушка, блиск. Ціна, час і запис — в один дотик.">
+<meta property="og:url" content="https://arvisstudio.github.io/portfolio/avtomiyka-pina/">
+<meta name="theme-color" content="#0F172A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --navy: #0F172A; --blue: #2563EB; --teal: #12C2B0; --yel: #FFCF3F; --snow: #F8FAFC;
+  --bg: var(--navy); --fg: var(--snow); --wc: var(--yel); --cov: 64px; --tt: 50svh;
+  --head: "Unbounded", "Arial Black", sans-serif;
+  --sans: "Inter", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 17px/1.55 var(--sans); overflow-x: hidden; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--yel); outline-offset: 3px; }
+.wrap { width: 100%; max-width: 1240px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+h1, h2, h3 { margin: 0; font-family: var(--head); font-weight: 700; line-height: 1.04; letter-spacing: -.02em; text-wrap: balance; }
+
+#gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+html:not(.js) #gl { display: none; }
+.demo, header.top, footer, .book, .visit { position: relative; z-index: 3; }
+
+.demo { background: var(--yel); color: var(--navy); font-size: 16px; line-height: 1.4; padding: 9px 0; }
+.demo .wrap { display: flex; gap: 4px 14px; flex-wrap: wrap; justify-content: space-between; }
+.demo a { font-weight: 700; }
+
+header.top { position: sticky; top: 0; z-index: 6; background: var(--bg); color: var(--fg); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 64px; }
+.logo { font: 800 24px/1 var(--head); text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: -.03em; }
+.logo i { position: relative; width: 26px; height: 22px; }
+.logo i::before, .logo i::after { content: ""; position: absolute; border-radius: 50%; border: 3px solid currentColor; }
+.logo i::before { width: 16px; height: 16px; left: 0; bottom: 0; }
+.logo i::after { width: 11px; height: 11px; right: 0; top: 0; }
+.pill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 24px; border-radius: 999px; border: 2px solid var(--yel); background: var(--yel); color: var(--navy); font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer; transition: transform .2s ease; }
+.pill:hover { transform: translateY(-2px); }
+.pill.ghost { background: transparent; color: inherit; border-color: currentColor; }
+header .pill { min-height: 44px; padding: 0 18px; }
+
+/* ── мийка: одна сцена на весь тунель, тексти прив'язані до прокрутки */
+.tunnel { position: relative; }
+.js .tunnel { height: 580vh; height: 580svh; margin-top: calc(-1px * var(--hd, 0)); }
+.js .stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.track, .words { display: none; }
+.js .track { display: block; position: absolute; z-index: 4; left: 0; right: 0; top: var(--cov); height: 3px; background: rgba(127,140,160,.3); }
+.track i { display: block; height: 100%; background: var(--yel); transform-origin: 0 0; transform: scaleX(0); }
+.js .words { display: block; position: absolute; z-index: 0; left: 0; right: 0; top: calc(var(--tt) - 17vw); height: 16vw; pointer-events: none; user-select: none; }
+.bw { position: absolute; left: 50%; top: 0; white-space: nowrap; font: 800 19vw/.8 var(--head); letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 2px var(--wc); opacity: 0; transform: translate3d(-50%, 0, 0); will-change: transform, opacity; }
+
+.chaps { display: grid; grid-template-columns: minmax(0, 1fr); }
+.chap { color: var(--cf, var(--snow)); padding-inline: max(16px, calc((100% - 1208px) / 2)); }
+.js .chaps { position: absolute; z-index: 2; left: 0; right: 0; top: var(--tt); bottom: 0; grid-template-rows: minmax(0, 1fr); padding-bottom: max(22px, env(safe-area-inset-bottom, 0px)); }
+.js .chap { grid-area: 1 / 1; align-self: end; opacity: 0; visibility: hidden; }
+.js .chap:first-child { opacity: 1; visibility: visible; }
+.js .tx > * { transform: translate3d(0, calc(var(--y, 0px) * var(--f, 1)), 0); }
+.js .tx > :nth-child(2) { --f: 1.18; }
+.js .tx > :nth-child(3) { --f: 1.36; }
+.js .tx > :nth-child(4) { --f: 1.54; }
+.js .tx > :nth-child(5) { --f: 1.72; }
+.chap .eye { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; margin-bottom: 12px; }
+.chap .eye b { font: 700 16px/1 var(--head); color: var(--yel); }
+.chap.lt .eye b { color: var(--blue); }
+.chap h1 { font-size: clamp(30px, 8.6vw, 64px); line-height: 1; }
+.chap h2 { font-size: clamp(26px, 7.2vw, 54px); }
+.chap p { margin: 12px 0 0; max-width: 40ch; }
+.chap .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.rows { list-style: none; margin: 16px 0 0; padding: 0; max-width: 470px; }
+.rows li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 14px; align-items: baseline; padding: 10px 0; border-top: 1px solid rgba(248,250,252,.28); }
+.chap.lt .rows li { border-color: rgba(15,23,42,.16); }
+.rows b { font-weight: 700; }
+.rows span { grid-column: 1 / -1; opacity: .85; }
+.rows .pr { grid-column: 2; grid-row: 1; font: normal 700 19px/1 var(--head); white-space: nowrap; }
+.rows .tm { grid-column: 1; opacity: .7; }
+.rows.check li { grid-template-columns: 28px minmax(0, 1fr); align-items: start; }
+.rows.check li::before { content: ""; width: 20px; height: 20px; margin-top: 3px; border-radius: 50%; background: var(--yel); box-shadow: inset 0 0 0 5px var(--navy); }
+.rows.check span { grid-column: 2; opacity: 1; }
+.note { font-size: 16px; opacity: .75; margin-top: 10px !important; }
+
+/* ── статичний режим: суцільна стрічка кольорів, кожен етап — кадр сцени */
+.shots { display: none; }
+html:not(.js) .chap { background: linear-gradient(180deg, var(--cb) calc(100% - 80px), var(--nb)); padding-block: 44px 84px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+html:not(.js) .shots { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.shot { position: relative; margin: 0; height: 250px; overflow: hidden; container-type: inline-size; }
+.shot canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+.shot .w { position: absolute; z-index: 0; left: 50%; top: 42%; transform: translate(-50%, -50%); font: 800 19cqw/.8 var(--head); letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 2px var(--yel); opacity: .8; white-space: nowrap; }
+.chap.lt .shot .w { -webkit-text-stroke-color: var(--blue); }
+.shot figcaption { position: absolute; z-index: 2; left: 0; bottom: 4px; font-weight: 600; }
+.shot figcaption b { font-family: var(--head); color: var(--yel); margin-right: 8px; }
+.chap.lt .shot figcaption b { color: var(--blue); }
+
+/* ── калькулятор */
+.book { background: var(--snow); color: var(--navy); padding: 110px 0 90px; overflow: hidden; }
+.js .book, .js .visit { background: transparent; }
+.bigw { position: absolute; z-index: 0; left: 50%; transform: translateX(-50%); white-space: nowrap; font: 800 clamp(110px, 25vw, 380px)/.8 var(--head); letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 2px rgba(15,23,42,.1); pointer-events: none; user-select: none; }
+.book .bigw { top: 30px; }
+.book .wrap, .visit .wrap { position: relative; z-index: 1; }
+.book h2, .visit h2 { font-size: clamp(36px, 7vw, 88px); }
+.lead { max-width: 46ch; margin: 16px 0 34px; color: #475569; }
+.calc { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px; align-items: start; }
+.lbl { font: 700 16px/1.2 var(--head); margin: 0 0 12px; }
+.types { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 30px; }
+.types button { min-height: 92px; border: 2px solid rgba(15,23,42,.14); border-radius: 20px; background: transparent; cursor: pointer; display: grid; place-items: center; gap: 4px; padding: 10px 6px; font-weight: 600; transition: border-color .25s, background .25s; }
+.types svg { width: 56px; height: 28px; fill: currentColor; }
+.types button[aria-pressed="true"] { border-color: var(--navy); background: var(--navy); color: var(--snow); }
+.types button[aria-pressed="true"] svg { fill: var(--teal); }
+.packs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.packs button { min-height: 44px; padding: 0 18px; border-radius: 999px; border: 0; background: rgba(37,99,235,.1); color: var(--blue); font-weight: 700; cursor: pointer; }
+.packs button:hover { background: rgba(37,99,235,.18); }
+.svc { display: grid; gap: 0; }
+.svc label { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 12px; align-items: center; min-height: 56px; padding: 8px 0; border-top: 1px solid rgba(15,23,42,.12); cursor: pointer; }
+.svc label:last-child { border-bottom: 1px solid rgba(15,23,42,.12); }
+.svc input { appearance: none; -webkit-appearance: none; margin: 0; width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--navy); display: grid; place-items: center; cursor: pointer; transition: background .2s; }
+.svc input:checked { background: var(--teal); border-color: var(--teal); }
+.svc input:checked::after { content: ""; width: 10px; height: 6px; border: solid var(--navy); border-width: 0 0 3px 3px; transform: translateY(-2px) rotate(-45deg); }
+.svc small { display: block; color: #64748b; font-size: 16px; }
+.svc .pr { font-weight: 700; white-space: nowrap; text-align: right; }
+.sum { background: var(--navy); color: var(--snow); border-radius: 32px; padding: clamp(22px, 3vw, 36px); position: sticky; top: 84px; }
+.total { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px 20px; flex-wrap: wrap; padding-bottom: 20px; border-bottom: 1px solid rgba(248,250,252,.16); margin-bottom: 22px; }
+.total b { display: block; font: 800 clamp(40px, 5vw, 58px)/1 var(--head); color: var(--yel); letter-spacing: -.03em; }
+.total span { display: block; opacity: .75; }
+.total .tt { text-align: right; }
+.total .tt b { font-size: clamp(24px, 2.6vw, 32px); color: var(--snow); }
+.days { display: flex; gap: 6px; margin-bottom: 14px; }
+.days button { flex: 1; min-height: 46px; border-radius: 14px; border: 2px solid rgba(248,250,252,.25); background: transparent; font-weight: 700; cursor: pointer; }
+.days button[aria-pressed="true"] { background: var(--snow); color: var(--navy); border-color: var(--snow); }
+.slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; }
+.slots button { min-height: 44px; border-radius: 12px; border: 0; background: rgba(248,250,252,.1); font-weight: 600; cursor: pointer; transition: background .2s, color .2s; }
+.slots button:hover { background: rgba(248,250,252,.22); }
+.slots button[aria-pressed="true"] { background: var(--teal); color: var(--navy); }
+.empty { grid-column: 1 / -1; flex: 1 0 100%; opacity: .8; margin: 6px 0; }
+.sum .hint { opacity: .7; margin: 12px 0 18px; }
+.sum .pill { width: 100%; }
+.msg { margin: 14px 0 0; padding: 14px 16px; border-radius: 16px; background: rgba(18,194,176,.16); display: none; }
+.msg.on { display: block; }
+.sbar { display: none; }
+
+/* ── контакти */
+.visit { background: var(--teal); color: var(--navy); padding: 80px 0 120px; overflow: hidden; }
+.visit .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.visit dl { margin: 26px 0 0; }
+.visit dl div { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 14px; padding: 16px 0; border-top: 1px solid rgba(15,23,42,.2); }
+.visit svg { width: 24px; height: 24px; stroke: var(--navy); fill: none; stroke-width: 1.9; margin-top: 2px; }
+.visit dd { margin: 0; font-weight: 700; }
+.visit dd small { display: block; color: rgba(15,23,42,.72); font-weight: 400; font-size: 16px; }
+.rev { border: 2px dashed rgba(15,23,42,.35); border-radius: 28px; padding: 30px 26px; }
+.rev h3 { font-size: 24px; margin-bottom: 8px; }
+.rev p { margin: 0; color: rgba(15,23,42,.8); }
+.bubbles { display: flex; gap: 8px; margin-bottom: 18px; }
+.bubbles i { width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--navy); }
+.bubbles i:nth-child(2) { width: 28px; height: 28px; border-color: var(--snow); }
+.bubbles i:nth-child(3) { border-color: var(--yel); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+footer { background: var(--navy); color: var(--snow); padding: 0 0 36px; overflow: hidden; }
+footer .end { font: 800 clamp(90px, 27vw, 400px)/.8 var(--head); letter-spacing: -.06em; color: var(--teal); margin: 0 0 22px; padding-top: 50px; white-space: nowrap; transform: translateX(-.04em); }
+footer .wrap > div { display: flex; flex-wrap: wrap; gap: 8px 30px; justify-content: space-between; opacity: .85; }
+
+.js .rv { opacity: 0; transform: translateY(32px); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 899px) {
+  .js .chap .opt { display: none; }
+  .js .chap p { margin-top: 8px; }
+  .js .chap .cta { margin-top: 14px; }
+  .js .rows { margin-top: 12px; }
+  .js .rows li { padding: 8px 0; }
+  .js .rows:not(.check) li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; }
+  .js .rows .pr { order: 3; margin-left: auto; }
+  .calc, .visit .grid { grid-template-columns: minmax(0, 1fr); }
+  .sum { position: static; }
+  .book { padding: 80px 0 60px; }
+  .total .tt { text-align: left; }
+  .svc small { display: none; }
+  .svc label { min-height: 50px; padding: 4px 0; }
+  .types { margin-bottom: 22px; }
+  .types button { min-height: 80px; }
+  .slots { display: flex; overflow-x: auto; scroll-snap-type: x proximity; overscroll-behavior-x: contain; padding-bottom: 6px; scrollbar-width: thin; }
+  .slots button { flex: 0 0 78px; scroll-snap-align: start; }
+  .js .sbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; position: fixed; z-index: 7; left: 0; right: 0; bottom: 0; padding: 10px 16px max(10px, env(safe-area-inset-bottom, 0px)); background: var(--navy); color: var(--snow); transform: translateY(110%); transition: transform .35s ease; }
+  .js .sbar.on { transform: none; }
+  .sbar b { display: block; font: 800 24px/1 var(--head); color: var(--yel); }
+  .sbar span { display: block; opacity: .8; font-size: 16px; }
+  .sbar .pill { flex: none; min-height: 48px; padding: 0 20px; }
+}
+@media (max-width: 899px) and (max-height: 700px) { .js .chap h2 { font-size: 24px; } .js .chap .cta .ghost { display: none; } }
+@media (min-width: 900px) {
+  .js .words { top: auto; bottom: 2vh; height: 11.5vw; }
+  .bw { font-size: 14vw; top: auto; bottom: 0; -webkit-text-stroke-width: 3px; }
+  .js .chaps { top: var(--cov); bottom: calc(2vh + 11.5vw); padding: 24px 0; }
+  .js .chap { align-self: center; }
+  .tx { max-width: 500px; }
+  .chap p { font-size: 18px; }
+  html:not(.js) .chap { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; padding-block: 70px 110px; }
+  html:not(.js) .shots.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shot { height: 400px; }
+  .two .shot { height: 330px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .js .rv { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="demo"><div class="wrap"><span>Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи.</span><a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><i></i>Піна</a>
+    <a class="pill" href="#book">Записатися</a>
+  </div>
+</header>
+
+<main>
+  <section class="tunnel" id="tunnel" aria-label="Як проходить мийка">
+    <div class="stick">
+      <div class="track" aria-hidden="true"><i id="bar"></i></div>
+      <div class="words" aria-hidden="true"><span class="bw">БРУД</span><span class="bw">ПІНА</span><span class="bw">ЩІТКИ</span><span class="bw">ВОДА</span><span class="bw">СУШКА</span><span class="bw">БЛИСК</span></div>
+      <div class="chaps">
+        <article class="chap" style="--cb:#0F172A;--nb:#2563EB">
+          <div class="tx">
+            <div class="eye"><b>01</b>Бруд</div>
+            <h1>Повернемо йому колір</h1>
+            <p>«Піна» — автомийка, де видно кожен крок. Гортайте вниз — і авто проїде мийку просто на вашому екрані.</p>
+            <div class="cta"><a class="pill" href="#book">Порахувати ціну</a><a class="pill ghost" href="#tunnel" data-go="1">Як ми миємо</a></div>
+          </div>
+          <div class="shots" aria-hidden="true"><figure class="shot" data-p=".02"><span class="w">БРУД</span><figcaption><b>1</b>Брудне авто перед аркою</figcaption></figure></div>
+        </article>
+        <article class="chap" style="--cb:#2563EB;--nb:#0F172A">
+          <div class="tx">
+            <div class="eye"><b>02</b>Піна</div>
+            <h2>Три пакети — одна шапка піни</h2>
+            <p class="opt">Активна піна розм'якшує бруд, і він сходить без тертя.</p>
+            <ul class="rows">
+              <li><b>Зовнішня</b><span>кузов, диски, сушка</span></li>
+              <li><b>Комплекс</b><span>+ пилосос і скло в салоні</span></li>
+              <li><b>Блиск</b><span>+ віск і чорніння гуми</span></li>
+            </ul>
+          </div>
+          <div class="shots" aria-hidden="true"><figure class="shot" data-p=".44"><span class="w">ПІНА</span><figcaption><b>2</b>Шапка піни лягає на кузов</figcaption></figure></div>
+        </article>
+        <article class="chap" style="--cb:#0F172A;--nb:#F8FAFC">
+          <div class="tx">
+            <div class="eye"><b>03</b>Щітки й вода</div>
+            <h2>М'які щітки — без подряпин</h2>
+            <ul class="rows check">
+              <li><span>Вода під тиском змиває пісок — щітці вже нічого тягнути</span></li>
+              <li><span>Ворс зі спіненого матеріалу, а не жорсткої щетини</span></li>
+              <li class="opt"><span>Диски й пороги — окремою щіткою</span></li>
+            </ul>
+          </div>
+          <div class="shots two" aria-hidden="true">
+            <figure class="shot" data-p=".53"><span class="w">ЩІТКИ</span><figcaption><b>3</b>Щітки знімають бруд</figcaption></figure>
+            <figure class="shot" data-p=".7"><span class="w">ВОДА</span><figcaption><b>4</b>Вода змиває піну</figcaption></figure>
+          </div>
+        </article>
+        <article class="chap lt" style="--cb:#F8FAFC;--nb:#F8FAFC;--cf:#0F172A">
+          <div class="tx">
+            <div class="eye"><b>04</b>Сушка й блиск</div>
+            <h2>Блищить. І ось скільки коштує</h2>
+            <ul class="rows">
+              <li><b>Зовнішня</b><em class="pr">420 ₴</em><span class="tm">≈ 30 хв</span></li>
+              <li><b>Комплекс</b><em class="pr">720 ₴</em><span class="tm">≈ 55 хв</span></li>
+              <li><b>Блиск</b><em class="pr">1 150 ₴</em><span class="tm">≈ 1 год 20 хв</span></li>
+            </ul>
+            <p class="note">Приклад цін для легкового авто</p>
+            <div class="cta"><a class="pill" href="#book">Обрати час</a></div>
+          </div>
+          <div class="shots two" aria-hidden="true">
+            <figure class="shot" data-p=".83"><span class="w">СУШКА</span><figcaption><b>5</b>Сушка здуває краплі</figcaption></figure>
+            <figure class="shot" data-p=".985"><span class="w">БЛИСК</span><figcaption><b>6</b>Чистий кузов з відблиском</figcaption></figure>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="book" id="book">
+    <div class="bigw" aria-hidden="true">ЗАПИС</div>
+    <div class="wrap">
+      <h2 class="rv">Запис на час</h2>
+      <p class="lead rv" style="--d:.08s">Оберіть авто й послуги — ціна й тривалість порахуються одразу. Потім вільна година на сьогодні чи завтра, і без дзвінків.</p>
+      <div class="calc">
+        <div class="rv" style="--d:.12s">
+          <p class="lbl">Яке авто</p>
+          <div class="types" id="types"></div>
+          <p class="lbl">Послуги</p>
+          <div class="packs" id="packs"></div>
+          <div class="svc" id="svc"></div>
+          <p class="note" style="color:#475569;opacity:1">Приклад цін: тут будуть ваші послуги й ціни.</p>
+        </div>
+        <div class="sum rv" id="sum" style="--d:.2s" aria-live="polite">
+          <div class="total">
+            <div><b id="price">0 ₴</b><span id="what">Оберіть послуги</span></div>
+            <div class="tt"><b id="dur">0 хв</b><span>на мийці</span></div>
+          </div>
+          <p class="lbl">Вільний час</p>
+          <div class="days" id="days"><button type="button" data-day="0" aria-pressed="true">Сьогодні</button><button type="button" data-day="1" aria-pressed="false">Завтра</button></div>
+          <div class="slots" id="slots"></div>
+          <p class="hint" id="hint">Показуємо лише вільні години (приклад розкладу).</p>
+          <button class="pill" type="button" id="go">Записатися</button>
+          <p class="msg" id="msg">Це концепт: на справжньому сайті заявка прийде в Telegram, а вам — підтвердження з часом.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap grid">
+      <div>
+        <h2 class="rv">Заїжджайте</h2>
+        <dl class="rv" style="--d:.1s">
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span class="sr">Адреса</span></dt><dd>Тут буде ваша адреса<small>з маршрутом у Google Картах</small></dd></div>
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="sr">Години</span></dt><dd>Щодня 8:00–21:00<small>приклад графіка</small></dd></div>
+          <div><dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span class="sr">Телефон</span></dt><dd>Тут буде ваш номер<small>натиснув — і дзвінок</small></dd></div>
+        </dl>
+      </div>
+      <div class="rev rv" style="--d:.15s">
+        <div class="bubbles" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h3>Тут будуть відгуки ваших гостей</h3>
+        <p>Справжні, з Google Карт — до і після мийки.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="sbar" id="sbar"><div><b id="sbP">0 ₴</b><span id="sbT">оберіть час</span></div><button class="pill" type="button" id="sbGo">Записатися</button></div>
+
+<footer>
+  <div class="end" aria-hidden="true">ПІНА</div>
+  <div class="wrap"><div><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>Авто й мийка — 3D прямо в браузері, без жодного фото</span></div></div>
+</footer>
+
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+<script>
+/* тунель (тексти, слова, фон — плавно від прокрутки), калькулятор, появи — працює й без 3D */
+(() => {
+  const $ = id => document.getElementById(id), root = document.documentElement;
+  const still = !root.classList.contains('js');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cl = v => v < 0 ? 0 : v > 1 ? 1 : v, ss = (a, b, v) => { const x = cl((v - a) / (b - a)); return x * x * (3 - 2 * x); };
+  const tunnel = $('tunnel'), demo = document.querySelector('.demo'), head = document.querySelector('header.top'), visit = $('visit');
+  const chaps = [...document.querySelectorAll('.chap')], words = [...document.querySelectorAll('.bw')];
+  /* розділ стоїть на місці між [a, b]; за T до a виїжджає знизу, після b — іде вгору. Сусіди частково перекриваються в часі */
+  const WIN = [[-1, .22], [.31, .46], [.54, .72], [.82, 2]], T = .08;
+  /* шість етапів сцени — шість великих слів */
+  const ST = [[0, .3], [.3, .46], [.46, .57], [.57, .74], [.74, .88], [.88, 1]];
+  const hx = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const N = hx('#0F172A'), B = hx('#2563EB'), S = hx('#F8FAFC'), TE = hx('#12C2B0'), Y = hx('#FFCF3F');
+  const BGK = [[0, N], [.22, N], [.3, B], [.46, B], [.54, N], [.72, N], [.84, S], [1, S]];
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const rgb = c => `rgb(${c[0]},${c[1]},${c[2]})`;
+  const bgAt = p => { for (let i = 1; i < BGK.length; i++) if (p <= BGK[i][0]) { const [p0, c0] = BGK[i - 1], [p1, c1] = BGK[i]; return mix(c0, c1, ss(p0, p1, p)); } return S; };
+  const L = window.L = { cov: -1, tt: 0, tr: 0 };
+  let top0 = 0, range = 1, demoH = 0, lastBg = '', ticking = false;
+  function measure() {
+    demoH = demo.offsetHeight;
+    if (!still) root.style.setProperty('--hd', (demoH + head.offsetHeight) + 'px');
+    top0 = tunnel.getBoundingClientRect().top + scrollY;
+    range = Math.max(1, tunnel.offsetHeight - innerHeight);
+    L.tr = Math.max(16, (innerWidth - 1240) / 2 + 16) + 500;
+  }
+  window.tunnelP = () => cl((scrollY - top0) / range);
+  window.tunnelEnd = () => top0 + range;
+  window.chapAt = p => p < .265 ? 0 : p < .5 ? 1 : p < .77 ? 2 : 3;
+  function tick() {
+    ticking = false;
+    const p = tunnelP(), ih = innerHeight;
+    $('bar').style.transform = `scaleX(${p.toFixed(4)})`;
+    /* вільна зона під шапкою: на першому екрані її з'їдає плашка концепту */
+    const cov = Math.round(Math.max(0, demoH - scrollY) + 64), tt = Math.round(Math.max(cov + 220, ih - 430));
+    if (cov !== L.cov || tt !== L.tt) { L.cov = cov; L.tt = tt; root.style.setProperty('--cov', cov + 'px'); root.style.setProperty('--tt', tt + 'px'); }
+    const D = innerWidth < 900 ? 80 : 120, ci = chapAt(p);
+    chaps.forEach((c, i) => {
+      let y = 0, op = 1;
+      if (reduce) op = i === ci ? 1 : 0;
+      else {
+        const [a, b] = WIN[i];
+        if (p < a) { const k = cl((a - p) / T); y = D * k; op = 1 - ss(0, .6, k); }
+        else if (p > b) { const k = cl((p - b) / T); y = -D * k; op = 1 - ss(0, .6, k); }
+      }
+      c.style.opacity = op.toFixed(3);
+      c.style.setProperty('--y', y.toFixed(1) + 'px');
+      c.style.visibility = op < .01 ? 'hidden' : 'visible';
+      c.style.pointerEvents = op > .5 ? 'auto' : 'none';
+    });
+    let si = ST.findIndex(s => p < s[1]); if (si < 0) si = ST.length - 1;
+    words.forEach((w, j) => {
+      const [s, e] = ST[j]; let op, x = 0;
+      if (reduce) op = j === si ? 1 : 0;
+      else { op = (j ? ss(s - .025, s + .025, p) : 1) * (j < ST.length - 1 ? 1 - ss(e - .025, e + .025, p) : 1); x = -(p - (s + e) / 2) / (e - s) * 6; }
+      w.style.opacity = (op * .85).toFixed(3);
+      w.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}vw), 0, 0)`;
+    });
+    /* спільне тло: темне → синє (піна) → темне → світле (блиск) → бірюзове на контактах */
+    let bg;
+    if (scrollY <= top0 + range) bg = bgAt(p);
+    else bg = mix(S, TE, ss(0, 1, (ih * .9 - visit.getBoundingClientRect().top) / (ih * .6)));
+    const str = rgb(bg);
+    if (str !== lastBg) {
+      lastBg = str;
+      const lum = (.2126 * bg[0] + .7152 * bg[1] + .0722 * bg[2]) / 255;
+      root.style.setProperty('--bg', str);
+      root.style.setProperty('--fg', lum > .55 ? '#0F172A' : '#F8FAFC');
+      root.style.setProperty('--wc', rgb(mix(Y, B, ss(.35, .8, lum))));
+    }
+  }
+  if (!still) {
+    measure(); tick();
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
+    addEventListener('resize', () => { measure(); tick(); });
+    addEventListener('load', () => { measure(); tick(); });
+    document.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => {
+      e.preventDefault(); scrollTo({ top: top0 + range * WIN[+a.dataset.go][0], behavior: reduce ? 'auto' : 'smooth' });
+    }));
+  } else measure();
+
+  /* калькулятор */
+  const TYPES = [['Легкове', 1, 'M2 18V14l6-2 6-5h14l7 5 9 1 2 2v3z'], ['Кросовер', 1.2, 'M2 18V12l5-1 5-6h20l5 6 8 1 1 2v4z'], ['Мінівен', 1.4, 'M2 18V9l4-5h30l8 6 2 2v6z']];
+  const SVC = [
+    ['body', 'Мийка кузова з піною', 'активна піна, щітки, сушка', 300, 20],
+    ['disk', 'Диски й арки', 'окремою щіткою', 120, 10],
+    ['vac', 'Пилосос салону', 'сидіння, килимки, багажник', 200, 15],
+    ['glass', 'Скло всередині', 'без розводів', 100, 10],
+    ['wax', 'Віск і полірування', 'той самий блиск', 350, 20],
+    ['tyre', 'Чорніння гуми', 'колеса як нові', 80, 5],
+    ['mats', 'Хімчистка килимків', 'гумові й текстильні', 250, 20],
+  ];
+  const PACKS = [['Зовнішня', ['body', 'disk']], ['Комплекс', ['body', 'disk', 'vac', 'glass']], ['Блиск', ['body', 'disk', 'vac', 'glass', 'wax', 'tyre']]];
+  let type = 0, day = 0, slot = null;
+  const on = new Set(['body', 'disk']);
+  const fmtT = m => m >= 60 ? `${Math.floor(m / 60)} год${m % 60 ? ' ' + m % 60 + ' хв' : ''}` : `${m} хв`;
+  const hhmm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+  const money = n => n.toLocaleString('uk-UA') + ' ₴';
+  const car = d => `<svg viewBox="0 0 48 24" aria-hidden="true"><path d="${d}"/><circle cx="12" cy="18" r="4"/><circle cx="36" cy="18" r="4"/></svg>`;
+  const DEF = 'Показуємо лише вільні години (приклад розкладу).';
+  const smooth = reduce ? 'auto' : 'smooth';
+
+  $('types').innerHTML = TYPES.map((t, i) => `<button type="button" data-t="${i}" aria-pressed="${i === type}">${car(t[2])}${t[0]}</button>`).join('');
+  $('packs').innerHTML = PACKS.map((p, i) => `<button type="button" data-p="${i}">${p[0]}</button>`).join('');
+  $('svc').innerHTML = SVC.map(s => `<label><input type="checkbox" value="${s[0]}" ${on.has(s[0]) ? 'checked' : ''}><span>${s[1]}<small>${s[2]}</small></span><span class="pr" data-pr="${s[0]}"></span></label>`).join('');
+
+  $('types').addEventListener('click', e => { const b = e.target.closest('[data-t]'); if (!b) return; type = +b.dataset.t; document.querySelectorAll('#types button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); calc(); });
+  $('packs').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; on.clear(); PACKS[+b.dataset.p][1].forEach(k => on.add(k)); document.querySelectorAll('#svc input').forEach(x => x.checked = on.has(x.value)); calc(); });
+  $('svc').addEventListener('change', e => { const x = e.target; if (x.checked) on.add(x.value); else on.delete(x.value); calc(); });
+  $('days').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (!b) return; setDay(+b.dataset.day); slot = null; drawSlots(); summary(); });
+  $('slots').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (!b) return; slot = +b.dataset.m; drawSlots(); summary(); });
+  function submit(fromBar) {
+    if (!on.size) { $('hint').textContent = 'Спершу оберіть хоча б одну послугу.'; if (fromBar) $('svc').scrollIntoView({ block: 'center', behavior: smooth }); return; }
+    if (slot == null) { $('hint').textContent = 'Оберіть вільну годину — і можна записуватись.'; if (fromBar) $('days').scrollIntoView({ block: 'center', behavior: smooth }); return; }
+    $('msg').classList.add('on');
+    if (fromBar) $('msg').scrollIntoView({ block: 'center', behavior: smooth });
+  }
+  $('go').addEventListener('click', () => submit(false));
+  $('sbGo').addEventListener('click', () => submit(true));
+  function setDay(d) { day = d; document.querySelectorAll('#days button').forEach(x => x.setAttribute('aria-pressed', String(+x.dataset.day === d))); }
+
+  let price = 0, dur = 0;
+  function calc() {
+    const k = TYPES[type][1], list = SVC.filter(s => on.has(s[0]));
+    price = Math.round(list.reduce((a, s) => a + s[3], 0) * k / 10) * 10;
+    dur = Math.ceil(list.reduce((a, s) => a + s[4], 0) * (1 + (k - 1) * .5) / 5) * 5;
+    SVC.forEach(s => { document.querySelector(`[data-pr="${s[0]}"]`).textContent = money(Math.round(s[3] * k / 10) * 10); });
+    $('price').textContent = money(price);
+    $('dur').textContent = fmtT(dur);
+    drawSlots(); summary();
+  }
+  const OPEN = 8 * 60, CLOSE = 21 * 60;
+  /* лише вільні години: зайняті й минулі не займають місця */
+  function freeFor(d) {
+    const now = new Date(), nowM = now.getHours() * 60 + now.getMinutes(), seed = now.getDate() + d, out = [];
+    for (let m = OPEN; m < CLOSE; m += 30) {
+      const busy = ((m / 30) * 7 + seed * 13) % 10 < 3;
+      if (!(busy || (d === 0 && m < nowM + 30) || m + Math.max(dur, 10) > CLOSE)) out.push(m);
+    }
+    return out;
+  }
+  function drawSlots() {
+    let list = freeFor(day);
+    if (day === 0 && !list.length && slot == null) { setDay(1); list = freeFor(1); }
+    if (slot != null && !list.includes(slot)) slot = null;
+    $('slots').innerHTML = list.length ? list.map(m => `<button type="button" data-m="${m}" aria-pressed="${m === slot}">${hhmm(m)}</button>`).join('')
+      : `<p class="empty">На цей день вільних годин немає — оберіть інший.</p>`;
+    $('msg').classList.remove('on');
+  }
+  function summary() {
+    const n = on.size, when = slot != null ? `${day ? 'завтра' : 'сьогодні'} о ${hhmm(slot)}` : '';
+    $('what').textContent = !n ? 'Оберіть послуги' : `${TYPES[type][0]} · ${n} ${n === 1 ? 'послуга' : n < 5 ? 'послуги' : 'послуг'}${when ? ' · ' + when : ''}`;
+    $('hint').textContent = slot != null ? `Закінчимо приблизно о ${hhmm(slot + dur)}.` : DEF;
+    $('sbP').textContent = money(price);
+    $('sbT').textContent = `${fmtT(dur)} · ${when || 'оберіть час'}`;
+  }
+  calc();
+
+  if ('IntersectionObserver' in window) {
+    const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+    /* телефон: підсумок з ціною й кнопкою закріплений знизу, поки самої кнопки не видно */
+    if (!still) {
+      let inBook = false, seeGo = false;
+      const upd = () => $('sbar').classList.toggle('on', inBook && !seeGo);
+      new IntersectionObserver(es => { inBook = es[0].isIntersecting; upd(); }, { rootMargin: '0px 0px -35% 0px' }).observe($('book'));
+      new IntersectionObserver(es => { seeGo = es[0].isIntersecting; upd(); }).observe($('go'));
+    }
+  } else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
+})();
+</script>
+
+<script type="module">
+const canvas = document.getElementById('gl');
+const still = !document.documentElement.classList.contains('js');
+try {
+const [{ mountStage }, model] = await Promise.all([import('../3d/stage.js'), import('../3d/models/nizkopoligonalne-avto-ku.js')]);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const cl = v => v < 0 ? 0 : v > 1 ? 1 : v, ss = (a, b, v) => { const x = cl((v - a) / (b - a)); return x * x * (3 - 2 * x); };
+/* той самий шлях авто, що й у моделі — камера трохи «їде» за ним */
+const carAt = p => -1.3 + 1.3 * ss(.04, .3, p) + 1.15 * ss(.76, .98, p);
+
+if (still) {
+  /* для скриншота — окремий кадр на кожен етап: бруд, піна, щітки, вода, сушка, блиск */
+  canvas.remove();
+  for (const el of document.querySelectorAll('.shot')) {
+    const c = document.createElement('canvas'), p = +el.dataset.p;
+    c.setAttribute('aria-hidden', 'true'); el.appendChild(c);
+    await mountStage(c, model, {
+      instant: true, fill: 'parent', model: { color: '#12C2B0' }, progress: () => p,
+      beforeFrame(f, inst) {
+        const k = Math.min(1.7, f.viewW / 3, f.viewH / 2.1), o = inst.object;
+        o.scale.setScalar(.88 * k); o.position.set(-carAt(p) * .88 * k * .85, -.06 * k, 0);
+      },
+    });
+  }
+} else {
+  /* без анімацій — по одному статичному кадру на розділ */
+  const PV = [0, .44, .66, 1];
+  const progress = () => { const p = tunnelP(); return reduce ? PV[chapAt(p)] : p; };
+  let sh = progress(), lastOp = -1;
+  await mountStage(canvas, model, {
+    instant: reduce, model: { color: '#12C2B0' }, progress,
+    beforeFrame(f, inst) {
+      sh = f.instant ? f.p : sh + (f.p - sh) * Math.min(1, f.dt * 3);
+      const W = f.viewW, H = f.viewH, iw = innerWidth, ih = innerHeight, m = iw < 900, o = inst.object, px = H / ih;
+      /* зона сцени: телефон — між шапкою й словом над текстом; комп'ютер — праворуч від тексту, над словом */
+      let x0, x1, y0, y1;
+      if (m) { x0 = 0; x1 = iw; y0 = L.cov + 8; y1 = L.tt - .17 * iw - 4; }
+      else { x0 = L.tr + 36; x1 = iw - 12; y0 = L.cov + 24; y1 = ih * .98 - .115 * iw; }
+      const zw = (x1 - x0) * px, zh = Math.max(60, y1 - y0) * px;
+      const s = m ? Math.min(1, zw / 2.7, zh / 1.9) : Math.min(1.4, zw / 3.3, zh / 2.1);
+      const follow = m ? .72 : .5;
+      /* після тунелю чисте авто виїжджає праворуч, а назустріч піднімається запис */
+      const away = Math.max(0, scrollY - tunnelEnd()) / ih;
+      o.scale.setScalar(.88 * s);
+      o.position.set(((x0 + x1) / 2 / iw - .5) * W - carAt(sh) * .88 * s * follow + W * 1.1 * ss(.05, 1, away), (.5 - (y0 + y1) / 2 / ih) * H - .06 * s, 0);
+      const op = Math.round((1 - ss(.25, .8, away)) * 100) / 100;
+      if (op !== lastOp) { lastOp = op; canvas.style.opacity = op; canvas.style.visibility = op < .01 ? 'hidden' : 'visible'; }
+    },
+  });
+}
+} catch (e) {
+  /* без 3D сайт працює далі: тексти, калькулятор і запис не залежать від сцени */
+  canvas.style.display = 'none';
+  console.warn('3D не завантажилось', e);
+}
+</script>
+</body>
+</html>
