@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Тату-студія «Чорнило»</title>
+<meta name="description" content="Концепт-сайт тату-студії від Arvis: крапля чорнила падає у воду, розпускається хмарою і стає ескізом. Калькулятор ціни й часу сеансу.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Чорнило — концепт сайту тату-студії від Arvis">
+<meta property="og:description" content="Крапля чорнила падає у воду й стає ескізом. Обираєте місце на тілі, розмір і стиль — сайт рахує ціну й час сеансу.">
+<meta property="og:url" content="https://arvisstudio.github.io/portfolio/tatu-studiya-chornilo-2/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root {
+  --ink: #111111;
+  --paper: #F2EFE9;
+  --coral: #FF4B3E;
+  --grey: #7A7A7A;
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --mut: #5f5f5f;
+  --line: rgba(17,17,17,.16);
+  --head: "Playfair Display", Georgia, "Times New Roman", serif;
+  --sans: "Inter", "Segoe UI", Arial, sans-serif;
+}
+html[data-theme="dark"] { --bg: var(--ink); --fg: var(--paper); --mut: #b9b5ad; --line: rgba(242,239,233,.2); }
+* { box-sizing: border-box; }
+html.js { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 17px/1.6 var(--sans); overflow-x: hidden; transition: background-color .9s ease, color .9s ease; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: max(18px, env(safe-area-inset-left, 0px)); }
+h1, h2, h3 { margin: 0; font-family: var(--head); font-weight: 400; line-height: 1; letter-spacing: -.01em; text-wrap: balance; }
+h2 { font-size: clamp(42px, 6vw, 88px); margin-bottom: 20px; }
+h2 em, h1 em { font-style: italic; }
+.kick { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px; }
+.kick::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--coral); }
+.lead { color: var(--mut); max-width: 44ch; margin: 0 0 28px; font-size: clamp(17px, 1.5vw, 19px); transition: color .9s; }
+.slot { min-width: 0; min-height: 0; pointer-events: none; }
+
+/* 3D позаду тексту: куб живе тільки в порожніх «слотах» розділів */
+#gl { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100lvh; z-index: 1; pointer-events: none; }
+.demo, header.top, main, footer { position: relative; z-index: 2; }
+main > section { position: relative; }
+.bgword { position: absolute; z-index: -1; left: 50%; transform: translateX(-50%); font: 400 clamp(110px, 22vw, 360px)/.8 var(--head); font-style: italic; color: transparent; -webkit-text-stroke: 1.5px rgba(17,17,17,.12); white-space: nowrap; pointer-events: none; user-select: none; }
+
+.demo { background: var(--ink); color: var(--paper); font-size: 16px; padding: 9px 0; z-index: 6; }
+.demo .wrap { display: flex; gap: 4px 14px; flex-wrap: wrap; justify-content: space-between; }
+.demo a { color: #ff8a80; font-weight: 600; }
+
+header.top { position: sticky; top: 0; z-index: 5; background: var(--bg); transition: background-color .9s ease; }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px; height: 66px; }
+.logo { font: 700 26px/1 var(--head); text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo i { width: 12px; height: 16px; background: var(--fg); clip-path: path("M6 0C6 0 0 8 0 11a6 5 0 0 0 12 0C12 8 6 0 6 0z"); transition: background-color .9s; }
+.pill { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border-radius: 999px; border: 1.5px solid var(--fg); background: var(--fg); color: var(--bg); font-weight: 600; font-size: 16px; text-decoration: none; cursor: pointer; transition: transform .25s, background-color .9s, color .9s, border-color .9s; }
+.pill:hover { transform: translateY(-2px); }
+.pill.ghost { background: transparent; color: var(--fg); }
+.pill.coral { background: var(--coral); border-color: var(--coral); color: var(--ink); }
+
+/* перший екран: текст ліворуч, куб праворуч */
+.hero { min-height: calc(100vh - var(--top, 108px)); min-height: calc(100svh - var(--top, 108px)); display: grid; grid-template-rows: minmax(0, 1fr); padding: 30px 0 50px; }
+.hero .wrap { width: 100%; display: grid; grid-template-columns: minmax(0, 560px) minmax(0, 1fr); gap: 40px; align-items: center; }
+.hero .slot { align-self: stretch; }
+.hero h1 { font-size: clamp(64px, 8.4vw, 132px); line-height: .9; position: relative; display: inline-block; padding-bottom: 14px; }
+.hero h1 span { display: inline-block; }
+.hero h1 svg { position: absolute; left: 2%; bottom: -6px; width: 96%; height: 34px; overflow: visible; }
+.hero h1 svg path { fill: none; stroke: var(--coral); stroke-width: 7; stroke-linecap: round; }
+.hero .lead { margin-top: 26px; }
+.cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.hint { margin-top: 38px; display: flex; align-items: center; gap: 12px; color: var(--mut); font-size: 16px; }
+.hint i { width: 1.5px; height: 44px; background: var(--line); position: relative; overflow: hidden; }
+.hint i::after { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 40%; background: var(--fg); }
+.js .hint i::after { animation: fall 1.8s cubic-bezier(.6,0,.4,1) infinite; }
+@keyframes fall { from { transform: translateY(-100%); } to { transform: translateY(260%); } }
+.js .hero h1 span { opacity: 0; filter: blur(14px); transform: translateY(.08em) scale(1.08); animation: inkin 1.3s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(.6s + var(--i) * .09s); }
+@keyframes inkin { to { opacity: 1; filter: none; transform: none; } }
+.js .hero h1 svg path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.1s cubic-bezier(.6,0,.3,1) 1.5s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* майстри: sticky-сцена */
+.masters { padding: 110px 0; }
+.masters .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 560px); gap: 40px; align-items: center; }
+.masters .slot { align-self: stretch; min-height: 420px; }
+.ms { display: grid; gap: 34px; }
+.m { border-top: 1px solid var(--line); padding-top: 22px; }
+.m .no { font: italic 400 20px/1 var(--head); color: var(--coral); }
+.m h3 { font-size: clamp(32px, 3.6vw, 48px); margin: 10px 0 12px; }
+.m p { margin: 0 0 14px; color: var(--mut); }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags span { border: 1px solid var(--line); border-radius: 999px; padding: 4px 14px; font-size: 16px; }
+.m small { display: block; margin-top: 14px; color: var(--grey); font-size: 16px; font-style: italic; }
+.dots { display: none; gap: 8px; margin-top: 26px; }
+.dots i { width: 28px; height: 3px; background: var(--line); transition: background-color .4s; }
+.dots i.on { background: var(--fg); }
+.masters .bgword { top: 50px; }
+.masters:not(.seq) .bgword:not(.on) { display: none; }
+.masters.seq { height: 320vh; padding: 0; }
+.masters.seq .stick { position: sticky; top: 66px; height: calc(100vh - 66px); height: calc(100svh - 66px); display: grid; grid-template-rows: minmax(0, 1fr); align-items: stretch; overflow: hidden; }
+.masters.seq .grid { padding-block: 30px; }
+.masters.seq .ms { gap: 0; }
+.masters.seq .m { grid-area: 1 / 1; opacity: 0; transform: translateY(40px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1); pointer-events: none; }
+.masters.seq .m.on { opacity: 1; transform: none; pointer-events: auto; }
+.masters.seq .dots { display: flex; }
+.masters.seq .bgword { top: 50%; transform: translate(-50%, -50%); opacity: 0; transition: opacity .7s; }
+.masters.seq .bgword.on { opacity: 1; }
+
+/* ескізи */
+.sketches { padding: 120px 0; overflow: hidden; }
+.sketches .bgword { top: 40px; }
+.sketches .grid { display: grid; grid-template-columns: minmax(0, 640px) minmax(0, 1fr); grid-template-areas: "h s" "t s"; gap: 0 40px; }
+.sk-h { grid-area: h; } .sk-t { grid-area: t; } .sketches .slot { grid-area: s; min-height: 420px; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.tile { margin: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 14px 12px; background: rgba(242,239,233,.72); cursor: crosshair; outline-offset: -3px; }
+.tile svg { display: block; width: 100%; aspect-ratio: 1; overflow: visible; }
+.tile path { fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.tile .base path { stroke: var(--grey); opacity: .35; }
+.tile .ink path { stroke: var(--ink); stroke-width: 2.2; }
+.tile .ink path.c { stroke: var(--coral); }
+.js .tile .ink path { stroke-dasharray: 1 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(.5,0,.3,1); }
+.js .tile .ink path.c { transition-delay: .9s; }
+.js .tile:hover .ink path, .js .tile:focus .ink path, .js .tile.drawn .ink path { stroke-dashoffset: 0; }
+.tile figcaption { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; font-size: 16px; margin-top: 6px; }
+.tile figcaption b { font: 400 19px/1.2 var(--head); }
+.tile figcaption span { color: var(--grey); }
+.note { color: var(--grey); font-size: 16px; margin-top: 16px; }
+.tch { display: none; }
+@media (hover: none) { .hov { display: none; } .tch { display: inline; } }
+
+/* підготовка */
+.prep { padding: 130px 0 60px; overflow: hidden; }
+.prep .bgword { top: 60px; }
+.prep .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 600px); gap: 40px; }
+.prep ol { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.prep li { counter-increment: s; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 14px; padding: 22px 0; border-top: 1px solid var(--line); background: rgba(242,239,233,.6); }
+.prep li::before { content: "0" counter(s); font: italic 400 34px/1 var(--head); color: var(--coral); }
+.prep li b { display: block; font-size: 19px; font-weight: 600; margin-bottom: 4px; }
+.prep li p { margin: 0; color: var(--mut); }
+
+/* чорнило розтікається: перехід у темний розділ і назад */
+.spill { --k: 1; position: relative; z-index: 2; height: clamp(170px, 34vh, 330px); margin-bottom: -2px; pointer-events: none; overflow: hidden; }
+.spill svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.spill path, .spill circle { fill: var(--ink); }
+.spill .mass { transform-box: view-box; transform-origin: 50% 100%; transform: scaleY(calc(.12 + .88 * var(--k))); }
+.spill circle { transform-box: fill-box; transform-origin: center; transform: translateY(calc((1 - var(--k)) * 120px)) scale(clamp(0, calc(var(--k) * 1.8 - var(--o, 0)), 1)); }
+.spill.out { margin: -2px 0 0; }
+.spill.out svg { transform: scaleY(-1); }
+
+/* запис */
+.book { background: var(--ink); color: var(--paper); padding: 40px 0 120px; --fg: var(--paper); --mut: #b9b5ad; --line: rgba(242,239,233,.2); }
+.book .bgword { top: 20px; -webkit-text-stroke-color: rgba(242,239,233,.08); }
+.bhead { max-width: 820px; margin-bottom: 44px; }
+.bhead .lead { margin-bottom: 0; }
+.book .grid { display: grid; grid-template-columns: minmax(0, 460px) minmax(0, 1fr); gap: 56px; align-items: start; }
+.body-wrap { position: sticky; top: 90px; }
+.figure { width: 100%; max-width: 460px; margin: 0 auto; display: block; overflow: visible; }
+.figure .ln { fill: none; stroke: var(--paper); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.figure .ln.p2 { stroke-width: .8; stroke-opacity: .32; }
+.figure .ln.dt { stroke-width: 1; stroke-opacity: .5; }
+.figure .z { fill: url(#hatch); fill-opacity: .28; stroke: none; cursor: pointer; pointer-events: all; transition: fill-opacity .3s; }
+.figure .z:hover { fill-opacity: .9; }
+.figure .z.on { fill: var(--coral); fill-opacity: .92; }
+.figure .z:focus { outline: none; }
+.figure .z:focus-visible { stroke: var(--coral); stroke-width: 2; }
+.figlab { display: flex; justify-content: space-around; max-width: 460px; margin: 8px auto 0; font: italic 400 19px/1.2 var(--head); }
+.figcap { text-align: center; color: var(--mut); font-size: 16px; margin-top: 8px; }
+.opt { margin: 0 0 26px; padding: 0; border: 0; min-width: 0; }
+.opt legend { font-weight: 600; margin-bottom: 12px; padding: 0; }
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button { min-height: 46px; padding: 0 18px; border-radius: 999px; border: 1.5px solid rgba(242,239,233,.3); background: transparent; color: var(--paper); cursor: pointer; font-size: 16px; transition: background-color .25s, border-color .25s, color .25s; }
+.seg button:hover { border-color: var(--paper); }
+.seg button[aria-pressed="true"] { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+.seg button small { opacity: .7; font-size: 16px; margin-left: 4px; }
+.res { border-top: 1px solid rgba(242,239,233,.2); padding-top: 24px; margin-top: 8px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.res div small { display: block; color: var(--mut); font-size: 16px; }
+.res b { display: block; font: 400 clamp(30px, 3.4vw, 44px)/1.1 var(--head); margin-top: 6px; }
+.res .tip { grid-column: 1 / -1; margin: 0; color: var(--mut); min-height: 1.6em; }
+.res .tip::before { content: "— "; color: var(--coral); }
+.send { margin-top: 24px; display: flex; gap: 14px 20px; align-items: center; flex-wrap: wrap; }
+.done { margin: 16px 0 0; color: #ff8a80; display: none; }
+.done.on { display: block; }
+
+/* контакти */
+.visit { padding: 70px 0 140px; overflow: hidden; }
+.visit .bgword { top: 30px; }
+.visit .grid { display: grid; grid-template-columns: minmax(0, 580px) minmax(0, 1fr); gap: 40px; }
+.visit dl { margin: 0; display: grid; }
+.visit dl div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 14px; padding: 18px 0; border-top: 1px solid var(--line); }
+.visit dt { color: var(--grey); }
+.visit dd { margin: 0; font-weight: 600; }
+.visit dd small { display: block; font-weight: 400; color: var(--mut); font-size: 16px; }
+.fin { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 460px; }
+.fin .slot { min-height: 380px; }
+.sig { margin: 0; text-align: center; font: italic 400 clamp(30px, 3vw, 40px)/1.1 var(--head); }
+.sig::before { content: ""; display: block; width: 40px; height: 2px; background: var(--coral); margin: 0 auto 14px; }
+.sig small { display: block; font: 400 16px/1.5 var(--sans); color: var(--mut); margin-top: 8px; }
+footer { padding: 26px 0 44px; font-size: 16px; color: var(--mut); border-top: 1px solid var(--line); }
+footer .wrap { display: flex; gap: 8px 30px; flex-wrap: wrap; justify-content: space-between; }
+
+.js .rv { opacity: 0; transform: translateY(34px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.js .rv.in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .hero { padding: 0 0 26px; }
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(130px, 1fr) auto; gap: 0; align-items: end; }
+  .hero .slot { order: -1; }
+  .hero .kick { margin-bottom: 8px; }
+  .hero h1 { font-size: clamp(56px, 17vw, 120px); }
+  .hero .lead { margin: 18px 0 22px; }
+  .hint { display: none; }
+  .masters .grid, .sketches .grid, .prep .grid, .book .grid, .visit .grid { grid-template-columns: minmax(0, 1fr); }
+  .masters .grid { gap: 0; }
+  .masters .slot { min-height: 0; height: 32vh; }
+  .masters.seq .stick { padding-bottom: 28px; }
+  .masters.seq .grid { grid-template-rows: minmax(0, 1fr) auto; padding-block: 8px 0; }
+  .masters.seq .slot { height: auto; }
+  .prep .slot { display: none; }
+  .sketches .grid { grid-template-areas: "h" "s" "t"; }
+  .sketches .slot { min-height: 0; height: min(84vw, 340px); margin: 0 0 20px; }
+  .fin { min-height: 0; margin-top: 30px; }
+  .fin .slot { min-height: 0; height: min(92vw, 380px); }
+  .masters.seq .m h3 { font-size: 34px; }
+  .masters h2 { font-size: 40px; }
+  .masters, .sketches { padding: 80px 0; }
+  .prep { padding: 80px 0 30px; }
+  .book { padding: 20px 0 80px; }
+  .visit { padding: 40px 0 44px; }
+  .bhead { margin-bottom: 30px; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .body-wrap { position: static; }
+  .visit dl div { grid-template-columns: minmax(0, 1fr); }
+  header.top .pill { min-height: 44px; padding: 0 16px; }
+  .bgword { font-size: 30vw; }
+}
+@media (max-width: 600px) {
+  .demo { font-size: 14px; line-height: 1.4; padding: 7px 0; }
+  .demo .wrap { display: block; }
+  .demo a { margin-left: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  .js .rv, .js .hero h1 span { opacity: 1; transform: none; filter: none; }
+  .js .hero h1 svg path, .js .tile .ink path { stroke-dashoffset: 0; }
+}
+</style>
+</head>
+<body>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<div class="demo"><div class="wrap"><span>Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи.</span><a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#"><i></i>Чорнило</a>
+    <a class="pill" href="#book">Записатися</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" data-d="hero">
+    <div class="wrap">
+      <div class="txt">
+        <div class="kick rv">Тату-студія</div>
+        <h1 aria-label="Чорнило"><span style="--i:0">Ч</span><span style="--i:1">о</span><span style="--i:2">р</span><span style="--i:3">н</span><span style="--i:4">и</span><span style="--i:5">л</span><span style="--i:6">о</span><svg viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M4 20C60 10 130 8 190 12s80 6 106-2"/></svg></h1>
+        <p class="lead rv" style="--d:.2s">Кожне тату починається з краплі. Вона падає у воду, розпускається хмарою і стає ескізом. Так само ми працюємо з вашою ідеєю.</p>
+        <div class="cta rv" style="--d:.3s"><a class="pill" href="#book">Порахувати сеанс</a><a class="pill ghost" href="#sketches">Ескізи</a></div>
+        <div class="hint rv" style="--d:.5s"><i></i>Гортайте — хмара стане ескізом</div>
+      </div>
+      <div class="slot" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="masters" id="masters" data-d="masters">
+    <div class="stick">
+      <div class="bgword on" aria-hidden="true">ЛІНІЯ</div>
+      <div class="bgword" aria-hidden="true">СВІТЛОТІНЬ</div>
+      <div class="bgword" aria-hidden="true">ТИША</div>
+      <div class="wrap grid">
+        <div class="slot" aria-hidden="true"></div>
+        <div>
+          <h2 class="rv">Три почерки</h2>
+          <div class="ms">
+            <article class="m on">
+              <div class="no">01 / графіка</div>
+              <h3>Майстер графіки</h3>
+              <p>Чіткий контур, штрихування, як у старій гравюрі. Ботаніка, тварини, орнаменти — те, що добре старіє разом зі шкірою.</p>
+              <div class="tags"><span>лайнворк</span><span>дотворк</span><span>гравюра</span></div>
+              <small>Тут буде ім'я та портфоліо майстра</small>
+            </article>
+            <article class="m">
+              <div class="no">02 / реалізм</div>
+              <h3>Майстер реалізму</h3>
+              <p>Портрети, фактури, м'яка світлотінь. Сеанси довші, зате робота виглядає як фото на шкірі.</p>
+              <div class="tags"><span>портрет</span><span>чорно-сірий</span><span>мікрореалізм</span></div>
+              <small>Тут буде ім'я та портфоліо майстра</small>
+            </article>
+            <article class="m">
+              <div class="no">03 / мінімалізм</div>
+              <h3>Майстер мінімалізму</h3>
+              <p>Одна лінія, символ, кілька слів. Ідеально для першого тату: швидко, акуратно і майже не боляче.</p>
+              <div class="tags"><span>файнлайн</span><span>символи</span><span>леттеринг</span></div>
+              <small>Тут буде ім'я та портфоліо майстра</small>
+            </article>
+          </div>
+          <div class="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sketches" id="sketches" data-d="sketches">
+    <div class="bgword" aria-hidden="true">ЕСКІЗИ</div>
+    <div class="wrap grid">
+      <div class="sk-h">
+        <h2 class="rv">Ескізи з <em>хмари</em></h2>
+        <p class="lead rv" style="--d:.1s"><span class="hov">Наведіть на ескіз — і він намалюється лінією, так, як ляже на шкіру.</span><span class="tch">Гортайте — ескізи малюються самі.</span></p>
+      </div>
+      <div class="slot" aria-hidden="true"></div>
+      <div class="sk-t">
+        <div class="tiles" id="tiles"></div>
+        <p class="note">Приклад ескізів: тут будуть роботи ваших майстрів.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="prep" data-d="prep">
+    <div class="bgword" aria-hidden="true">ДОБА ДО</div>
+    <div class="wrap grid">
+      <div class="slot" aria-hidden="true"></div>
+      <div>
+        <h2 class="rv">Як підготуватися до сеансу</h2>
+        <ol>
+          <li class="rv"><div><b>Виспіться й поїжте</b><p>На голодний шлунок і після безсонної ночі сеанс переноситься важче.</p></div></li>
+          <li class="rv"><div><b>Без алкоголю за добу</b><p>Він розріджує кров — фарба лягає гірше, загоєння довше.</p></div></li>
+          <li class="rv"><div><b>Не засмагайте тиждень до</b><p>Подразнена шкіра погано приймає пігмент.</p></div></li>
+          <li class="rv"><div><b>Зручний одяг</b><p>Щоб майстру був вільний доступ до місця, а вам — не холодно.</p></div></li>
+          <li class="rv"><div><b>Візьміть референси</b><p>Фото, скриншоти, навіть начерк на серветці. З цього народжується ескіз.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <div class="spill" id="spillIn" aria-hidden="true"><svg viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice"><path class="mass" d="M0 300V200C80 180 120 130 200 150S300 230 380 190 480 70 560 100 640 200 720 170 820 60 900 100 1000 210 1080 180 1180 90 1260 120 1360 200 1440 170 1540 120 1600 140V300Z"/><circle cx="560" cy="58" r="14" style="--o:.2"/><circle cx="905" cy="44" r="18" style="--o:.35"/><circle cx="250" cy="118" r="10" style="--o:.5"/><circle cx="1262" cy="78" r="12" style="--o:.3"/><circle cx="730" cy="128" r="8" style="--o:.6"/><circle cx="1450" cy="118" r="9" style="--o:.45"/><circle cx="410" cy="140" r="7" style="--o:.7"/><circle cx="1075" cy="140" r="9" style="--o:.55"/><circle cx="805" cy="22" r="6" style="--o:.8"/><circle cx="660" cy="96" r="5" style="--o:.9"/><circle cx="980" cy="120" r="6" style="--o:.75"/></svg></div>
+
+  <section class="book" id="book" data-d="book" data-theme="dark">
+    <div class="bgword" aria-hidden="true">ЗАПИС</div>
+    <div class="wrap">
+      <div class="bhead">
+        <div class="kick" style="color:var(--paper)">Запис онлайн</div>
+        <h2 class="rv">Скільки це буде коштувати?</h2>
+        <p class="lead">Торкніться місця на силуеті, оберіть розмір і стиль — сайт порахує орієнтовну ціну й час. Точну скаже майстер на безкоштовній консультації.</p>
+      </div>
+      <div class="grid">
+        <div class="body-wrap">
+          <svg class="figure" id="fig" viewBox="0 0 360 412" role="group" aria-label="Силует тіла спереду і ззаду: оберіть місце для тату">
+            <defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V5" stroke="#F2EFE9" stroke-width="1.2"/></pattern></defs>
+            <g id="figF" transform="translate(10 12)"></g>
+            <g id="figB" transform="translate(190 12)"></g>
+          </svg>
+          <div class="figlab" aria-hidden="true"><span>спереду</span><span>ззаду</span></div>
+          <p class="figcap">Натисніть на місце, де хочете тату</p>
+        </div>
+        <div>
+          <fieldset class="opt"><legend>Місце</legend><div class="seg" id="zones"></div></fieldset>
+          <fieldset class="opt"><legend>Розмір</legend><div class="seg" id="sizes"></div></fieldset>
+          <fieldset class="opt"><legend>Стиль</legend><div class="seg" id="styles"></div></fieldset>
+          <div class="res" aria-live="polite">
+            <div><small>Орієнтовна ціна</small><b id="price">—</b></div>
+            <div><small>Час сеансу</small><b id="time">—</b></div>
+            <p class="tip" id="tip">Передпліччя — найпопулярніше місце для першого тату</p>
+          </div>
+          <p class="note">Приклад цін: на вашому сайті будуть ваші.</p>
+          <div class="send"><button class="pill coral" type="button" id="order">Записатися на консультацію</button></div>
+          <p class="done" id="done">Це концепт: на справжньому сайті заявка прийде в Telegram — разом з місцем, розміром і стилем, які ви обрали.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="spill out" id="spillOut" aria-hidden="true"><svg viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice"><path class="mass" d="M0 300V170C70 160 110 210 180 200S260 90 330 120 420 230 500 210 600 140 680 160 760 250 840 230 930 110 1010 140 1100 240 1180 220 1270 150 1350 170 1460 230 1520 210 1580 180 1600 180V300Z"/><circle cx="600" cy="110" r="11" style="--o:.3"/><circle cx="930" cy="70" r="14" style="--o:.5"/><circle cx="760" cy="170" r="7" style="--o:.7"/><circle cx="1270" cy="104" r="10" style="--o:.4"/><circle cx="330" cy="76" r="9" style="--o:.6"/></svg></div>
+
+  <section class="visit" data-d="visit">
+    <div class="bgword" aria-hidden="true">ЧЕКАЄМО</div>
+    <div class="wrap grid">
+      <div>
+        <h2 class="rv">Приходьте на каву й ескіз</h2>
+        <dl class="rv" style="--d:.1s">
+          <div><dt>Адреса</dt><dd>Тут буде ваша адреса<small>з маршрутом у Google Картах</small></dd></div>
+          <div><dt>Години</dt><dd>Тут будуть ваші години роботи<small>сеанси — за попереднім записом</small></dd></div>
+          <div><dt>Телефон</dt><dd>Тут буде ваш номер<small>натиснув — і дзвінок</small></dd></div>
+          <div><dt>Відгуки</dt><dd>Тут будуть відгуки ваших клієнтів<small>з фото загоєних робіт</small></dd></div>
+        </dl>
+      </div>
+      <div class="fin">
+        <div class="slot" data-mode="flower" aria-hidden="true"></div>
+        <p class="sig rv">Ваш ескіз<small>з краплі чорнила — у лінію на шкірі</small></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></span><span>Крапля й ескіз — 3D прямо в браузері</span></div></footer>
+
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }</script>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const still = /still/.test(location.search), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const root = document.documentElement;
+  const setTop = () => root.style.setProperty('--top', (document.querySelector('.demo').offsetHeight + 66) + 'px');
+  setTop(); addEventListener('resize', setTop);
+
+  /* ескізи: сірий слід + чорна лінія, що малюється */
+  const SK = [
+    ['Троянда', 'графіка', ['M60 50c-7-1-11 5-7 10s12 3 12-5-7-13-15-10-13 13-9 21 19 12 26 4 9-21 1-28', 'M44 46c-8 4-12 14-8 24', 'M76 42c8 4 12 12 10 22', 'M59 76c-1 12-3 22 1 34'], 'M59 94c8-9 19-9 24-4-7 7-17 9-24 4z'],
+    ['Ластівка', 'олдскул', ['M14 46c18 0 32 8 44 20 8-12 22-20 48-22-12 10-20 22-24 34l8 24-16-14c-6 4-14 4-20 0l-18 12 10-24C40 62 30 52 14 46z', 'M58 66c4 4 4 10 0 14'], 'M64 60c3-4 8-4 11 0'],
+    ['Місяць', 'мінімалізм', ['M70 22a38 38 0 1 0 0 76 32 32 0 1 1 0-76z'], 'M90 38l3 8 8 1-6 5 2 8-7-4-7 4 2-8-6-5 8-1z'],
+    ['Змія', 'графіка', ['M28 104c24 2 38-10 26-22S26 64 40 50s40-4 46-18-6-16-18-12', 'M68 20c4-6 14-6 16 2s-6 10-12 8', 'M34 98c16 0 24-6 18-14'], 'M84 22l9-5m-9 5l9 3'],
+    ['Хвиля', 'мінімалізм', ['M12 84c10-24 32-36 50-24s16 34 0 34-18-16-6-22 26 0 34 14', 'M12 98h96'], 'M76 32a10 10 0 1 0 20 0a10 10 0 1 0-20 0'],
+    ['Око', 'реалізм', ['M14 60c22-28 70-28 92 0-22 28-70 28-92 0z', 'M60 20v9M34 28l5 7M86 28l-5 7M18 42l7 5M102 42l-7 5'], 'M48 60a12 12 0 1 0 24 0a12 12 0 1 0-24 0'],
+  ];
+  const ps = (a, c) => a.map(d => `<path pathLength="1" d="${d}"/>`).join('') + (c ? `<path class="c" pathLength="1" d="${c}"/>` : '');
+  $('tiles').innerHTML = SK.map((s, i) => `<figure class="tile rv" tabindex="0" style="--d:${i * .06}s"><svg viewBox="0 0 120 120" aria-hidden="true"><g class="base">${ps(s[2], s[3])}</g><g class="ink">${ps(s[2], s[3])}</g></svg><figcaption><b>${s[0]}</b><span>${s[1]}</span></figcaption></figure>`).join('');
+
+  /* силует: контур як у тату-ескізу, плавні криві через точки (права половина, дзеркалиться) */
+  const r1 = v => Math.round(v * 10) / 10, pt = p => `${r1(p[0])} ${r1(p[1])}`;
+  function curve(P, closed = true) {
+    const n = P.length, g = i => P[closed ? (i + n) % n : Math.max(0, Math.min(n - 1, i))];
+    let d = `M${pt(P[0])}`;
+    for (let i = 0; i < (closed ? n : n - 1); i++) {
+      const a = g(i - 1), b = g(i), c = g(i + 1), e = g(i + 2);
+      d += `C${pt([b[0] + (c[0] - a[0]) / 6, b[1] + (c[1] - a[1]) / 6])} ${pt([c[0] - (e[0] - b[0]) / 6, c[1] - (e[1] - b[1]) / 6])} ${pt(c)}`;
+    }
+    return d + (closed ? 'Z' : '');
+  }
+  const mir = P => P.map(([x, y]) => [160 - x, y]);
+  const HALF = [[80,6],[93,10],[100,24],[99,40],[94,52],[88,60],[88,68],[98,76],[114,81],[124,88],[129,104],[131,124],[134,146],[137,170],[140,194],[145,204],[146,220],[141,232],[135,229],[132,214],[129,198],[124,172],[120,146],[117,122],[112,104],[107,118],[104,136],[101,152],[104,172],[110,192],[112,214],[110,240],[107,262],[109,284],[107,310],[102,340],[99,366],[105,380],[103,390],[90,390],[88,376],[88,350],[86,316],[86,290],[87,266],[86,240],[84,222],[80,212]];
+  const BODY = curve([...HALF, ...mir(HALF.slice(1, -1)).reverse()]);
+  const ln = (P, cls = 'dt', both = true) => (both ? [P, mir(P)] : [P]).map(Q => `<path class="ln ${cls}" d="${curve(Q, false)}"/>`).join('');
+  const zone = (k, P, pair = true) => (pair ? [P, mir(P)] : [P]).map(Q => `<path class="z" data-z="${k}" d="${curve(Q)}"/>`).join('');
+  const outline = `<path class="ln p2" d="${BODY}" transform="translate(1.2 .8)"/><path class="ln" d="${BODY}"/>`;
+  const CALF = [[108,278],[107,310],[102,340],[100,358],[88,358],[88,340],[86,316],[86,290],[88,276]];
+  const SHOU = zone('shoulder', [[114,82],[124,89],[129,104],[131,124],[133,140],[120,141],[117,122],[112,105]]);
+  const FORE = zone('forearm', [[134,150],[137,170],[140,191],[129,195],[124,172],[120,150]]);
+  $('figF').innerHTML = SHOU + FORE +
+    zone('hand', [[140,197],[145,205],[146,220],[141,231],[135,228],[132,214],[129,199]]) +
+    zone('thigh', [[110,194],[112,214],[110,240],[107,256],[88,258],[86,240],[85,222]]) +
+    zone('calf', CALF) + outline +
+    ln([[86,80],[96,83],[108,84]]) + ln([[82,100],[92,110],[104,107]]) + ln([[80,118],[80,146]], 'dt', false) +
+    ln([[80,156],[80,161]], 'dt', false) + ln([[92,263],[97,268],[102,263]]) + ln([[124,148],[128,150],[132,148]]);
+  $('figB').innerHTML =
+    zone('neck', [[87,58],[88,70],[80,74],[72,70],[73,58],[80,56]], false) +
+    zone('upback', [[96,80],[112,85],[110,104],[106,122],[80,128],[54,122],[50,104],[48,85],[64,80],[80,78]], false) +
+    zone('lowback', [[103,138],[101,152],[104,170],[80,176],[56,170],[59,152],[57,138],[80,134]], false) +
+    SHOU + FORE + zone('calf', CALF) + outline +
+    ln([[80,72],[80,186]], 'dt', false) + ln([[90,90],[102,94],[106,110],[98,122]]) + ln([[80,186],[92,198],[106,196]]) +
+    ln([[91,266],[103,266]]) + ln([[72,30],[80,34],[88,30]], 'dt', false);
+
+  /* калькулятор сеансу */
+  const Z = {
+    forearm: ['Передпліччя', 1, 'Передпліччя — найпопулярніше місце для першого тату'],
+    shoulder: ['Плече', 1, 'Плече — одне з найкомфортніших місць'],
+    hand: ['Кисть', 1.25, 'Кисть: лінії можуть потребувати безкоштовної корекції', 'M'],
+    neck: ['Шия', 1.3, 'Шия: тонка шкіра — чутливіше й трохи довше', 'M'],
+    upback: ['Лопатки', 1, 'Лопатки: рівна поверхня, добре для великих робіт'],
+    lowback: ['Поперек', 1.1, 'Поперек: гарно лягають симетричні орнаменти'],
+    thigh: ['Стегно', 1, 'Стегно: багато місця і переноситься легко'],
+    calf: ['Гомілка', 1.1, 'Гомілка: біля кістки трохи чутливіше'],
+  };
+  const S = { S: ['S', 'до 5 см', 1200, 1], M: ['M', '5–12 см', 2800, 2.5], L: ['L', '12–25 см', 6000, 5] };
+  const ST = { g: ['Графіка', 1], r: ['Реалізм', 1.6], m: ['Мінімалізм', .75] };
+  const st = { z: 'forearm', s: 'M', y: 'g' };
+  const seg = (el, obj, key, lab) => { $(el).innerHTML = Object.keys(obj).map(k => `<button type="button" data-k="${k}" aria-pressed="${st[key] === k}">${lab(obj[k])}</button>`).join(''); $(el).addEventListener('click', e => { const b = e.target.closest('button'); if (b) { st[key] = b.dataset.k; calc(); } }); };
+  seg('zones', Z, 'z', z => z[0]);
+  seg('sizes', S, 's', s => `${s[0]}<small>${s[1]}</small>`);
+  seg('styles', ST, 'y', s => s[0]);
+  const zs = [...document.querySelectorAll('#fig .z')];
+  zs.forEach(z => { z.setAttribute('tabindex', '0'); z.setAttribute('role', 'button'); z.setAttribute('aria-label', Z[z.dataset.z][0]); });
+  let picked = null;
+  const pick = el => { picked = el; st.z = el.dataset.z; calc(); };
+  $('fig').addEventListener('click', e => { const z = e.target.closest('.z'); if (z) pick(z); });
+  $('fig').addEventListener('keydown', e => { const z = e.target.closest('.z'); if (z && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(z); } });
+  const r100 = v => Math.round(v / 100) * 100, fmt = v => v.toLocaleString('uk-UA').replace(/\s/g, ' ');
+  function calc() {
+    const z = Z[st.z], y = ST[st.y];
+    let size = st.s, tip = z[2];
+    if (z[3] && size === 'L') { size = 'M'; tip = `${z[0]}: L тут не поміститься — рахуємо як M, майстер запропонує варіант`; }
+    const s = S[size], k = z[1] * y[1], base = s[2] * k, h = s[3] * k;
+    $('price').textContent = `${fmt(Math.max(800, r100(base * .85)))}–${fmt(r100(base * 1.15))} ₴`;
+    $('time').textContent = h > 6 ? `${Math.ceil(h / 5)} сеанси` : h <= 1.2 ? '≈ 1 год' : `${Math.max(1, Math.round(h * .8))}–${Math.round(h * 1.2)} год`;
+    $('tip').textContent = h > 6 ? `Велика робота: ділимо на ${Math.ceil(h / 5)} сеанси по 4–5 год з перервою на загоєння` : tip;
+    document.querySelectorAll('#zones button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === st.z)));
+    document.querySelectorAll('#sizes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === st.s)));
+    document.querySelectorAll('#styles button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.k === st.y)));
+    if (!picked || picked.dataset.z !== st.z) picked = zs.find(e => e.dataset.z === st.z);
+    zs.forEach(e => e.classList.toggle('on', e === picked));
+    $('done').classList.remove('on');
+  }
+  calc();
+  $('order').addEventListener('click', () => $('done').classList.add('on'));
+
+  /* майстри по черзі: sticky-сцена */
+  const ms = $('masters'), arts = [...ms.querySelectorAll('.m')], words = [...ms.querySelectorAll('.bgword')], dots = [...ms.querySelectorAll('.dots i')];
+  const live = !still && !reduce;
+  if (live) ms.classList.add('seq');
+  let curM = 0;
+  function masters() {
+    if (!live) return;
+    const r = ms.getBoundingClientRect(), k = Math.min(.999, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+    const i = Math.floor(k * 3);
+    if (i !== curM) { curM = i; [arts, words, dots].forEach(l => l.forEach((e, j) => e.classList.toggle('on', j === i))); }
+  }
+
+  /* чорнило розтікається в темний розділ і відступає після нього */
+  const sIn = $('spillIn'), sOut = $('spillOut'), cl = v => Math.min(1, Math.max(0, v));
+  function spills() {
+    if (!live) return;
+    const vh = innerHeight, a = sIn.getBoundingClientRect(), b = sOut.getBoundingClientRect();
+    sIn.style.setProperty('--k', cl((vh - a.top) / (vh * .8)).toFixed(3));
+    sOut.style.setProperty('--k', (1 - .75 * cl((vh * .75 - b.top) / (vh * .6))).toFixed(3));
+  }
+
+  /* фон стає чорнилом, коли розділ запису займає екран */
+  const book = $('book');
+  function theme() {
+    const r = book.getBoundingClientRect(), dark = r.top < innerHeight * .55 && r.bottom > innerHeight * .45;
+    root.dataset.theme = dark ? 'dark' : 'light';
+  }
+  let tick = false;
+  const all = () => { masters(); theme(); spills(); };
+  addEventListener('scroll', () => { if (tick) return; tick = true; requestAnimationFrame(() => { tick = false; all(); }); }, { passive: true });
+  addEventListener('resize', all);
+  all();
+
+  if ('IntersectionObserver' in window) {
+    const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+    /* на телефоні наведення немає — ескіз малюється, коли з'являється на екрані */
+    if (matchMedia('(hover: none)').matches) {
+      const dr = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('drawn', e.isIntersecting)), { rootMargin: '-25% 0px -25% 0px' });
+      document.querySelectorAll('.tile').forEach(el => dr.observe(el));
+    }
+  } else document.querySelectorAll('.rv').forEach(el => el.classList.add('in'));
+})();
+</script>
+
+<script type="module">
+import { mountStage, THREE } from '../3d/stage.js';
+import * as base from '../3d/models/sklyaniy-kub-vodi-na.js';
+
+const still = /still/.test(location.search), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const instant = still || reduce;
+const mob = () => innerWidth < 900;
+const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const sm = (a, b, v) => { const k = cl((v - a) / (b - a)); return k * k * (3 - 2 * k); };
+
+/* хмара чорнила: шейдер з curl noise — щільне темне ядро, м'які світлі краї, закрут; далі частинки стягуються в квітку */
+const VS = `
+uniform float uT, uB, uM, uHit, uH, uS;
+attribute vec4 aS; attribute vec3 aF;
+varying float vA, vC;
+vec3 pot(vec3 p) {
+  return vec3(sin(p.y * 1.7 + uT * .31) + .6 * sin(p.z * 2.3 - uT * .23),
+              sin(p.z * 1.9 + uT * .27) + .6 * sin(p.x * 2.6 + uT * .19),
+              sin(p.x * 1.8 - uT * .29) + .6 * sin(p.y * 2.4 + uT * .21));
+}
+vec3 curl(vec3 p) {
+  const float e = .07; vec3 dx = vec3(e, 0., 0.), dy = vec3(0., e, 0.), dz = vec3(0., 0., e);
+  vec3 x0 = pot(p - dx), x1 = pot(p + dx), y0 = pot(p - dy), y1 = pot(p + dy), z0 = pot(p - dz), z1 = pot(p + dz);
+  return vec3((y1.z - y0.z) - (z1.y - z0.y), (z1.x - z0.x) - (x1.z - x0.z), (x1.y - x0.y) - (y1.x - y0.x)) / (2. * e);
+}
+void main() {
+  float q = pow(aS.x, .5);
+  float D = .1 + 1.5 * uB;
+  vec3 c = vec3(.2 * uB * q * sin(q * 4. + uT * .25), .9 - q * D, .16 * uB * q * cos(q * 3.3 - uT * .2));
+  float R = (.035 + .58 * uB * pow(q, 1.4)) * (1. + .25 * sin(q * 9. - uT * .45));
+  float k = pow(aS.y, 1.7);
+  float th = aS.z * 6.2832 + uT * (.2 + .35 * (1. - q)), cp = aS.w * 2. - 1., sp = sqrt(1. - cp * cp);
+  vec3 p = c + vec3(cos(th) * sp, cp * .65, sin(th) * sp) * R * k;
+  float wisp = step(.84, fract(aS.w * 7.31 + aS.y * 3.7));
+  float amp = uB * (.1 + .25 * q) * (1. + 1.4 * wisp);
+  p += curl(p * 1.35 + vec3(0., uT * .12, 0.)) * amp * .32;
+  p += curl(p * 3.1 - vec3(uT * .09)) * amp * .09;
+  float core = (1. - k) * (1. - .65 * wisp);
+  float kk = clamp((uM - aS.w * .3) / .7, 0., 1.), e = kk * kk * (3. - 2. * kk);
+  p = mix(p, aF, e);
+  float sw = sin(3.14159 * e) * (1.4 + aS.z), cs = cos(sw), sn = sin(sw);
+  p.xz = vec2(p.x * cs - p.z * sn, p.x * sn + p.z * cs);
+  p = clamp(p, vec3(-1.14), vec3(1.14, .9, 1.14));
+  vC = mix(core, 1., e);
+  vA = uHit * mix(mix(.04, .5, core * core) * (.45 + .55 * q), .85, e);
+  vec4 mv = modelViewMatrix * vec4(p, 1.);
+  gl_Position = projectionMatrix * mv;
+  gl_PointSize = mix(mix(.24, .075, core), .03, e) * uH / -mv.z * mix(1., uS, .6);
+}`;
+const FS = `
+varying float vA, vC;
+void main() {
+  float d = length(gl_PointCoord - .5) * 2.; if (d > 1.) discard;
+  gl_FragColor = vec4(mix(vec3(.3, .35, .38), vec3(.03, .03, .04), vC), pow(1. - d, mix(2.4, 1., vC)) * vA);
+}`;
+
+let flowerOnly = 0;
+const model = { meta: base.meta, create(T, o) {
+  const inst = base.create(T, o), root = inst.object, ch = root.children;
+  const old = ch.find(c => c.isPoints), n = old.geometry.attributes.position.count;
+  inst.update({ t: 0, dt: 0, p: 1, instant: true });
+  const aF = Float32Array.from(old.geometry.attributes.position.array);
+  inst.update({ t: 0, dt: 0, p: 0, instant: true });
+  old.visible = false;
+  const aS = new Float32Array(n * 4); for (let i = 0; i < aS.length; i++) aS[i] = Math.random();
+  const g = new T.BufferGeometry();
+  g.setAttribute('position', new T.BufferAttribute(new Float32Array(n * 3), 3));
+  g.setAttribute('aF', new T.BufferAttribute(aF, 3));
+  g.setAttribute('aS', new T.BufferAttribute(aS, 4));
+  const U = { uT: { value: 0 }, uB: { value: 0 }, uM: { value: 0 }, uHit: { value: 0 }, uH: { value: 400 }, uS: { value: 1 } };
+  const pts = new T.Points(g, new T.ShaderMaterial({ uniforms: U, vertexShader: VS, fragmentShader: FS, transparent: true, depthWrite: false }));
+  pts.frustumCulled = false; pts.renderOrder = 2; root.add(pts);
+
+  /* скло й вода: тонкий світлий каркас, легкий тон води і лінія її поверхні */
+  const [shadow, water, , , surf, glass] = ch, [edges, edges2] = ch.filter(c => c.isLineSegments);
+  edges.material.color.set('#b3c6cc'); edges2.material.color.set('#d3e0e4');
+  water.material.color.set('#93c6d3'); surf.material.color.set('#a3d3de');
+  const IN = 1.17, E = .9, V = (x, z) => new T.Vector3(x, E, z);
+  const wl = new T.LineLoop(new T.BufferGeometry().setFromPoints([V(-IN, -IN), V(IN, -IN), V(IN, IN), V(-IN, IN)]), new T.LineBasicMaterial({ color: '#3f8ea3', transparent: true }));
+  wl.renderOrder = 4; root.add(wl);
+  const FD = [[edges, .34], [edges2, .14], [water, .3], [surf, .5], [glass, .16], [shadow, .5], [wl, .8]];
+  const sz = new T.Vector2();
+  let s = 0;
+  return { object: root, setColor: inst.setColor, dispose: inst.dispose,
+    update(f) {
+      inst.update(f);
+      const pp = cl(f.p);
+      s = f.instant ? pp : s + (pp - s) * Math.min(1, f.dt * 3);
+      U.uT.value = f.t; U.uB.value = sm(.1, .48, s); U.uM.value = cl((s - .48) / .32); U.uHit.value = sm(.1, .135, s);
+      U.uH.value = o.renderer.getDrawingBufferSize(sz).y * .5; U.uS.value = root.scale.x;
+      const k = 1 - flowerOnly;
+      for (const [m, a] of FD) { m.material.opacity = a * k; m.visible = k > .01; }
+    } };
+} };
+
+/* габарит куба разом із краплею над ним (у світових одиницях при масштабі 1); у фіналі — тільки квітка, крупно */
+const DIM = { cube: [3.5, 3.9, .3, .62, 1.05], flower: [2, 2.35, 0, 1.25, 1.5] };
+const canvas = document.getElementById('gl');
+const slots = [...document.querySelectorAll('.slot')];
+let cw = 1, ch = 1;
+const meas = () => { cw = canvas.clientWidth || innerWidth; ch = canvas.clientHeight || innerHeight; };
+addEventListener('resize', meas); meas();
+
+/* куб стоїть тільки в порожньому слоті розділу: вписується в нього й ніколи не заходить на текст */
+function fit(el, f) {
+  const r = el.getBoundingClientRect();
+  if (r.width < 4 || r.height < 4) return null;
+  const fl = el.dataset.mode === 'flower' ? 1 : 0, [WU, HU, CY, mx1, mx2] = fl ? DIM.flower : DIM.cube;
+  const vh = innerHeight, ppx = cw / f.viewW, ppy = ch / f.viewH;
+  const s = Math.min(r.width * .92 / (WU * ppx), Math.min(r.height, vh * .8) * .94 / (HU * ppy), mob() ? mx1 : mx2);
+  const hp = HU * s * ppy;
+  const y = r.height <= hp ? r.top + r.height / 2 : cl(vh / 2, r.top + hp / 2, r.bottom - hp / 2);
+  const vis = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0)) / Math.max(1, Math.min(r.height, vh));
+  return { x: r.left + r.width / 2, y, s, vis, f: fl, cy: CY };
+}
+
+/* стадія сцени: на першому екрані крапля падає й розпускається хмарою, далі хмара стає квіткою */
+const ms = document.getElementById('masters'), sk = document.querySelector('.sketches .slot'), t0 = performance.now();
+function pTarget() {
+  const vh = innerHeight, y = scrollY;
+  const intro = instant ? .3 : .3 * sm(.5, 3.2, (performance.now() - t0) / 1000);
+  const K = [[0, intro], [Math.max(1, ms.offsetTop), .4]];
+  if (ms.classList.contains('seq')) K.push([ms.offsetTop + ms.offsetHeight - vh, .6]);
+  const sr = sk.getBoundingClientRect();
+  K.push([Math.max(K[K.length - 1][0] + 1, sr.top + y + Math.min(sr.height, vh) / 2 - vh / 2), 1]);
+  if (y <= K[0][0]) return K[0][1];
+  for (let i = 0; i < K.length - 1; i++) if (y < K[i + 1][0]) { const k = sm(0, 1, (y - K[i][0]) / (K[i + 1][0] - K[i][0])); return K[i][1] + (K[i + 1][1] - K[i][1]) * k; }
+  return 1;
+}
+
+/* наступні краплі: поки у воді хмара, зверху падають нові краплі */
+let drip = null;
+function makeDrip(root) {
+  const prof = [];
+  for (let i = 0; i <= 20; i++) { const a = Math.PI - i / 20 * Math.PI; prof.push(new THREE.Vector2(Math.max(.0001, .62 * Math.sin(a) * Math.pow(Math.sin(a / 2), 1.3)), Math.cos(a))); }
+  drip = new THREE.Mesh(new THREE.LatheGeometry(prof, 24), new THREE.MeshPhysicalMaterial({ color: '#0d0d10', roughness: .12, metalness: .1, clearcoat: 1, clearcoatRoughness: .05 }));
+  root.add(drip);
+}
+
+let cur = null, last = null, lastEl = null, pS = 0;
+mountStage(canvas, model, {
+  instant,
+  beforeFrame(f, inst) {
+    const o = inst.object;
+    if (!drip) makeDrip(o);
+
+    /* де стоїть куб */
+    let best = null, bestEl = null;
+    for (const el of slots) { const T = fit(el, f); if (T && T.vis > .35 && (!best || T.vis > best.vis)) { best = T; bestEl = el; } }
+    if (!best && lastEl) { best = fit(lastEl, f); bestEl = lastEl; }
+    const T = best || { x: cw * .75, y: -ch * .5, s: 0, f: 0, cy: .3 };
+    if (!cur || instant) cur = { ...T };
+    else {
+      if (bestEl === lastEl && last) { cur.x += T.x - last.x; cur.y += T.y - last.y; }
+      const dm = 1 - Math.pow(.003, f.dt);
+      for (const k of ['x', 'y', 's', 'f', 'cy']) cur[k] += (T[k] - cur[k]) * dm;
+    }
+    last = T; lastEl = bestEl;
+    flowerOnly = cur.f;
+    const ppx = cw / f.viewW, ppy = ch / f.viewH;
+    o.position.set((cur.x - cw / 2) / ppx, -(cur.y - ch / 2) / ppy - cur.cy * cur.s, 0);
+    o.scale.setScalar(Math.max(.0001, cur.s));
+    o.visible = cur.s > .02;
+
+    /* стадія */
+    const pt = pTarget();
+    f.p = pt;
+    pS = instant ? pt : pS + (pt - pS) * Math.min(1, f.dt * 3);
+
+    /* крапля-продовження: висить, падає, зникає у воді */
+    const v = sm(.12, .17, pS) * (1 - sm(.42, .5, pS));
+    const c = instant ? .7 : (f.t / 2.4) % 1;
+    const q = cl((c - .5) / .28), appear = sm(0, .15, c) * (q < 1 ? 1 : 0);
+    const hang = 2.05 + Math.sin(f.t * 1.6) * .025 * (1 - q);
+    drip.position.set(0, hang + (.95 - hang) * q * q, 0);
+    const ds = .14 * v * appear;
+    drip.scale.set(ds * (1 - q * .15), ds * (1 + q * .45), ds * (1 - q * .15));
+    drip.visible = ds > .001;
+  },
+}).catch(() => { canvas.style.display = 'none'; });
+</script>
+</body>
+</html>
