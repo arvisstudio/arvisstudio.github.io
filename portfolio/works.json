@@ -1,5 +1,19 @@
 [
  {
+  "slug": "shkola-programuvannya-kubik",
+  "url": "shkola-programuvannya-kubik/",
+  "host": "arvisstudio.github.io/portfolio/shkola-programuvannya-kubik",
+  "name": "Школа програмування «Кубик»",
+  "kind": "IT-школа для дітей",
+  "look": "3D прямо в браузері",
+  "text": "Гортаєш — зверху друкується код, а 3D-робот-кубик одразу виконує кожен рядок: іде, стрибає, збирає монети.",
+  "feats": [
+   "Міні-редактор: дитина складає програму з блоків, натискає «Запустити» — 3D-робот виконує її на острівці",
+   "Перший екран: код `robot.go()` друкується зверху, робот робить перший крок",
+   "Курси: Scratch (7–9), Python (10–13), Roblox Studio (12+) — кожен курс = новий рядок коду, робот виконує"
+  ]
+ },
+ {
   "slug": "glazur",
   "url": "glazur/",
   "host": "arvisstudio.github.io/portfolio/glazur",
