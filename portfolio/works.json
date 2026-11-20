@@ -1,5 +1,19 @@
 [
  {
+  "slug": "avtomiyka-pina",
+  "url": "avtomiyka-pina/",
+  "host": "arvisstudio.github.io/portfolio/avtomiyka-pina",
+  "name": "Автомийка «Піна»",
+  "kind": "автомийка",
+  "look": "Unbounded + Inter",
+  "text": "Брудне 3D-авто проїжджає через мийку, поки ти гортаєш: піна, щітки, сушка — і воно блищить.",
+  "feats": [
+   "Калькулятор: тип авто (легкове / кросовер / мінівен) + послуги галочками → ціна й час; вибір вільного слоту на сьогодні/завтра",
+   "Брудне авто — «Ми повернемо йому колір»",
+   "Піна — пакети послуг"
+  ]
+ },
+ {
   "slug": "kvitkoviy-buton",
   "url": "kvitkoviy-buton/",
   "host": "arvisstudio.github.io/portfolio/kvitkoviy-buton",
