@@ -1,5 +1,19 @@
 [
  {
+  "slug": "tatu-studiya-chornilo-2",
+  "url": "tatu-studiya-chornilo-2/",
+  "host": "arvisstudio.github.io/portfolio/tatu-studiya-chornilo-2",
+  "name": "Тату-студія «Чорнило»",
+  "kind": "тату-студія",
+  "look": "Playfair Display + Inter",
+  "text": "Крапля чорнила падає у воду й розпускається хмарою, з хмари проявляються ескізи майстрів.",
+  "feats": [
+   "Запис: обираєш місце на силуеті руки/спини (клік по зоні), розмір (S/M/L) і стиль — сайт рахує орієнтовну ціну й час сеансу",
+   "Крапля падає — назва студії проступає з чорнила",
+   "Хмара розходиться — 3 майстри, у кожного свій стиль (без вигаданих імен: «Майстер графіки», «Майстер реалізму», «Майстер мінімалізму»)"
+  ]
+ },
+ {
   "slug": "shkola-programuvannya-kubik",
   "url": "shkola-programuvannya-kubik/",
   "host": "arvisstudio.github.io/portfolio/shkola-programuvannya-kubik",
