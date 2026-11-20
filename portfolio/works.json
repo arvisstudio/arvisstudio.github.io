@@ -1,5 +1,19 @@
 [
  {
+  "slug": "kvitkoviy-buton",
+  "url": "kvitkoviy-buton/",
+  "host": "arvisstudio.github.io/portfolio/kvitkoviy-buton",
+  "name": "Квітковий «Бутон»",
+  "kind": "квітковий магазин",
+  "look": "3D прямо в браузері",
+  "text": "3D-бутон розкривається пелюстка за пелюсткою, поки гортаєш, — а в кінці ти сам збираєш букет у 3D.",
+  "feats": [
+   "Конструктор букета: додаєш півонії, троянди, евкаліпт — вони з'являються в букеті (2D/3D), ціна рахується, обираєш час доставки",
+   "Бутон закритий — заголовок",
+   "Розкривається — сезонні квіти"
+  ]
+ },
+ {
   "slug": "tatu-studiya-chornilo-2",
   "url": "tatu-studiya-chornilo-2/",
   "host": "arvisstudio.github.io/portfolio/tatu-studiya-chornilo-2",
