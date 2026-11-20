@@ -1,4 +1,4 @@
-/* Arvis — языки, список услуг с раскрытием, сценки, пауза анимаций вне экрана. */
+/* Arvis 2 — языки, код от прокрутки, дерево услуг, работы из портфолио. Тексты и цены — из старого main.js. 3D — в scene.js. */
 (function () {
   "use strict";
 
@@ -182,14 +182,182 @@
   };
   // «от …» в строке списка — самая низкая цена направления
   const FROM = { ai: 4000, web: 2000, tg: 2500, app: 8000, game: 2000, video: 300, design: 200, "3d": 600 };
+
+  /* ---------- новые тексты ---------- */
+  const EXTRA = {
+    uk: { "hero.eyebrow": "// сайти · боти · ШІ · застосунки · ігри", "hero.title3": "Пишемо код, який оживає", "hero.scroll": "↓ гортайте — код пишеться сам",
+      "ch.from": "від", "ch.uah": "грн",
+      "ch.site.tag": "сайти", "ch.site.t": "Сайти, які не схожі на шаблон", "ch.site.d": "3D, живі переходи, запис і замовлення прямо на сторінці. Швидкі з телефона — без гальм.", "ch.site.link": "Подивитися наші сайти →",
+      "ch.bot.tag": "боти й ШІ", "ch.bot.t": "Боти, які працюють за вас 24/7", "ch.bot.d": "Telegram-бот приймає заявки й оплату, ШІ-помічник відповідає клієнтам і записує на послуги, поки ви займаєтесь справою.", "ch.bot.link": "Поговорити з нашим ШІ-продавцем →",
+      "ch.game.tag": "ігри й застосунки", "ch.game.t": "Ігри в Roblox і застосунки", "ch.game.d": "Гра під ключ: мапа, 3D-моделі, економіка, монетизація. Застосунки для Android, iOS і Windows під вашу роботу.", "ch.game.link": "Усі послуги й ціни ↓",
+      "svc.comment": "// оберіть напрям — покажемо ціни", "works.comment": "// концепт-сайти, які ми зробили", "works.title": "Наші роботи", "works.all": "Усі роботи →",
+      "cta.cmd": "arvis написати --telegram",
+      "code.idea": "ваша ідея", "code.site.h": "Кава з собою", "code.site.p": "Щодня 8:00–20:00", "code.cta.1": "відкриваю @arvisstudio_bot…", "code.cta.2": "відповімо з ціною та терміном" },
+    ru: { "hero.eyebrow": "// сайты · боты · ИИ · приложения · игры", "hero.title3": "Пишем код, который оживает", "hero.scroll": "↓ листайте — код пишется сам",
+      "ch.from": "от", "ch.uah": "грн",
+      "ch.site.tag": "сайты", "ch.site.t": "Сайты, не похожие на шаблон", "ch.site.d": "3D, живые переходы, запись и заказ прямо на странице. Быстрые с телефона — без тормозов.", "ch.site.link": "Посмотреть наши сайты →",
+      "ch.bot.tag": "боты и ИИ", "ch.bot.t": "Боты, которые работают за вас 24/7", "ch.bot.d": "Telegram-бот принимает заявки и оплату, ИИ-помощник отвечает клиентам и записывает на услуги, пока вы занимаетесь делом.", "ch.bot.link": "Поговорить с нашим ИИ-продавцом →",
+      "ch.game.tag": "игры и приложения", "ch.game.t": "Игры в Roblox и приложения", "ch.game.d": "Игра под ключ: карта, 3D-модели, экономика, монетизация. Приложения для Android, iOS и Windows под вашу работу.", "ch.game.link": "Все услуги и цены ↓",
+      "svc.comment": "// выберите направление — покажем цены", "works.comment": "// концепт-сайты, которые мы сделали", "works.title": "Наши работы", "works.all": "Все работы →",
+      "cta.cmd": "arvis написать --telegram",
+      "code.idea": "ваша идея", "code.site.h": "Кофе с собой", "code.site.p": "Каждый день 8:00–20:00", "code.cta.1": "открываю @arvisstudio_bot…", "code.cta.2": "ответим с ценой и сроком" },
+    en: { "hero.eyebrow": "// websites · bots · AI · apps · games", "hero.title3": "We write code that comes alive", "hero.scroll": "↓ scroll — the code writes itself",
+      "ch.from": "from", "ch.uah": "UAH",
+      "ch.site.tag": "websites", "ch.site.t": "Websites that don't look like templates", "ch.site.d": "3D, live transitions, bookings and orders right on the page. Fast on phones — no lag.", "ch.site.link": "See our websites →",
+      "ch.bot.tag": "bots & AI", "ch.bot.t": "Bots that work for you 24/7", "ch.bot.d": "A Telegram bot takes requests and payments, an AI assistant answers customers and books appointments while you run your business.", "ch.bot.link": "Talk to our AI sales assistant →",
+      "ch.game.tag": "games & apps", "ch.game.t": "Roblox games and apps", "ch.game.d": "Turnkey games: map, 3D models, economy, monetization. Android, iOS and Windows apps for your workflow.", "ch.game.link": "All services and prices ↓",
+      "svc.comment": "// pick a service to see prices", "works.comment": "// concept sites we've built", "works.title": "Our work", "works.all": "All work →",
+      "cta.cmd": "arvis message --telegram",
+      "code.idea": "your idea", "code.site.h": "Coffee to go", "code.site.p": "Daily 8:00–20:00", "code.cta.1": "opening @arvisstudio_bot…", "code.cta.2": "we'll reply with price and timeline" },
+  };
+  Object.keys(EXTRA).forEach((l) => Object.assign(I18N[l], EXTRA[l]));
+
   const ORDER = Object.keys(FROM);
-
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const BASE = /\/next\/?/.test(location.pathname) ? "../" : "";   // черновик лежит в /next/, главная — в корне
   let lang = "uk";
-  let current = "ai";        // открытая строка; null — все свёрнуты
-  let servicesVisible = false;
-
+  const t = (k) => I18N[lang][k] || I18N.uk[k] || k;
   const money = (n) => lang === "en" ? n.toLocaleString("en-US") : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, NB);
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  document.querySelectorAll("[data-portfolio]").forEach((a) => a.setAttribute("href", BASE + "portfolio/"));
+
+  /* ---------- код сверху: печатается от прокрутки ---------- */
+  const CODE = {
+    hero: { file: "arvis.js", lines: [
+      [["c", "// arvis.js"]],
+      [["k", "const"], ["", " idea = "], ["s", '"{code.idea}"'], ["", ";"]],
+      [["k", "const"], ["", " app = arvis."], ["n", "build"], ["", "(idea);"]],
+      [["", "app."], ["n", "launch"], ["", "();"]],
+    ] },
+    site: { file: "kavarnia.html", lines: [
+      [["k", "<section"], ["", " class="], ["s", '"hero"'], ["k", ">"]],
+      [["", "  "], ["k", "<h1>"], ["", "{code.site.h}"], ["k", "</h1>"]],
+      [["", "  "], ["k", "<p>"], ["", "{code.site.p}"], ["k", "</p>"]],
+      [["", "  "], ["k", "<button>"], ["", "{sc.web.btn}"], ["k", "</button>"]],
+      [["k", "</section>"]],
+    ] },
+    bot: { file: "bot.py", lines: [
+      [["n", "@bot.message"], ["", "("], ["s", '"/start"'], ["", ")"]],
+      [["k", "async def"], ["", " start(msg):"]],
+      [["", "  "], ["k", "await"], ["", " msg.answer("]],
+      [["", "    "], ["s", '"{sc.tg.m1}"'], ["", ","]],
+      [["", "    buttons=["], ["s", '"{sc.tg.b1}"'], ["", ", "], ["s", '"{sc.tg.b2}"'], ["", "])"]],
+    ] },
+    game: { file: "coin.lua", lines: [
+      [["k", "local"], ["", " coin = workspace.Coin"]],
+      [["", "coin.Touched:"], ["n", "Connect"], ["", "("], ["k", "function"], ["", "()"]],
+      [["", "  player.coins += 1"]],
+      [["", "  coin:"], ["n", "Destroy"], ["", "()"]],
+      [["k", "end"], ["", ")"]],
+    ] },
+    cta: { file: "terminal", lines: [
+      [["n", "$"], ["", " {cta.cmd}"]],
+      [["c", "> {code.cta.1}"]],
+      [["c", "> {code.cta.2}"]],
+    ] },
+  };
+  const fill = (s) => s.replace(/\{([a-z0-9.]+)\}/g, (_, k) => t(k));
+  const cbCode = document.getElementById("cb-code");
+  const cbFile = document.getElementById("cb-file");
+  const codebar = document.getElementById("codebar");
+  const chapters = Array.from(document.querySelectorAll(".chapter"));
+  const solids = Array.from(document.querySelectorAll(".solid, .foot"));
+  const t0 = performance.now();
+  let lastKey = "";
+
+  function renderCode(id, frac) {
+    const lines = CODE[id].lines.map((line) => line.map(([c, s]) => [c, fill(s)]));
+    const total = lines.reduce((n, l) => n + l.reduce((m, [, s]) => m + s.length, 0), 0);
+    let left = Math.round(total * Math.max(0, Math.min(1, frac)));
+    const key = id + lang + left + innerWidth;
+    if (key === lastKey) return;
+    lastKey = key;
+    cbFile.textContent = CODE[id].file;
+    const out = [];
+    for (const line of lines) {
+      if (left <= 0 && out.length) break;
+      let html = "";
+      for (const [c, s] of line) {
+        const part = s.slice(0, Math.max(0, left));
+        left -= s.length;
+        if (part) html += c ? `<span class="${c}">${esc(part)}</span>` : esc(part);
+      }
+      out.push(html);
+    }
+    out[out.length - 1] += '<span class="caret"></span>';
+    const show = innerWidth < 900 ? out.slice(-3) : out;   // на телефоне — последние 3 строки, чтобы не закрывать 3D
+    cbCode.innerHTML = show.join("\n");
+  }
+  function onScroll() {
+    const vh = innerHeight, mid = scrollY + vh * 0.55;
+    const overSolid = solids.some((s) => { const r = s.getBoundingClientRect(); return r.top < vh * 0.55 && r.bottom > vh * 0.55; });
+    codebar.classList.toggle("off", overSolid);
+    if (overSolid) return;
+    let ch = chapters[0];
+    for (const c of chapters) if (c.offsetTop <= mid) ch = c;
+    const id = ch.dataset.code;
+    let frac = (mid - ch.offsetTop) / (ch.offsetHeight * 0.75);
+    if (id === "hero") frac = Math.max(frac + 0.15, reduce ? 1 : (performance.now() - t0) / 3200);
+    if (reduce) frac = 1;
+    renderCode(id, frac);
+  }
+  let ticking = false;
+  const tick = () => { ticking = false; onScroll(); };
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
+  addEventListener("resize", () => { lastKey = ""; onScroll(); });
+  (function intro() { onScroll(); if (performance.now() - t0 < 3600) requestAnimationFrame(intro); })();
+
+  /* ---------- услуги: дерево, строка раскрывается в цены ---------- */
+  const tree = document.getElementById("tree");
+  let openId = "web";
+  function renderTree() {
+    tree.innerHTML = ORDER.map((id) => {
+      const [name, desc, prices] = SVC[lang][id];
+      const open = id === openId;
+      const live = id === "ai" ? `<a class="link" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener">${esc(t("svc.live"))}</a><br>` : "";
+      return `<li class="row${open ? " open" : ""}" data-svc="${id}">
+        <button class="row-btn" type="button" aria-expanded="${open}" aria-controls="p-${id}">
+          <span class="row-path">${id}/</span><span class="row-name">${esc(name)}</span><span class="row-dots" aria-hidden="true"></span>
+          <span class="row-from">${esc(t("svc.from").replace("{n}", money(FROM[id])))}</span></button>
+        <div class="row-panel" id="p-${id}" ${open ? "" : "hidden"}><div>
+          <p class="row-desc">${esc(desc)}</p>
+          <ul class="prices">${prices.map(([n, pr]) => `<li><span>${esc(n)}</span><i></i><b>${esc(p(pr))}</b></li>`).join("")}</ul>
+          ${live}<a class="btn" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener">${esc(t("svc.cta"))}</a>
+        </div></div></li>`;
+    }).join("");
+  }
+  tree.addEventListener("click", (e) => {
+    const btn = e.target.closest(".row-btn");
+    if (!btn) return;
+    const id = btn.parentNode.dataset.svc;
+    openId = openId === id ? null : id;
+    tree.querySelectorAll(".row").forEach((row) => {
+      const on = row.dataset.svc === openId;
+      row.classList.toggle("open", on);
+      row.querySelector(".row-btn").setAttribute("aria-expanded", String(on));
+      row.querySelector(".row-panel").hidden = !on;
+    });
+  });
+
+  /* ---------- работы: три последние из портфолио ---------- */
+  const grid = document.getElementById("work-grid");
+  fetch(BASE + "portfolio/works.json", { cache: "no-cache" }).then((r) => r.json()).then((list) => {
+    grid.innerHTML = list.slice(0, 3).map((w) => `<a class="work" href="${BASE}portfolio/${esc(w.url)}">
+      <img src="${BASE}portfolio/shots/${esc(w.slug)}.jpg" alt="${esc(w.name)}" loading="lazy" width="1440" height="900">
+      <span class="work-cap"><span class="mono">${esc(w.slug)}/</span><b>${esc(w.name)}</b></span></a>`).join("");
+  }).catch(() => { grid.hidden = true; });
+
+  /* ---------- «коммиты» появляются по одному ---------- */
+  const steps = Array.from(document.querySelectorAll(".log li"));
+  if (reduce || !("IntersectionObserver" in window)) steps.forEach((li) => li.classList.add("in"));
+  else {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (!e.isIntersecting) return;
+      steps.forEach((li, i) => setTimeout(() => li.classList.add("in"), i * 140));
+      io.disconnect();
+    }), { threshold: 0.2 });
+    io.observe(document.querySelector(".log"));
+  }
 
   /* ---------- язык ---------- */
   function storedLang() { try { return localStorage.getItem("arvis-lang"); } catch (e) { return null; } }
@@ -201,218 +369,17 @@
     lang = I18N[next] ? next : "uk";
     const dict = I18N[lang];
     document.documentElement.lang = lang;
-    document.querySelectorAll("[data-i18n]").forEach((el) => { const t = dict[el.dataset.i18n]; if (t) el.textContent = t; });
-    document.querySelectorAll("[data-i18n-aria]").forEach((el) => { const t = dict[el.dataset.i18nAria]; if (t) el.setAttribute("aria-label", t); });
+    document.querySelectorAll("[data-i18n]").forEach((el) => { const v = dict[el.dataset.i18n]; if (v) el.textContent = v; });
+    document.querySelectorAll("[data-i18n-aria]").forEach((el) => { const v = dict[el.dataset.i18nAria]; if (v) el.setAttribute("aria-label", v); });
     document.title = dict["meta.title"];
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute("content", dict["meta.desc"]);
     document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
     try { localStorage.setItem("arvis-lang", lang); } catch (e) { /* без памяти — не страшно */ }
-    rows.forEach((row) => {
-      const id = row.dataset.svc;
-      row.querySelector(".svc-name").textContent = SVC[lang][id][0];
-      row.querySelector(".svc-from").textContent = dict["svc.from"].replace("{n}", money(FROM[id]));
-    });
-    if (current) renderService(current, false);
-    renderCaption();
-    if (servicesVisible && current) runScene(current);   // тексты в сценке поменялись — начинаем её заново
+    renderTree();
+    lastKey = "";
+    onScroll();
   }
-
-  /* ---------- список услуг: одна строка открыта, в неё переезжает блок с ценами и сценкой ---------- */
-  const rows = Array.from(document.querySelectorAll(".svc"));
-  const detail = document.getElementById("detail");
-  function renderService(id, animate) {
-    const [, desc, prices] = SVC[lang][id];
-    document.getElementById("svc-desc").textContent = desc;
-    document.getElementById("svc-live").hidden = id !== "ai";   // живой пример — наш @arvisstudio_bot
-    const ul = document.getElementById("svc-prices");
-    ul.textContent = "";
-    prices.forEach(([n, price]) => {
-      const li = document.createElement("li");
-      const s = document.createElement("span"); s.textContent = n;
-      const b = document.createElement("b"); b.textContent = p(price);
-      li.append(s, b); ul.append(li);
-    });
-    if (animate && !reduce) { detail.classList.remove("swap"); void detail.offsetWidth; detail.classList.add("swap"); }
-  }
-  function openRow(id) {
-    current = id;
-    rows.forEach((row) => {
-      const on = row.dataset.svc === id;
-      row.querySelector(".svc-btn").setAttribute("aria-expanded", String(on));
-      const panel = row.querySelector(".svc-panel");
-      panel.hidden = !on;
-      if (on) panel.append(detail);
-    });
-    if (!id) { stopScene(); return; }
-    renderService(id, true);
-    document.querySelectorAll(".scene").forEach((s) => s.classList.toggle("on", s.dataset.scene === id));
-    if (servicesVisible) runScene(id); else stopScene();
-  }
-  rows.forEach((row) => {
-    const btn = row.querySelector(".svc-btn");
-    btn.addEventListener("click", () => {
-      // строка выше свернётся — держим нажатую кнопку на том же месте экрана
-      const before = btn.getBoundingClientRect().top;
-      openRow(current === row.dataset.svc ? null : row.dataset.svc);
-      const shift = btn.getBoundingClientRect().top - before;
-      if (shift) window.scrollBy({ top: shift, behavior: "instant" });
-    });
-  });
-
-  /* ---------- сценки: шаги по времени (data-at / data-out, цикл data-loop) ---------- */
-  let activeScene = null, timer = null, t0 = 0;
-  function stopScene() { clearInterval(timer); timer = null; if (activeScene) activeScene.classList.add("paused"); }
-  function runScene(id) {
-    clearInterval(timer);
-    const el = document.querySelector(`.scene[data-scene="${id}"]`);
-    if (!el) return;
-    activeScene = el;
-    el.classList.remove("paused", "fade");
-    const steps = Array.from(el.querySelectorAll("[data-at]"));
-    if (reduce) { steps.forEach((s) => s.classList.toggle("in", !s.dataset.out)); return; }
-    const loop = Number(el.dataset.loop) || 8;
-    t0 = performance.now();
-    const tick = () => {
-      const t = (performance.now() - t0) / 1000;
-      if (t >= loop) { t0 = performance.now(); el.classList.remove("fade"); steps.forEach((s) => s.classList.remove("in")); return; }
-      el.classList.toggle("fade", t > loop - 0.5);
-      steps.forEach((s) => {
-        const at = Number(s.dataset.at), out = s.dataset.out ? Number(s.dataset.out) : Infinity;
-        s.classList.toggle("in", t >= at && t < out);
-      });
-    };
-    steps.forEach((s) => s.classList.remove("in"));
-    tick();
-    timer = setInterval(tick, 80);
-  }
-
-  /* ---------- субтитры и звуковая дорожка в «Відео» ---------- */
-  function renderCaption() {
-    const cap = document.getElementById("caption");
-    cap.textContent = "";
-    I18N[lang].caption.split(" ").forEach((w, i, all) => {
-      const s = document.createElement("span");
-      s.className = "w"; s.dataset.at = (0.5 + i * 0.45).toFixed(2);
-      s.textContent = w;
-      cap.append(s, i < all.length - 1 ? " " : "");
-    });
-  }
-  (function wave() {
-    const box = document.querySelector(".wave");
-    let seed = 5;
-    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    for (let i = 0; i < 56; i++) {
-      const b = document.createElement("i");
-      b.style.setProperty("--h", Math.round(20 + 80 * Math.abs(Math.sin(i * 0.55)) * (0.5 + rnd() * 0.5)) + "%");
-      box.append(b);
-    }
-  })();
-
-  /* ---------- «Ігри»: уровень из кубиков в изометрии, оттенки серого с чёрным контуром ---------- */
-  (function buildLevel() {
-    const svg = document.getElementById("iso");
-    const NS = "http://www.w3.org/2000/svg";
-    const s = 36, a = s * 0.866, b = s * 0.5, ox = 180, oy = 96;
-    const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); parent.append(n); return n; };
-    const pt = (gx, gy, gz) => [ox + (gx - gy) * a, oy + (gx + gy) * b - gz * s];
-    const TONE = {
-      ground: ["#FFFFFF", "#D4D4D4", "#9A9A9A"],
-      dark: ["#7A7A7A", "#3D3D3D", "#000000"],
-      light: ["#EDEDED", "#BDBDBD", "#7A7A7A"],
-    };
-    const blocks = [];
-    for (let gx = 0; gx < 3; gx++) for (let gy = 0; gy < 3; gy++) blocks.push([gx, gy, 0, "ground"]);
-    blocks.push([0, 0, 1, "dark"], [0, 0, 2, "dark"], [0, 1, 1, "light"], [2, 0, 1, "light"]);
-    blocks.sort((p1, p2) => (p1[0] + p1[1]) - (p2[0] + p2[1]) || p1[2] - p2[2]);
-    blocks.forEach(([gx, gy, gz, c], i) => {
-      const [x, y] = pt(gx, gy, gz);
-      const [top, left, right] = TONE[c];
-      const g = el("g", { class: "blk step", "data-at": (gz === 0 ? 0.2 + i * 0.12 : 1.5 + gz * 0.25 + i * 0.03).toFixed(2) }, svg);
-      el("polygon", { points: `${x},${y} ${x + a},${y + b} ${x},${y + 2 * b} ${x - a},${y + b}`, fill: top }, g);
-      el("polygon", { points: `${x - a},${y + b} ${x},${y + 2 * b} ${x},${y + 2 * b + s} ${x - a},${y + b + s}`, fill: left }, g);
-      el("polygon", { points: `${x},${y + 2 * b} ${x + a},${y + b} ${x + a},${y + b + s} ${x},${y + 2 * b + s}`, fill: right }, g);
-    });
-    const [cx, cy] = pt(1, 1, 0);
-    const feet = cy + b;
-    const bot = el("g", { class: "bot step", "data-at": "2.5" }, svg);
-    const body = el("g", {}, bot);
-    el("rect", { x: cx - 9, y: feet - 20, width: 8, height: 20, rx: 2, fill: "#000" }, body);
-    el("rect", { x: cx + 1, y: feet - 20, width: 8, height: 20, rx: 2, fill: "#000" }, body);
-    el("rect", { x: cx - 12, y: feet - 42, width: 24, height: 23, rx: 4, fill: "#000" }, body);
-    el("rect", { x: cx - 18, y: feet - 41, width: 6, height: 19, rx: 3, fill: "#fff" }, body);
-    el("rect", { x: cx + 12, y: feet - 41, width: 6, height: 19, rx: 3, fill: "#fff" }, body);
-    el("rect", { x: cx - 10, y: feet - 62, width: 20, height: 19, rx: 5, fill: "#fff" }, body);
-    el("circle", { cx: cx - 4, cy: feet - 54, r: 1.4, fill: "#000" }, body);
-    el("circle", { cx: cx + 4, cy: feet - 54, r: 1.4, fill: "#000" }, body);
-    el("path", { d: `M${cx - 4} ${feet - 49} q4 3 8 0`, stroke: "#000", "stroke-width": 1.6, fill: "none", "stroke-linecap": "round" }, body);
-    const [kx, ky] = pt(2, 0, 1);
-    const coin = el("g", { class: "coin step", "data-at": "3.2" }, svg);
-    const cg = el("g", {}, coin);
-    el("circle", { cx: kx, cy: ky - 18, r: 11, fill: "#fff", "stroke-width": 3 }, cg);
-    el("path", { d: `M${kx} ${ky - 24} v12`, stroke: "#000", "stroke-width": 3, "stroke-linecap": "round" }, cg);
-    const plus = el("text", { class: "coin-pop step", "data-at": "3.6", x: kx + 14, y: ky - 34 }, svg);
-    plus.textContent = "+10";
-  })();
-
-  /* ---------- слово arvis во всю ширину экрана: меряем на 100px и пересчитываем ---------- */
-  const word = document.querySelector(".word");
-  function fitWord() {
-    const free = document.documentElement.clientWidth - (innerWidth <= 560 ? 32 : 48);
-    word.style.setProperty("--word-size", "100px");
-    word.style.setProperty("--word-size", (100 * free / word.getBoundingClientRect().width).toFixed(1) + "px");
-  }
-  let resizeTimer;
-  window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(fitWord, 100); });
-  if (document.fonts) document.fonts.addEventListener("loadingdone", fitWord);
-  fitWord();
-
-  /* ---------- заставка: буквы выезжают из-за линии, рисуется атом, потом текст ---------- */
-  const root = document.documentElement;
-  // слабое устройство или экономия трафика — без заставки и без постоянного движения
-  const conn = navigator.connection;
-  if ((conn && conn.saveData) || navigator.deviceMemory <= 2 || navigator.hardwareConcurrency <= 2) root.classList.add("lite");
-  // страницу открыли не с начала — заставка тоже не нужна
-  if (window.scrollY > 80 || root.classList.contains("lite")) root.classList.remove("intro");
-  // ждём шрифты, чтобы слово не поменяло ширину посреди анимации, но не дольше 0.7 с
-  Promise.race([document.fonts ? document.fonts.ready : null, new Promise((r) => setTimeout(r, 700))]).then(() => {
-    fitWord();
-    if (!root.classList.contains("intro") || root.classList.contains("go")) return;  // запасной таймер успел раньше
-    root.classList.add("go");
-    // ?t=1500 — стоп-кадр заставки на 1.5 с: так проверяю кадры, на обычных посетителей не влияет
-    const t = new URLSearchParams(location.search).get("t");
-    if (t !== null) {
-      getComputedStyle(word).width;   // пересчитать стили сразу, чтобы анимации уже существовали
-      document.getAnimations().forEach((a) => { a.pause(); a.currentTime = Number(t); });
-    }
-  });
-
-  /* ---------- что видно на экране: запускаем и ставим на паузу ---------- */
-  const hero = document.querySelector(".hero");
-  const services = document.getElementById("services");
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(([e]) => hero.classList.toggle("paused", !e.isIntersecting)).observe(hero);
-    new IntersectionObserver(([e]) => {
-      servicesVisible = e.isIntersecting;
-      if (servicesVisible && current) runScene(current); else stopScene();
-    }, { threshold: 0.1 }).observe(services);
-  } else {
-    servicesVisible = true; runScene(current);
-  }
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopScene(); else if (servicesVisible && current) runScene(current);
-  });
-
-  document.querySelectorAll(".lang button").forEach((btn) => btn.addEventListener("click", () => setLang(btn.dataset.lang)));
+  document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
   setLang(storedLang() || guessLang());
-
-  // прямая ссылка на услугу: …/#web, …/#ai, …/#3d — открывает нужную строку
-  function openFromHash() {
-    const id = decodeURIComponent(location.hash.slice(1));
-    if (!ORDER.includes(id)) return;
-    openRow(id);
-    document.getElementById("btn-" + id).scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-  }
-  window.addEventListener("hashchange", openFromHash);
-  openFromHash();
 })();

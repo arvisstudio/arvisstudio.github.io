@@ -1,4 +1,4 @@
-/* Arvis «Редактор» — языки, редактор с печатью кода, дерево услуг, работы из портфолио. Тексты и цены — из старого main.js. */
+/* Arvis 2 — языки, код от прокрутки, дерево услуг, работы из портфолио. Тексты и цены — из старого main.js. 3D — в scene.js. */
 (function () {
   "use strict";
 
@@ -183,152 +183,138 @@
   // «от …» в строке списка — самая низкая цена направления
   const FROM = { ai: 4000, web: 2000, tg: 2500, app: 8000, game: 2000, video: 300, design: 200, "3d": 600 };
 
-  /* ---------- новые тексты «Редактора» ---------- */
+  /* ---------- новые тексты ---------- */
   const EXTRA = {
-    uk: { "hero.eyebrow": "// сайти · боти · ШІ · застосунки · ігри", "hero.title2": "Пишемо код, який працює на ваш бізнес",
-      "ed.label": "Приклад: код друкується, поруч — результат", "ed.result": "результат", "ed.site.h": "Кава з собою",
-      "ed.site.p": "Щодня 8:00–20:00", "ed.game.coins": "Монети", "ed.foot": "код друкується сам",
-      "svc.comment": "// оберіть напрям — покажемо ціни", "works.comment": "// концепт-сайти, які ми зробили", "works.title": "Наші роботи",
-      "works.all": "Усі роботи →", "cta.cmd": "arvis написати --telegram" },
-    ru: { "hero.eyebrow": "// сайты · боты · ИИ · приложения · игры", "hero.title2": "Пишем код, который работает на ваш бизнес",
-      "ed.label": "Пример: код печатается, рядом — результат", "ed.result": "результат", "ed.site.h": "Кофе с собой",
-      "ed.site.p": "Каждый день 8:00–20:00", "ed.game.coins": "Монеты", "ed.foot": "код печатается сам",
-      "svc.comment": "// выберите направление — покажем цены", "works.comment": "// концепт-сайты, которые мы сделали", "works.title": "Наши работы",
-      "works.all": "Все работы →", "cta.cmd": "arvis написать --telegram" },
-    en: { "hero.eyebrow": "// websites · bots · AI · apps · games", "hero.title2": "We write code that works for your business",
-      "ed.label": "Example: code types itself, the result appears next to it", "ed.result": "result", "ed.site.h": "Coffee to go",
-      "ed.site.p": "Daily 8:00–20:00", "ed.game.coins": "Coins", "ed.foot": "code types itself",
-      "svc.comment": "// pick a service to see prices", "works.comment": "// concept sites we've built", "works.title": "Our work",
-      "works.all": "All work →", "cta.cmd": "arvis message --telegram" },
+    uk: { "hero.eyebrow": "// сайти · боти · ШІ · застосунки · ігри", "hero.title3": "Пишемо код, який оживає", "hero.scroll": "↓ гортайте — код пишеться сам",
+      "ch.from": "від", "ch.uah": "грн",
+      "ch.site.tag": "сайти", "ch.site.t": "Сайти, які не схожі на шаблон", "ch.site.d": "3D, живі переходи, запис і замовлення прямо на сторінці. Швидкі з телефона — без гальм.", "ch.site.link": "Подивитися наші сайти →",
+      "ch.bot.tag": "боти й ШІ", "ch.bot.t": "Боти, які працюють за вас 24/7", "ch.bot.d": "Telegram-бот приймає заявки й оплату, ШІ-помічник відповідає клієнтам і записує на послуги, поки ви займаєтесь справою.", "ch.bot.link": "Поговорити з нашим ШІ-продавцем →",
+      "ch.game.tag": "ігри й застосунки", "ch.game.t": "Ігри в Roblox і застосунки", "ch.game.d": "Гра під ключ: мапа, 3D-моделі, економіка, монетизація. Застосунки для Android, iOS і Windows під вашу роботу.", "ch.game.link": "Усі послуги й ціни ↓",
+      "svc.comment": "// оберіть напрям — покажемо ціни", "works.comment": "// концепт-сайти, які ми зробили", "works.title": "Наші роботи", "works.all": "Усі роботи →",
+      "cta.cmd": "arvis написати --telegram",
+      "code.idea": "ваша ідея", "code.site.h": "Кава з собою", "code.site.p": "Щодня 8:00–20:00", "code.cta.1": "відкриваю @arvisstudio_bot…", "code.cta.2": "відповімо з ціною та терміном" },
+    ru: { "hero.eyebrow": "// сайты · боты · ИИ · приложения · игры", "hero.title3": "Пишем код, который оживает", "hero.scroll": "↓ листайте — код пишется сам",
+      "ch.from": "от", "ch.uah": "грн",
+      "ch.site.tag": "сайты", "ch.site.t": "Сайты, не похожие на шаблон", "ch.site.d": "3D, живые переходы, запись и заказ прямо на странице. Быстрые с телефона — без тормозов.", "ch.site.link": "Посмотреть наши сайты →",
+      "ch.bot.tag": "боты и ИИ", "ch.bot.t": "Боты, которые работают за вас 24/7", "ch.bot.d": "Telegram-бот принимает заявки и оплату, ИИ-помощник отвечает клиентам и записывает на услуги, пока вы занимаетесь делом.", "ch.bot.link": "Поговорить с нашим ИИ-продавцом →",
+      "ch.game.tag": "игры и приложения", "ch.game.t": "Игры в Roblox и приложения", "ch.game.d": "Игра под ключ: карта, 3D-модели, экономика, монетизация. Приложения для Android, iOS и Windows под вашу работу.", "ch.game.link": "Все услуги и цены ↓",
+      "svc.comment": "// выберите направление — покажем цены", "works.comment": "// концепт-сайты, которые мы сделали", "works.title": "Наши работы", "works.all": "Все работы →",
+      "cta.cmd": "arvis написать --telegram",
+      "code.idea": "ваша идея", "code.site.h": "Кофе с собой", "code.site.p": "Каждый день 8:00–20:00", "code.cta.1": "открываю @arvisstudio_bot…", "code.cta.2": "ответим с ценой и сроком" },
+    en: { "hero.eyebrow": "// websites · bots · AI · apps · games", "hero.title3": "We write code that comes alive", "hero.scroll": "↓ scroll — the code writes itself",
+      "ch.from": "from", "ch.uah": "UAH",
+      "ch.site.tag": "websites", "ch.site.t": "Websites that don't look like templates", "ch.site.d": "3D, live transitions, bookings and orders right on the page. Fast on phones — no lag.", "ch.site.link": "See our websites →",
+      "ch.bot.tag": "bots & AI", "ch.bot.t": "Bots that work for you 24/7", "ch.bot.d": "A Telegram bot takes requests and payments, an AI assistant answers customers and books appointments while you run your business.", "ch.bot.link": "Talk to our AI sales assistant →",
+      "ch.game.tag": "games & apps", "ch.game.t": "Roblox games and apps", "ch.game.d": "Turnkey games: map, 3D models, economy, monetization. Android, iOS and Windows apps for your workflow.", "ch.game.link": "All services and prices ↓",
+      "svc.comment": "// pick a service to see prices", "works.comment": "// concept sites we've built", "works.title": "Our work", "works.all": "All work →",
+      "cta.cmd": "arvis message --telegram",
+      "code.idea": "your idea", "code.site.h": "Coffee to go", "code.site.p": "Daily 8:00–20:00", "code.cta.1": "opening @arvisstudio_bot…", "code.cta.2": "we'll reply with price and timeline" },
   };
   Object.keys(EXTRA).forEach((l) => Object.assign(I18N[l], EXTRA[l]));
 
   const ORDER = Object.keys(FROM);
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const BASE = /\/next\/?/.test(location.pathname) ? "../" : "";   // черновик лежит в /next/, главная — в корне
   let lang = "uk";
   const t = (k) => I18N[lang][k] || I18N.uk[k] || k;
   const money = (n) => lang === "en" ? n.toLocaleString("en-US") : String(n).replace(/\B(?=(\d{3})+(?!\d))/g, NB);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  document.querySelectorAll("[data-portfolio]").forEach((a) => a.setAttribute("href", BASE + "portfolio/"));
 
-  /* ---------- редактор: код печатается, справа появляется результат ---------- */
-  // строка — список кусочков [класс, текст]; «{ключ}» внутри текста — перевод
-  const SNIPPETS = {
-    site: { lines: [
-      [["k", "<section"], ["", " "], ["n", "class"], ["", "="], ["s", '"hero"'], ["k", ">"]],
-      [["", "  "], ["k", "<h1>"], ["", "{ed.site.h}"], ["k", "</h1>"]],
-      [["", "  "], ["k", "<p>"], ["", "{ed.site.p}"], ["k", "</p>"]],
+  /* ---------- код сверху: печатается от прокрутки ---------- */
+  const CODE = {
+    hero: { file: "arvis.js", lines: [
+      [["c", "// arvis.js"]],
+      [["k", "const"], ["", " idea = "], ["s", '"{code.idea}"'], ["", ";"]],
+      [["k", "const"], ["", " app = arvis."], ["n", "build"], ["", "(idea);"]],
+      [["", "app."], ["n", "launch"], ["", "();"]],
+    ] },
+    site: { file: "kavarnia.html", lines: [
+      [["k", "<section"], ["", " class="], ["s", '"hero"'], ["k", ">"]],
+      [["", "  "], ["k", "<h1>"], ["", "{code.site.h}"], ["k", "</h1>"]],
+      [["", "  "], ["k", "<p>"], ["", "{code.site.p}"], ["k", "</p>"]],
       [["", "  "], ["k", "<button>"], ["", "{sc.web.btn}"], ["k", "</button>"]],
       [["k", "</section>"]],
-    ], reveal: { 0: [".mini-nav"], 1: ["h4"], 2: ["p"], 3: [".mini-btn"] } },
-    bot: { lines: [
-      [["c", "# Telegram-бот кав’ярні"]],
+    ] },
+    bot: { file: "bot.py", lines: [
       [["n", "@bot.message"], ["", "("], ["s", '"/start"'], ["", ")"]],
       [["k", "async def"], ["", " start(msg):"]],
       [["", "  "], ["k", "await"], ["", " msg.answer("]],
       [["", "    "], ["s", '"{sc.tg.m1}"'], ["", ","]],
       [["", "    buttons=["], ["s", '"{sc.tg.b1}"'], ["", ", "], ["s", '"{sc.tg.b2}"'], ["", "])"]],
-    ], reveal: { 1: [".msg.me"], 5: [".msg:not(.me)"] } },
-    game: { lines: [
-      [["c", "-- Roblox: монета дає очко"]],
+    ] },
+    game: { file: "coin.lua", lines: [
       [["k", "local"], ["", " coin = workspace.Coin"]],
-      [["", "coin.Touched:"], ["n", "Connect"], ["", "("], ["k", "function"], ["", "(hit)"]],
+      [["", "coin.Touched:"], ["n", "Connect"], ["", "("], ["k", "function"], ["", "()"]],
       [["", "  player.coins += 1"]],
       [["", "  coin:"], ["n", "Destroy"], ["", "()"]],
       [["k", "end"], ["", ")"]],
-    ], reveal: { 1: [".hud", ".world"] } },
+    ] },
+    cta: { file: "terminal", lines: [
+      [["n", "$"], ["", " {cta.cmd}"]],
+      [["c", "> {code.cta.1}"]],
+      [["c", "> {code.cta.2}"]],
+    ] },
   };
-  const TABS = ["site", "bot", "game"];
-  const codeEl = document.getElementById("code");
-  const editor = document.getElementById("editor");
-  const lnCount = document.getElementById("ln-count");
-  let tab = "site", run = 0, edVisible = true;
-
   const fill = (s) => s.replace(/\{([a-z0-9.]+)\}/g, (_, k) => t(k));
-  function lineText(line) { return line.map(([, s]) => fill(s)).join(""); }
-  function renderCode(id) {
-    codeEl.innerHTML = SNIPPETS[id].lines.map((line) =>
-      '<span class="l"><span class="t" style="--c:0">' + line.map(([c, s]) => (c ? `<span class="${c}">${esc(fill(s))}</span>` : esc(fill(s)))).join("") + "</span></span>").join("");
-  }
-  const pvOf = (id) => editor.querySelector(`.pv[data-pv="${id}"]`);
-  function resetPreview(id) {
-    editor.querySelectorAll(".pv").forEach((p) => p.classList.toggle("on", p.dataset.pv === id));
-    const pv = pvOf(id);
-    pv.querySelectorAll(".b").forEach((b) => b.classList.remove("show", "press"));
-    const world = pv.querySelector(".world");
-    if (world) { world.classList.remove("go", "got"); pv.querySelector(".coins").textContent = "0"; }
-  }
-  function reveal(id, idx) {
-    (SNIPPETS[id].reveal[idx] || []).forEach((sel) => pvOf(id).querySelectorAll(sel).forEach((el) => el.classList.add("show")));
-  }
-  function selectTab(id) {
-    tab = id;
-    editor.querySelectorAll(".ed-tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === id)));
-  }
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  async function waitVisible(my) { while (!edVisible && my === run) await sleep(250); }
+  const cbCode = document.getElementById("cb-code");
+  const cbFile = document.getElementById("cb-file");
+  const codebar = document.getElementById("codebar");
+  const chapters = Array.from(document.querySelectorAll(".chapter"));
+  const solids = Array.from(document.querySelectorAll(".solid, .foot"));
+  const t0 = performance.now();
+  let lastKey = "";
 
-  async function play(id, my) {
-    selectTab(id);
-    renderCode(id);
-    resetPreview(id);
-    const lines = Array.from(codeEl.querySelectorAll(".t"));
-    const caret = document.createElement("span");
-    caret.className = "caret";
-    for (let i = 0; i < lines.length; i++) {
-      if (my !== run) return false;
-      const text = lineText(SNIPPETS[id].lines[i]);
-      const indent = text.length - text.trimStart().length;
-      lines[i].parentNode.appendChild(caret);
-      lnCount.textContent = "Ln " + (i + 1);
-      for (let c = indent; c <= text.length; c++) {
-        if (my !== run) return false;
-        lines[i].style.setProperty("--c", c);
-        await sleep(c === indent ? 120 : 26 + Math.random() * 30);
+  function renderCode(id, frac) {
+    const lines = CODE[id].lines.map((line) => line.map(([c, s]) => [c, fill(s)]));
+    const total = lines.reduce((n, l) => n + l.reduce((m, [, s]) => m + s.length, 0), 0);
+    let left = Math.round(total * Math.max(0, Math.min(1, frac)));
+    const key = id + lang + left + innerWidth;
+    if (key === lastKey) return;
+    lastKey = key;
+    cbFile.textContent = CODE[id].file;
+    const out = [];
+    for (const line of lines) {
+      if (left <= 0 && out.length) break;
+      let html = "";
+      for (const [c, s] of line) {
+        const part = s.slice(0, Math.max(0, left));
+        left -= s.length;
+        if (part) html += c ? `<span class="${c}">${esc(part)}</span>` : esc(part);
       }
-      reveal(id, i);
-      await waitVisible(my);
+      out.push(html);
     }
-    caret.remove();
-    // «запуск»: на сайте нажимают кнопку, в игре герой бежит за монетой
-    const pv = pvOf(id);
-    if (id === "site") {
-      await sleep(700); pv.querySelector(".mini-btn").classList.add("press");
-      await sleep(220); pv.querySelector(".mini-btn").classList.remove("press"); pv.querySelector(".toast").classList.add("show");
-    } else if (id === "game") {
-      await sleep(400); pv.querySelector(".world").classList.add("go");
-      await sleep(1000); pv.querySelector(".world").classList.add("got"); pv.querySelector(".coins").textContent = "1";
-    }
-    await sleep(2600);
-    return my === run;
+    out[out.length - 1] += '<span class="caret"></span>';
+    const show = innerWidth < 900 ? out.slice(-3) : out;   // на телефоне — последние 3 строки, чтобы не закрывать 3D
+    cbCode.innerHTML = show.join("\n");
   }
-  async function loop(start) {
-    const my = ++run;
-    let i = TABS.indexOf(start);
-    while (my === run) {
-      await waitVisible(my);
-      const ok = await play(TABS[i], my);
-      if (!ok) return;
-      i = (i + 1) % TABS.length;
-    }
+  function onScroll() {
+    const vh = innerHeight, mid = scrollY + vh * 0.55;
+    const overSolid = solids.some((s) => { const r = s.getBoundingClientRect(); return r.top < vh * 0.55 && r.bottom > vh * 0.55; });
+    codebar.classList.toggle("off", overSolid);
+    if (overSolid) return;
+    let ch = chapters[0];
+    for (const c of chapters) if (c.offsetTop <= mid) ch = c;
+    const id = ch.dataset.code;
+    let frac = (mid - ch.offsetTop) / (ch.offsetHeight * 0.75);
+    if (id === "hero") frac = Math.max(frac + 0.15, reduce ? 1 : (performance.now() - t0) / 3200);
+    if (reduce) frac = 1;
+    renderCode(id, frac);
   }
-  function showStatic(id) {   // без анимаций: код и результат сразу целиком
-    selectTab(id); renderCode(id); resetPreview(id);
-    codeEl.querySelectorAll(".t").forEach((el, i) => el.style.setProperty("--c", lineText(SNIPPETS[id].lines[i]).length));
-    Object.keys(SNIPPETS[id].reveal).forEach((k) => reveal(id, Number(k)));
-    const pv = pvOf(id);
-    if (id === "site") pv.querySelector(".toast").classList.add("show");
-  }
-  editor.querySelectorAll(".ed-tab").forEach((b) => b.addEventListener("click", () => (reduce ? showStatic(b.dataset.tab) : loop(b.dataset.tab))));
-  new IntersectionObserver((es) => es.forEach((e) => { edVisible = e.isIntersecting; }), { threshold: 0.15 }).observe(editor);
+  let ticking = false;
+  const tick = () => { ticking = false; onScroll(); };
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
+  addEventListener("resize", () => { lastKey = ""; onScroll(); });
+  (function intro() { onScroll(); if (performance.now() - t0 < 3600) requestAnimationFrame(intro); })();
 
   /* ---------- услуги: дерево, строка раскрывается в цены ---------- */
   const tree = document.getElementById("tree");
-  let openId = "ai";
+  let openId = "web";
   function renderTree() {
     tree.innerHTML = ORDER.map((id) => {
       const [name, desc, prices] = SVC[lang][id];
       const open = id === openId;
-      const live = id === "ai" ? `<p><a class="link" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener">${esc(t("svc.live"))}</a></p>` : "";
+      const live = id === "ai" ? `<a class="link" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener">${esc(t("svc.live"))}</a><br>` : "";
       return `<li class="row${open ? " open" : ""}" data-svc="${id}">
         <button class="row-btn" type="button" aria-expanded="${open}" aria-controls="p-${id}">
           <span class="row-path">${id}/</span><span class="row-name">${esc(name)}</span><span class="row-dots" aria-hidden="true"></span>
@@ -355,9 +341,9 @@
 
   /* ---------- работы: три последние из портфолио ---------- */
   const grid = document.getElementById("work-grid");
-  fetch("../portfolio/works.json", { cache: "no-cache" }).then((r) => r.json()).then((list) => {
-    grid.innerHTML = list.slice(0, 3).map((w) => `<a class="work" href="../portfolio/${esc(w.url)}">
-      <img src="../portfolio/shots/${esc(w.slug)}.jpg" alt="${esc(w.name)}" loading="lazy" width="1440" height="900">
+  fetch(BASE + "portfolio/works.json", { cache: "no-cache" }).then((r) => r.json()).then((list) => {
+    grid.innerHTML = list.slice(0, 3).map((w) => `<a class="work" href="${BASE}portfolio/${esc(w.url)}">
+      <img src="${BASE}portfolio/shots/${esc(w.slug)}.jpg" alt="${esc(w.name)}" loading="lazy" width="1440" height="900">
       <span class="work-cap"><span class="mono">${esc(w.slug)}/</span><b>${esc(w.name)}</b></span></a>`).join("");
   }).catch(() => { grid.hidden = true; });
 
@@ -391,8 +377,8 @@
     document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
     try { localStorage.setItem("arvis-lang", lang); } catch (e) { /* без памяти — не страшно */ }
     renderTree();
-    showStatic(tab);            // сразу на новом языке, даже если редактор сейчас не на экране
-    if (!reduce) loop(tab);
+    lastKey = "";
+    onScroll();
   }
   document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
   setLang(storedLang() || guessLang());

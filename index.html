@@ -3,46 +3,41 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Arvis — ШІ, сайти, боти та застосунки на замовлення</title>
-  <meta name="description" content="Arvis — команда розробників і ШІ: робимо ШІ-помічників, сайти, Telegram-ботів, застосунки, ігри в Roblox, відеомонтаж, дизайн і 3D-моделі на замовлення.">
-  <meta name="theme-color" content="#FFFFFF">
+  <title>Arvis — сайти, боти, ШІ й застосунки на замовлення</title>
+  <meta name="description" content="Arvis — команда розробників і ШІ: робимо сайти, Telegram-ботів, ШІ-помічників, застосунки, ігри в Roblox, відео, дизайн і 3D на замовлення.">
+  <meta name="theme-color" content="#F4F0E6">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght,SHRP@300..800,0..100&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=20261119">
-  <script>
-    // Заставка с логотипом — только при обычном заходе: не по ссылке на раздел и не при «меньше движения».
-    // Запускает её main.js, когда загрузятся шрифты; если что-то пошло не так — через 1.5 с сама.
-    (function (d) {
-      d.classList.add("js");
-      if (location.hash || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      d.classList.add("intro");
-      setTimeout(function () { d.classList.add("go"); }, 1500);
-    })(document.documentElement);
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20261120c">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
   <a class="skip" href="#main" data-i18n="skip">Перейти до змісту</a>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <defs>
-      <!-- логотип Arvis: атом Бора — ядро, две орбиты, по электрону на каждой -->
-      <symbol id="atom" viewBox="0 0 120 120">
-        <g fill="none" stroke="currentColor" stroke-width="5"><circle cx="60" cy="60" r="27"/><circle cx="60" cy="60" r="49"/></g>
-        <circle cx="60" cy="60" r="11" fill="currentColor"/>
-        <circle cx="79.1" cy="40.9" r="7" fill="currentColor"/>
-        <circle cx="25.4" cy="94.6" r="7.5" fill="currentColor"/>
-      </symbol>
-    </defs>
+    <symbol id="mark" viewBox="0 0 120 120">
+      <path d="M14 98 L44 22 L74 98" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="miter" stroke-miterlimit="10"/>
+      <rect x="88" y="72" width="18" height="26" fill="var(--cur, currentColor)"/>
+    </symbol>
   </svg>
+
+  <!-- 3D: ~100 кубиков. Листаешь — они собираются в логотип, окно сайта, телефон с ботом, игровой уровень -->
+  <canvas id="scene" aria-hidden="true"></canvas>
+
+  <!-- Код сверху печатается от прокрутки -->
+  <div class="codebar" id="codebar" aria-hidden="true">
+    <div class="cb-head mono"><i></i><i></i><i></i><span id="cb-file">arvis.js</span></div>
+    <pre class="cb-code mono" id="cb-code"></pre>
+  </div>
 
   <header class="top">
     <div class="wrap top-in">
-      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#atom"/></svg><span class="brand-name">arvis</span></a>
+      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#mark"/></svg><span class="brand-name">arvis</span></a>
       <nav class="nav" aria-label="Розділи" data-i18n-aria="nav.label">
         <a href="#services" data-i18n="nav.services">Послуги</a>
-        <a href="portfolio/" data-i18n="nav.works">Роботи</a>
+        <a href="#works" data-i18n="nav.works">Роботи</a>
         <a href="#process" data-i18n="nav.process">Як працюємо</a>
         <a href="#contact" data-i18n="nav.contact">Контакти</a>
       </nav>
@@ -52,242 +47,126 @@
           <button type="button" data-lang="ru" lang="ru" aria-pressed="false">RU</button>
           <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
         </div>
-        <a class="btn btn-sm top-cta" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="cta.short">Написати</a>
+        <a class="btn btn-sm" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="cta.short">Написати</a>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <!-- Первый экран — плакат: сверху текст, снизу слово arvis во всю ширину, низ букв срезан линией.
-         Заставка: сначала буквы выезжают из-за линии и рисуется атом, потом появляется текст. -->
-    <section class="hero" id="top">
-      <div class="wrap hero-top">
-        <h1 class="hl"><span data-i18n="hero.title">Робимо сайти, ботів і ШІ&#8209;помічників для вашого бізнесу</span></h1>
-        <div class="hero-side">
+    <section class="chapter hero" id="top" data-form="logo" data-code="hero">
+      <div class="wrap">
+        <div class="card">
+          <p class="eyebrow mono" data-i18n="hero.eyebrow">// сайти · боти · ШІ · застосунки · ігри</p>
+          <h1 data-i18n="hero.title3">Пишемо код, який оживає</h1>
           <p class="lead" data-i18n="hero.lead">Люди продумують задачу й пишуть код, ШІ бере на себе рутину — тому швидко і без зайвих витрат. Ціну називаємо одразу після розмови.</p>
-          <div class="hero-actions">
+          <div class="actions">
             <a class="btn" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="hero.cta">Обговорити задачу</a>
             <a class="link" href="#services" data-i18n="hero.more">Дивитися ціни</a>
           </div>
-          <p class="note" data-i18n="hero.note">Відповідаємо в Telegram. Обговорення безкоштовне.</p>
+          <p class="scroll-hint mono" data-i18n="hero.scroll">↓ гортайте — код пишеться сам</p>
         </div>
       </div>
-      <div class="word" aria-hidden="true"><span>a</span><span>r</span><span>v</span><span class="ii">ı<span class="i-atom">
-          <!-- орбиты начинаются в точке своего электрона: он ведёт линию, как перо -->
-          <svg viewBox="0 0 120 120">
-            <path class="bo bo1" pathLength="1" d="M79.09 40.91A27 27 0 1 1 40.91 79.09A27 27 0 1 1 79.09 40.91"/>
-            <path class="bo bo2" pathLength="1" d="M25.35 94.65A49 49 0 1 1 94.65 25.35A49 49 0 1 1 25.35 94.65"/>
-            <circle class="bn" cx="60" cy="60" r="11"/>
-          </svg>
-          <i class="de de1"><svg viewBox="0 0 120 120"><circle cx="79.1" cy="40.9" r="7"/></svg></i>
-          <i class="de de2"><svg viewBox="0 0 120 120"><circle cx="25.4" cy="94.6" r="7.5"/></svg></i>
-        </span></span><span>s</span></div>
     </section>
 
-    <!-- Услуги: список-указатель, строка раскрывается в цены и живую сценку -->
-    <section class="services" id="services">
+    <section class="chapter" data-form="site" data-code="site" aria-labelledby="ch-site">
+      <div class="wrap">
+        <div class="card">
+          <p class="num mono">01 / <span data-i18n="ch.site.tag">сайти</span></p>
+          <h2 id="ch-site" data-i18n="ch.site.t">Сайти, які не схожі на шаблон</h2>
+          <p data-i18n="ch.site.d">3D, живі переходи, запис і замовлення прямо на сторінці. Швидкі з телефона — без гальм.</p>
+          <p class="price mono"><span data-i18n="ch.from">від</span> 2 000 <span data-i18n="ch.uah">грн</span></p>
+          <a class="link" href="portfolio/" data-portfolio data-i18n="ch.site.link">Подивитися наші сайти →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" data-form="bot" data-code="bot" aria-labelledby="ch-bot">
+      <div class="wrap">
+        <div class="card">
+          <p class="num mono">02 / <span data-i18n="ch.bot.tag">боти й ШІ</span></p>
+          <h2 id="ch-bot" data-i18n="ch.bot.t">Боти, які працюють за вас 24/7</h2>
+          <p data-i18n="ch.bot.d">Telegram-бот приймає заявки й оплату, ШІ-помічник відповідає клієнтам і записує на послуги, поки ви займаєтесь справою.</p>
+          <p class="price mono"><span data-i18n="ch.from">від</span> 2 500 <span data-i18n="ch.uah">грн</span></p>
+          <a class="link" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="ch.bot.link">Поговорити з нашим ШІ-продавцем →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" data-form="game" data-code="game" aria-labelledby="ch-game">
+      <div class="wrap">
+        <div class="card">
+          <p class="num mono">03 / <span data-i18n="ch.game.tag">ігри й застосунки</span></p>
+          <h2 id="ch-game" data-i18n="ch.game.t">Ігри в Roblox і застосунки</h2>
+          <p data-i18n="ch.game.d">Гра під ключ: мапа, 3D-моделі, економіка, монетизація. Застосунки для Android, iOS і Windows під вашу роботу.</p>
+          <p class="price mono"><span data-i18n="ch.from">від</span> 2 000 <span data-i18n="ch.uah">грн</span></p>
+          <a class="link" href="#services" data-i18n="ch.game.link">Усі послуги й ціни ↓</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="solid services" id="services">
       <div class="wrap">
         <div class="sec-head">
+          <p class="mono comment" data-i18n="svc.comment">// оберіть напрям — покажемо ціни</p>
           <h2 data-i18n="svc.title">Що ми робимо</h2>
-          <p data-i18n="svc.lead">Оберіть напрям — покажемо, як це працює і скільки коштує.</p>
         </div>
-
-        <div class="svc-list">
-          <div class="svc" data-svc="ai">
-            <h3><button class="svc-btn" type="button" id="btn-ai" aria-expanded="true" aria-controls="panel-ai"><span class="mark"></span><span class="svc-name">ШІ-помічники та автоматизація</span><span class="svc-from">від 4 000 грн</span></button></h3>
-            <div class="svc-panel" id="panel-ai" role="region" aria-labelledby="btn-ai">
-              <div class="detail" id="detail">
-                <div class="detail-copy">
-                  <p id="svc-desc">Помічник відповідає клієнтам 24/7 у Telegram, Instagram чи на сайті, записує на послуги й приймає замовлення.</p>
-                  <ul class="prices" id="svc-prices"></ul>
-                  <a class="link live-link" id="svc-live" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="svc.live">Поговорити з живим прикладом — наш ШІ-продавець у Telegram</a>
-                  <a class="btn" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="svc.cta">Обговорити в Telegram</a>
-                </div>
-
-                <div class="stage" aria-hidden="true">
-                  <!-- ШІ: живой чат с помощником -->
-                  <div class="scene sc-ai on" data-scene="ai" data-loop="10">
-                    <div class="chat">
-                      <div class="chat-head"><span class="av"><svg><use href="#atom"/></svg></span><div><b data-i18n="sc.ai.name">Помічник кав’ярні</b><small data-i18n="sc.ai.status">онлайн 24/7</small></div></div>
-                      <div class="chat-body">
-                        <p class="msg me step" data-at="0.5" data-i18n="sc.ai.m1">Ви працюєте в неділю?</p>
-                        <p class="typing step" data-at="1.3" data-out="2.5"><i></i><i></i><i></i></p>
-                        <p class="msg bot step" data-at="2.5" data-i18n="sc.ai.m2">Так, з 10:00 до 20:00. Забронювати вам столик?</p>
-                        <p class="msg me step" data-at="4.4" data-i18n="sc.ai.m3">Так, на 15:00, на двох</p>
-                        <p class="typing step" data-at="5.2" data-out="6.3"><i></i><i></i><i></i></p>
-                        <p class="msg bot step" data-at="6.3" data-i18n="sc.ai.m4">Готово ✓ Столик на 15:00 заброньовано</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Сайты: страница собирается по блокам -->
-                  <div class="scene sc-web" data-scene="web" data-loop="8">
-                    <div class="browser">
-                      <div class="b-bar"><i></i><i></i><i></i><span class="b-url">kava.ua</span></div>
-                      <div class="b-page">
-                        <div class="b-nav step" data-at="0.3"><span class="b-logo"></span><span class="b-links"><i></i><i></i><i></i></span></div>
-                        <div class="b-hero step" data-at="0.8">
-                          <div class="b-hero-img"><span></span></div>
-                          <div class="b-hero-text">
-                            <span class="b-h1" data-i18n="sc.web.h">Кава з собою</span>
-                            <span class="b-line"></span><span class="b-line short"></span>
-                            <span class="b-btn step" data-at="1.5" data-i18n="sc.web.btn">Замовити</span>
-                          </div>
-                        </div>
-                        <div class="b-cards"><span class="b-card step" data-at="2.0"></span><span class="b-card step" data-at="2.25"></span><span class="b-card step" data-at="2.5"></span></div>
-                      </div>
-                      <span class="cursor step" data-at="3.0"></span>
-                      <span class="toast step" data-at="4.3" data-i18n="sc.web.toast">Замовлення прийнято</span>
-                    </div>
-                  </div>
-
-                  <!-- Telegram: бот в телефоне -->
-                  <div class="scene sc-tg" data-scene="tg" data-loop="9">
-                    <div class="phone">
-                      <div class="ph-head"><span class="av">K</span><div><b data-i18n="sc.tg.name">Кав’ярня — бот</b><small>bot</small></div></div>
-                      <div class="ph-body">
-                        <p class="msg me step" data-at="0.4">/start</p>
-                        <div class="msg bot step" data-at="1.0"><span data-i18n="sc.tg.m1">Вітаємо! Оберіть розділ:</span>
-                          <span class="kb"><span class="key k-menu" data-i18n="sc.tg.b1">Меню</span><span class="key" data-i18n="sc.tg.b2">Доставка</span><span class="key" data-i18n="sc.tg.b3">Адреса</span></span>
-                        </div>
-                        <span class="tap step" data-at="2.3" data-out="3.0"></span>
-                        <div class="msg bot step" data-at="3.0"><span class="item"><span class="item-pic"></span><span><b data-i18n="sc.tg.item">Капучино</b><small>65 ₴</small></span></span>
-                          <span class="kb"><span class="key k-add" data-i18n="sc.tg.add">Додати в кошик</span></span>
-                        </div>
-                        <span class="tap tap-2 step" data-at="4.4" data-out="5.1"></span>
-                        <p class="msg bot step" data-at="5.1" data-i18n="sc.tg.m2">Додано ✓ У кошику 1 товар</p>
-                        <span class="pay step" data-at="5.9" data-i18n="sc.tg.pay">Оформити — 65 ₴</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Приложения: экран с продажами -->
-                  <div class="scene sc-app" data-scene="app" data-loop="8">
-                    <div class="phone app">
-                      <div class="app-top step" data-at="0.3"><span class="app-hi" data-i18n="sc.app.hi">Продажі за тиждень</span><span class="app-big">48</span><small data-i18n="sc.app.unit">замовлень</small></div>
-                      <div class="bars"><i class="step" data-at="0.8" style="--h:38%"></i><i class="step" data-at="0.95" style="--h:55%"></i><i class="step" data-at="1.1" style="--h:47%"></i><i class="step" data-at="1.25" style="--h:72%"></i><i class="step" data-at="1.4" style="--h:64%"></i><i class="step" data-at="1.55" style="--h:90%"></i><i class="step" data-at="1.7" style="--h:80%"></i></div>
-                      <div class="app-row step" data-at="2.6"><span class="dot"></span><span data-i18n="sc.app.n1">Нове замовлення №1024</span></div>
-                      <div class="app-row step" data-at="3.4"><span class="dot dot-o"></span><span data-i18n="sc.app.n2">Оплату отримано</span></div>
-                      <span class="fab step" data-at="4.2">+</span>
-                    </div>
-                  </div>
-
-                  <!-- Игры: кубики складываются в уровень, персонаж прыгает -->
-                  <div class="scene sc-game" data-scene="game" data-loop="8">
-                    <svg class="iso" id="iso" viewBox="66 4 228 252"></svg>
-                  </div>
-
-                  <!-- Видео: монтажный стол, субтитры по словам -->
-                  <div class="scene sc-video" data-scene="video" data-loop="6">
-                    <div class="editor">
-                      <div class="preview">
-                        <span class="clip c1"></span><span class="clip c2 step" data-at="2.0"></span><span class="clip c3 step" data-at="4.0"></span>
-                        <p class="caption" id="caption"></p>
-                      </div>
-                      <div class="timeline">
-                        <div class="track"><span class="t-clip t1"></span><span class="t-clip t2"></span><span class="t-clip t3"></span></div>
-                        <div class="wave"></div>
-                        <span class="playhead"></span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Дизайн: знак рисуется пером -->
-                  <div class="scene sc-design" data-scene="design" data-loop="7">
-                    <div class="artboard">
-                      <svg class="mark-art" viewBox="0 0 200 200">
-                        <path class="mark-fill step" data-at="2.3" d="M100 22c34 0 60 30 60 66 0 46-60 90-60 90s-60-44-60-90c0-36 26-66 60-66z"/>
-                        <path class="mark-line step" data-at="0.3" pathLength="1" d="M100 22c34 0 60 30 60 66 0 46-60 90-60 90s-60-44-60-90c0-36 26-66 60-66z"/>
-                        <path class="mark-cut step" data-at="2.8" pathLength="1" d="M100 52c-10 22-10 50 0 96"/>
-                        <g class="handles step" data-at="0.6" data-out="2.3"><circle cx="100" cy="22" r="5"/><circle cx="160" cy="88" r="5"/><circle cx="40" cy="88" r="5"/><circle cx="100" cy="178" r="5"/><path d="M66 22h68M160 56v64"/></g>
-                      </svg>
-                      <div class="swatches"><i class="step" data-at="3.4"></i><i class="step" data-at="3.6"></i><i class="step" data-at="3.8"></i><i class="step" data-at="4.0"></i></div>
-                      <span class="specimen step" data-at="4.4">Aa</span>
-                    </div>
-                  </div>
-
-                  <!-- 3D: каркас куба становится твёрдым -->
-                  <div class="scene sc-3d" data-scene="3d" data-loop="8">
-                    <div class="space">
-                      <div class="floor"></div>
-                      <div class="cube-wrap"><div class="cube step" data-at="2.2"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i><i class="f5"></i><i class="f6"></i></div></div>
-                      <span class="chip step" data-at="0.5">Blender</span>
-                      <span class="chip chip-2 step" data-at="3.2" data-i18n="sc.3d.chip">Готово до гри</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="svc" data-svc="web">
-            <h3><button class="svc-btn" type="button" id="btn-web" aria-expanded="false" aria-controls="panel-web"><span class="mark"></span><span class="svc-name">Сайти</span><span class="svc-from">від 2 000 грн</span></button></h3>
-            <div class="svc-panel" id="panel-web" role="region" aria-labelledby="btn-web" hidden></div>
-          </div>
-          <div class="svc" data-svc="tg">
-            <h3><button class="svc-btn" type="button" id="btn-tg" aria-expanded="false" aria-controls="panel-tg"><span class="mark"></span><span class="svc-name">Telegram-боти та Mini Apps</span><span class="svc-from">від 2 500 грн</span></button></h3>
-            <div class="svc-panel" id="panel-tg" role="region" aria-labelledby="btn-tg" hidden></div>
-          </div>
-          <div class="svc" data-svc="app">
-            <h3><button class="svc-btn" type="button" id="btn-app" aria-expanded="false" aria-controls="panel-app"><span class="mark"></span><span class="svc-name">Застосунки та програми</span><span class="svc-from">від 8 000 грн</span></button></h3>
-            <div class="svc-panel" id="panel-app" role="region" aria-labelledby="btn-app" hidden></div>
-          </div>
-          <div class="svc" data-svc="game">
-            <h3><button class="svc-btn" type="button" id="btn-game" aria-expanded="false" aria-controls="panel-game"><span class="mark"></span><span class="svc-name">Ігри в Roblox</span><span class="svc-from">від 2 000 грн</span></button></h3>
-            <div class="svc-panel" id="panel-game" role="region" aria-labelledby="btn-game" hidden></div>
-          </div>
-          <div class="svc" data-svc="video">
-            <h3><button class="svc-btn" type="button" id="btn-video" aria-expanded="false" aria-controls="panel-video"><span class="mark"></span><span class="svc-name">Відеомонтаж</span><span class="svc-from">від 300 грн</span></button></h3>
-            <div class="svc-panel" id="panel-video" role="region" aria-labelledby="btn-video" hidden></div>
-          </div>
-          <div class="svc" data-svc="design">
-            <h3><button class="svc-btn" type="button" id="btn-design" aria-expanded="false" aria-controls="panel-design"><span class="mark"></span><span class="svc-name">Графічний дизайн</span><span class="svc-from">від 200 грн</span></button></h3>
-            <div class="svc-panel" id="panel-design" role="region" aria-labelledby="btn-design" hidden></div>
-          </div>
-          <div class="svc" data-svc="3d">
-            <h3><button class="svc-btn" type="button" id="btn-3d" aria-expanded="false" aria-controls="panel-3d"><span class="mark"></span><span class="svc-name">3D-моделі</span><span class="svc-from">від 600 грн</span></button></h3>
-            <div class="svc-panel" id="panel-3d" role="region" aria-labelledby="btn-3d" hidden></div>
-          </div>
-        </div>
-
-        <p class="works-link"><a href="portfolio/"><span data-i18n="svc.works">Подивитися наші сайти</span> <span aria-hidden="true">→</span></a></p>
+        <ul class="tree" id="tree"></ul>
         <p class="terms" data-i18n="svc.terms">Передоплата 50%, решта — після здачі. Дві правки безкоштовно. Місяць підтримки в подарунок.</p>
       </div>
     </section>
 
-    <section class="process" id="process">
+    <section class="solid works" id="works">
       <div class="wrap">
-        <h2 data-i18n="how.title">Як ми працюємо</h2>
-        <ol class="steps">
-          <li><span class="step-n">1</span><h3 data-i18n="how.1.t">Заявка</h3><p data-i18n="how.1.d">Пишете в Telegram, що потрібно. Можна голосовим.</p></li>
-          <li><span class="step-n">2</span><h3 data-i18n="how.2.t">Ціна й терміни</h3><p data-i18n="how.2.d">Уточнюємо деталі й називаємо точну ціну та термін.</p></li>
-          <li><span class="step-n">3</span><h3 data-i18n="how.3.t">Передоплата 50%</h3><p data-i18n="how.3.d">Після неї одразу беремося до роботи.</p></li>
-          <li><span class="step-n">4</span><h3 data-i18n="how.4.t">Розробка</h3><p data-i18n="how.4.d">Показуємо проміжні результати. Дві правки — безкоштовно.</p></li>
-          <li><span class="step-n">5</span><h3 data-i18n="how.5.t">Здача й підтримка</h3><p data-i18n="how.5.d">Решта 50% після здачі. Місяць підтримки — у подарунок.</p></li>
+        <div class="sec-head">
+          <p class="mono comment" data-i18n="works.comment">// концепт-сайти, які ми зробили</p>
+          <h2 data-i18n="works.title">Наші роботи</h2>
+        </div>
+        <div class="work-grid" id="work-grid"></div>
+        <p class="works-all"><a class="btn btn-ghost" href="portfolio/" data-portfolio data-i18n="works.all">Усі роботи →</a></p>
+      </div>
+    </section>
+
+    <section class="solid process" id="process">
+      <div class="wrap">
+        <div class="sec-head">
+          <p class="mono comment">$ git log --arvis</p>
+          <h2 data-i18n="how.title">Як ми працюємо</h2>
+        </div>
+        <ol class="log">
+          <li><span class="hash mono">a1f3c20</span><div><h3 data-i18n="how.1.t">Заявка</h3><p data-i18n="how.1.d">Пишете в Telegram, що потрібно. Можна голосовим.</p></div></li>
+          <li><span class="hash mono">b74e9d1</span><div><h3 data-i18n="how.2.t">Ціна й терміни</h3><p data-i18n="how.2.d">Уточнюємо деталі й називаємо точну ціну та термін.</p></div></li>
+          <li><span class="hash mono">c08a5f7</span><div><h3 data-i18n="how.3.t">Передоплата 50%</h3><p data-i18n="how.3.d">Після неї одразу беремося до роботи.</p></div></li>
+          <li><span class="hash mono">d4c2b88</span><div><h3 data-i18n="how.4.t">Розробка</h3><p data-i18n="how.4.d">Показуємо проміжні результати. Дві правки — безкоштовно.</p></div></li>
+          <li><span class="hash mono">e9f1036</span><div><h3 data-i18n="how.5.t">Здача й підтримка</h3><p data-i18n="how.5.d">Решта 50% після здачі. Місяць підтримки — у подарунок.</p></div></li>
         </ol>
       </div>
     </section>
 
-    <section class="cta" id="contact">
-      <div class="wrap cta-in">
-        <h2 data-i18n="cta.title">Розкажіть про задачу</h2>
-        <p data-i18n="cta.text">Кількох слів про ідею достатньо — відповімо з ціною та терміном.</p>
-        <a class="btn btn-inv btn-lg" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="cta.btn">Написати в Telegram</a>
-        <p class="handle">Telegram: <a href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener">@arvisstudio_bot</a></p>
+    <section class="chapter cta" id="contact" data-form="logo" data-code="cta">
+      <div class="wrap">
+        <div class="card card-teal">
+          <p class="prompt mono"><span class="ps">$</span> <span data-i18n="cta.cmd">arvis написати --telegram</span><span class="blink" aria-hidden="true"></span></p>
+          <h2 data-i18n="cta.title">Розкажіть про задачу</h2>
+          <p data-i18n="cta.text">Кількох слів про ідею достатньо — відповімо з ціною та терміном.</p>
+          <a class="btn btn-ink btn-lg" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="cta.btn">Написати в Telegram</a>
+          <p class="handle mono">Telegram: <a href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener">@arvisstudio_bot</a></p>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="foot">
     <div class="wrap foot-in">
-      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#atom"/></svg><span class="brand-name">arvis</span></a>
+      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#mark"/></svg><span class="brand-name">arvis</span></a>
       <p data-i18n="foot.about">Студія цифрових рішень: ШІ, сайти, боти, застосунки, ігри, відео й дизайн.</p>
       <p class="legal" data-i18n="foot.legal">Roblox — товарний знак Roblox Corporation. Arvis — незалежна студія й не пов’язана з Roblox Corporation.</p>
       <p class="legal">© 2026 Arvis</p>
     </div>
   </footer>
 
-  <script src="main.js?v=20261119"></script>
+  <script src="main.js?v=20261120c"></script>
+  <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
+  <script type="module" src="scene.js?v=20261120c"></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3556046dccae470a8d703f119cfbdda8"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
