@@ -3,8 +3,10 @@
    Листаешь — кубики разлетаются и собираются в следующую фигуру. Свободные кубики летают вокруг как конфетти.
    Лёгкая сцена: один тип геометрии, две «пачки» (InstancedMesh), без теней и постобработки. */
 import * as THREE from "three";
+const T_START = performance.now();
 
 const canvas = document.getElementById("scene");
+if (new URLSearchParams(location.search).has("no3d")) throw new Error("3D выключен (?no3d) — для замеров");
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const phone = () => innerWidth < 900;
 const weak = phone() || (navigator.hardwareConcurrency || 4) <= 4;
@@ -125,15 +127,22 @@ const DELAY = Array.from({ length: N }, (_, i) => ((i * 7) % 17) / 17 * 0.35);
 
 /* ---------- прокрутка → какая фигура и насколько собрана ---------- */
 const chapters = Array.from(document.querySelectorAll(".chapter"));
-let target = 0, cur = 0;
+let target = 0, cur = 0, C = [], screenH = innerHeight;
+// центры глав считаем один раз (и при смене размера), а не на каждом кадре прокрутки:
+// чтение offsetTop после правки панели кода заставляло браузер пересчитывать всю страницу — на Android это рывки
+function measure() {
+  C = chapters.map((c) => { let y = 0, el = c; while (el) { y += el.offsetTop; el = el.offsetParent; } return y + c.offsetHeight / 2; });
+}
 function readScroll() {
-  const mid = scrollY + innerHeight / 2;
-  const C = chapters.map((c) => c.offsetTop + c.offsetHeight / 2);
+  const mid = scrollY + screenH / 2;
+  if (!C.length) return;
   if (mid <= C[0]) target = 0;
   else if (mid >= C[C.length - 1]) target = C.length - 1;
   else for (let k = 0; k < C.length - 1; k++) if (mid >= C[k] && mid < C[k + 1]) { target = k + (mid - C[k]) / (C[k + 1] - C[k]); break; }
 }
 addEventListener("scroll", readScroll, { passive: true });
+new ResizeObserver(() => { measure(); readScroll(); }).observe(document.body);   // шрифты, картинки, языки меняют высоту
+measure();
 
 let visible = true;
 const io = new IntersectionObserver((es) => { es.forEach((e) => { e.target._in = e.isIntersecting; }); visible = chapters.some((c) => c._in); });
@@ -142,8 +151,12 @@ chapters.forEach((c) => io.observe(c));
 let mx = 0, my = 0;
 addEventListener("pointermove", (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
 
+let lastW = 0, lastH = 0;
 function layout() {
   const w = innerWidth, h = innerHeight;
+  // на Android адресная строка прячется при прокрутке и меняет высоту на ~60 px — пересоздавать холст из-за этого = рывок
+  if (w === lastW && Math.abs(h - lastH) < 160 && lastH) return;
+  lastW = w; lastH = h; screenH = h;
   renderer.setSize(w, h, false);
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
@@ -171,19 +184,23 @@ const names = chapters.map((c) => c.dataset.form);
 
 const Q = new URLSearchParams(location.search);
 const still = Q.has("still");          // для скриншотов: фигура сразу собрана
-const perf = Q.has("perf") ? (window.__perf = { frames: 0, ms: 0 }) : null;
-let last = 0;
+const perf = Q.has("perf") ? (window.__perf = { frames: 0, ms: 0, start: T_START }) : null;
+let last = 0, skip = false, lastE = -1, lastK = -1;
 function frame(now) {
   requestAnimationFrame(frame);
   if (!visible || document.hidden) { last = now; return; }
+  // в покое на слабых устройствах — 30 кадров в секунду (меньше нагрев и батарея), при прокрутке — все 60
+  if (weak && !still && Math.abs(target - cur) < 0.002 && (skip = !skip)) return;
   const t0 = perf ? performance.now() : 0;
   const t = now / 1000, dt = Math.min(0.1, (now - (last || now)) / 1000);
   last = now;
   cur += (target - cur) * (reduce || still ? 1 : 1 - Math.exp(-dt * 5.5));   // по времени, а не по кадрам: одинаково на 60 и 120 Гц
   const k = Math.min(Math.floor(cur), names.length - 2), f = cur - k;
   const A = FORMS[names[k]], B = FORMS[names[k + 1]];
-  const e = ease(clamp((f - 0.15) / 0.7));
+  const e = ease(clamp((f - 0.3) / 0.4));   // фигура стоит собранной большую часть главы, перестройка — у границы глав
   const blinkOn = Math.floor(t / 0.55) % 2 === 0;
+  const recolor = e !== lastE || k !== lastK;   // цвета меняются только во время перехода
+  lastE = e; lastK = k;
   for (let i = 0; i < N; i++) {
     const a = A[i], b = B[i];
     const l = ease(clamp((e - DELAY[i]) / 0.65));
@@ -205,15 +222,18 @@ function frame(now) {
     scl.addScalar(scl.x > 0.01 ? 0.07 : 0);
     m4.compose(pos, q, scl);
     hull.setMatrixAt(i, m4);
-    col.copy(PAL[a.c]).lerp(PAL[b.c], l);
-    body.setColorAt(i, col);
+    if (recolor) { col.copy(PAL[a.c]).lerp(PAL[b.c], l); body.setColorAt(i, col); }
   }
   body.instanceMatrix.needsUpdate = hull.instanceMatrix.needsUpdate = true;
-  body.instanceColor.needsUpdate = true;
+  if (recolor) body.instanceColor.needsUpdate = true;
   group.rotation.y = reduce ? -0.25 : -0.32 + Math.sin(t * 0.35) * 0.22 + mx * 0.3;
   group.rotation.x = reduce ? 0.12 : 0.14 + Math.sin(t * 0.28) * 0.05 + my * 0.12;
   renderer.render(scene, camera);
-  if (perf) { perf.frames++; perf.ms += performance.now() - t0; }
+  if (perf) { perf.frames++; perf.ms += performance.now() - t0; if (!perf.first) perf.first = performance.now(); perf.max = Math.max(perf.max || 0, performance.now() - t0); }
 }
 for (let i = 0; i < N; i++) body.setColorAt(i, PAL.teal);
-requestAnimationFrame(frame);
+// шейдеры готовим заранее и без блокировки страницы (где браузер умеет), потом показываем холст
+(renderer.compileAsync ? renderer.compileAsync(scene, camera).catch(() => {}) : Promise.resolve()).then(() => {
+  canvas.classList.add("ready");
+  requestAnimationFrame(frame);
+});

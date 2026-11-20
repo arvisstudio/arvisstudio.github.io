@@ -56,7 +56,8 @@ a { color: inherit; }
 .lang button[aria-pressed="true"] { background: var(--sun); }
 
 /* 3D-холст за главами */
-#scene { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; pointer-events: none; }
+#scene { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100lvh; z-index: 0; display: block; pointer-events: none; opacity: 0; transition: opacity .6s; }
+#scene.ready { opacity: 1; }
 main, .foot { position: relative; z-index: 1; }
 
 /* панель кода: печатается от прокрутки */
@@ -89,6 +90,7 @@ h2 { font: 800 clamp(28px, 3.4vw, 44px)/1.08 var(--head); letter-spacing: -.03em
 .scroll-hint { margin: 26px 0 0 !important; font-size: 13px; color: var(--faint); }
 .num { font-size: 13px; font-weight: 700; color: var(--coral); margin-bottom: 12px !important; }
 .price { display: inline-block; background: var(--sun); border: 2px solid var(--ink); padding: 6px 12px; font-weight: 700; font-size: 15px; }
+.card .price + .link { display: block; width: fit-content; margin-top: 16px; }
 .chapter:nth-of-type(3) .price { background: var(--teal); }
 .chapter:nth-of-type(4) .price { background: var(--coral); }
 
@@ -105,7 +107,7 @@ h2 { font: 800 clamp(28px, 3.4vw, 44px)/1.08 var(--head); letter-spacing: -.03em
 .row-path { font: 700 13px/1 var(--mono); color: var(--teal-d); }
 .row-path::before { content: "▸ "; display: inline-block; transition: transform .2s; }
 .row.open .row-path::before { transform: rotate(90deg); }
-.row-name { font: 600 clamp(18px, 2.2vw, 26px)/1.2 var(--head); letter-spacing: -.02em; }
+.row-name { font: 800 clamp(17px, 2vw, 24px)/1.2 var(--head); letter-spacing: -.02em; }
 .row-dots { border-bottom: 2px dotted var(--faint); }
 .row-from { font: 700 14px/1 var(--mono); white-space: nowrap; background: var(--sun); border: 2px solid var(--ink); padding: 6px 10px; }
 .row.open .row-from { background: var(--teal); }
@@ -129,7 +131,7 @@ h2 { font: 800 clamp(28px, 3.4vw, 44px)/1.08 var(--head); letter-spacing: -.03em
 .work img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-bottom: 2px solid var(--ink); background: var(--line); }
 .work-cap { display: block; padding: 12px 14px 14px; }
 .work-cap .mono { font-size: 12px; color: var(--teal-d); font-weight: 700; }
-.work-cap b { display: block; font: 600 17px/1.25 var(--head); margin-top: 4px; }
+.work-cap b { display: block; font: 700 18px/1.25 var(--sans); margin-top: 4px; }
 .works-all { margin: 30px 0 0; }
 
 /* как работаем — коммиты */
@@ -142,7 +144,7 @@ h2 { font: 800 clamp(28px, 3.4vw, 44px)/1.08 var(--head); letter-spacing: -.03em
 .log li:nth-child(4)::before { background: var(--teal); }
 .log li:last-child::before { background: var(--ink); }
 .hash { font-size: 13px; color: var(--faint); padding-top: 4px; }
-.log h3 { margin: 0 0 2px; font: 600 20px/1.2 var(--head); }
+.log h3 { margin: 0 0 2px; font: 700 21px/1.2 var(--sans); }
 .log p { margin: 0; color: var(--muted); }
 .js .log li { opacity: 0; transform: translateX(-10px); transition: opacity .4s, transform .4s; }
 .js .log li.in { opacity: 1; transform: none; }
@@ -186,6 +188,10 @@ h2 { font: 800 clamp(28px, 3.4vw, 44px)/1.08 var(--head); letter-spacing: -.03em
   .prices b { margin-left: auto; white-space: normal; text-align: right; }
 }
 @media (max-width: 900px) {
+  /* телефон: глава длиннее экрана, карточка прилипает к низу — сверху всё время видно 3D */
+  .chapter:not(.hero) { display: block; height: 150vh; height: 150svh; min-height: 0; padding: 0; }
+  .chapter:not(.hero) .wrap { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 18px; }
+  .chapter:not(.hero) .card { position: sticky; bottom: 16px; }
   h1 { font-size: clamp(28px, 8.4vw, 44px); }
   h2 { font-size: clamp(24px, 7vw, 36px); }
   .chapter.hero { padding-top: 52svh; }

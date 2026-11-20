@@ -288,15 +288,25 @@
     const show = innerWidth < 900 ? out.slice(-3) : out;   // на телефоне — последние 3 строки, чтобы не закрывать 3D
     cbCode.innerHTML = show.join("\n");
   }
+  // положения разделов — один раз и при смене размера, а не на каждом кадре прокрутки (на Android это давало рывки)
+  const pageTop = (el) => { let y = 0; while (el) { y += el.offsetTop; el = el.offsetParent; } return y; };
+  let CH = [], SO = [], VH = innerHeight;
+  function measure() {
+    CH = chapters.map((c) => ({ el: c, top: pageTop(c), h: c.offsetHeight }));
+    SO = solids.map((s) => { const top = pageTop(s); return [top, top + s.offsetHeight]; });
+  }
+  measure();
+  new ResizeObserver(() => { measure(); onScroll(); }).observe(document.body);
+  let wasOff = null;
   function onScroll() {
-    const vh = innerHeight, mid = scrollY + vh * 0.55;
-    const overSolid = solids.some((s) => { const r = s.getBoundingClientRect(); return r.top < vh * 0.55 && r.bottom > vh * 0.55; });
-    codebar.classList.toggle("off", overSolid);
+    const mid = scrollY + VH * 0.55;
+    const overSolid = SO.some(([a, b]) => a < mid && b > mid);
+    if (overSolid !== wasOff) { codebar.classList.toggle("off", overSolid); wasOff = overSolid; }
     if (overSolid) return;
-    let ch = chapters[0];
-    for (const c of chapters) if (c.offsetTop <= mid) ch = c;
-    const id = ch.dataset.code;
-    let frac = (mid - ch.offsetTop) / (ch.offsetHeight * 0.75);
+    let ch = CH[0];
+    for (const c of CH) if (c.top <= mid) ch = c;
+    const id = ch.el.dataset.code;
+    let frac = (mid - ch.top) / (ch.h * 0.75);
     if (id === "hero") frac = Math.max(frac + 0.15, reduce ? 1 : (performance.now() - t0) / 3200);
     if (reduce) frac = 1;
     renderCode(id, frac);
@@ -304,7 +314,10 @@
   let ticking = false;
   const tick = () => { ticking = false; onScroll(); };
   addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }, { passive: true });
-  addEventListener("resize", () => { lastKey = ""; onScroll(); });
+  addEventListener("resize", () => {
+    if (Math.abs(innerHeight - VH) > 160 || !VH) VH = innerHeight;   // прыжки адресной строки Android не считаем
+    lastKey = ""; onScroll();
+  });
   (function intro() { onScroll(); if (performance.now() - t0 < 3600) requestAnimationFrame(intro); })();
 
   /* ---------- услуги: дерево, строка раскрывается в цены ---------- */
