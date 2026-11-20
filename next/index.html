@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arvis — сайти, боти, ШІ й застосунки на замовлення</title>
+  <meta name="description" content="Arvis — команда розробників і ШІ: робимо сайти, Telegram-ботів, ШІ-помічників, застосунки, ігри в Roblox, відео, дизайн і 3D на замовлення.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#F4F2EE">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20261120">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <a class="skip" href="#main" data-i18n="skip">Перейти до змісту</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <!-- Знак Arvis: «A» без перекладини й курсор коду -->
+    <symbol id="mark" viewBox="0 0 120 120">
+      <path d="M14 98 L44 22 L74 98" fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="miter" stroke-miterlimit="10"/>
+      <rect class="mark-cur" x="88" y="72" width="18" height="26" fill="currentColor"/>
+    </symbol>
+  </svg>
+
+  <header class="top">
+    <div class="wrap top-in">
+      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#mark"/></svg><span class="brand-name">arvis<span class="blink" aria-hidden="true"></span></span></a>
+      <nav class="nav" aria-label="Розділи" data-i18n-aria="nav.label">
+        <a href="#services" data-i18n="nav.services">Послуги</a>
+        <a href="#works" data-i18n="nav.works">Роботи</a>
+        <a href="#process" data-i18n="nav.process">Як працюємо</a>
+        <a href="#contact" data-i18n="nav.contact">Контакти</a>
+      </nav>
+      <div class="top-actions">
+        <div class="lang" role="group" aria-label="Мова / Язык / Language">
+          <button type="button" data-lang="uk" lang="uk" aria-pressed="true">UA</button>
+          <button type="button" data-lang="ru" lang="ru" aria-pressed="false">RU</button>
+          <button type="button" data-lang="en" lang="en" aria-pressed="false">EN</button>
+        </div>
+        <a class="btn btn-sm" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="cta.short">Написати</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Первый экран: заголовок и «редактор» — код печатается сам, справа сразу результат -->
+    <section class="hero" id="top">
+      <div class="wrap hero-in">
+        <div class="hero-copy">
+          <p class="eyebrow mono" data-i18n="hero.eyebrow">// сайти · боти · ШІ · застосунки · ігри</p>
+          <h1 data-i18n="hero.title2">Пишемо код, який працює на ваш бізнес</h1>
+          <p class="lead" data-i18n="hero.lead">Люди продумують задачу й пишуть код, ШІ бере на себе рутину — тому швидко і без зайвих витрат. Ціну називаємо одразу після розмови.</p>
+          <div class="hero-actions">
+            <a class="btn" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="hero.cta">Обговорити задачу</a>
+            <a class="link" href="#services" data-i18n="hero.more">Дивитися ціни</a>
+          </div>
+          <p class="note" data-i18n="hero.note">Відповідаємо в Telegram. Обговорення безкоштовне.</p>
+        </div>
+
+        <div class="editor" id="editor" aria-label="Приклад: код і результат" data-i18n-aria="ed.label">
+          <div class="ed-tabs" role="tablist">
+            <button type="button" role="tab" class="ed-tab" data-tab="site" aria-selected="true">kavarnia.html</button>
+            <button type="button" role="tab" class="ed-tab" data-tab="bot" aria-selected="false">bot.py</button>
+            <button type="button" role="tab" class="ed-tab" data-tab="game" aria-selected="false">coin.lua</button>
+          </div>
+          <div class="ed-body">
+            <pre class="code mono" id="code" aria-hidden="true"></pre>
+            <div class="result" aria-hidden="true">
+              <span class="result-label mono" data-i18n="ed.result">результат</span>
+
+              <div class="pv pv-site" data-pv="site">
+                <div class="mini-nav"><b>Пінка</b><span></span><span></span></div>
+                <h4 class="b" data-i18n="ed.site.h">Кава з собою</h4>
+                <p class="b" data-i18n="ed.site.p">Щодня 8:00–20:00</p>
+                <span class="b mini-btn" data-i18n="sc.web.btn">Замовити</span>
+                <span class="b toast" data-i18n="sc.web.toast">Замовлення прийнято</span>
+              </div>
+
+              <div class="pv pv-bot" data-pv="bot">
+                <div class="chat-top"><span class="av">K</span><b data-i18n="sc.tg.name">Кав’ярня — бот</b></div>
+                <p class="b msg me">/start</p>
+                <div class="b msg">
+                  <span data-i18n="sc.tg.m1">Вітаємо! Оберіть розділ:</span>
+                  <span class="keys"><span data-i18n="sc.tg.b1">Меню</span><span data-i18n="sc.tg.b2">Доставка</span></span>
+                </div>
+              </div>
+
+              <div class="pv pv-game" data-pv="game">
+                <span class="b hud mono"><span data-i18n="ed.game.coins">Монети</span>: <b class="coins">0</b></span>
+                <div class="b world">
+                  <i class="blk" style="--x:0;--y:0"></i><i class="blk" style="--x:1;--y:0"></i><i class="blk" style="--x:2;--y:0"></i>
+                  <i class="blk" style="--x:3;--y:1"></i><i class="blk" style="--x:4;--y:1"></i>
+                  <i class="hero-dot"></i><i class="coin"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="ed-foot mono"><span class="ln-count" id="ln-count">Ln 1</span><span>UTF-8</span><span data-i18n="ed.foot">код друкується сам</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Услуги: как дерево файлов — строка раскрывается в описание и цены -->
+    <section class="services" id="services">
+      <div class="wrap">
+        <div class="sec-head">
+          <p class="mono comment" data-i18n="svc.comment">// оберіть напрям — покажемо ціни</p>
+          <h2 data-i18n="svc.title">Що ми робимо</h2>
+        </div>
+        <ul class="tree" id="tree"></ul>
+        <p class="terms" data-i18n="svc.terms">Передоплата 50%, решта — після здачі. Дві правки безкоштовно. Місяць підтримки в подарунок.</p>
+      </div>
+    </section>
+
+    <!-- Работы: карточки из портфолио (portfolio/works.json) -->
+    <section class="works" id="works">
+      <div class="wrap">
+        <div class="sec-head">
+          <p class="mono comment" data-i18n="works.comment">// концепт-сайти, які ми зробили</p>
+          <h2 data-i18n="works.title">Наші роботи</h2>
+        </div>
+        <div class="work-grid" id="work-grid"></div>
+        <p class="works-all"><a class="link" href="../portfolio/" data-i18n="works.all">Усі роботи →</a></p>
+      </div>
+    </section>
+
+    <!-- Как работаем: как история коммитов -->
+    <section class="process" id="process">
+      <div class="wrap">
+        <div class="sec-head">
+          <p class="mono comment">$ git log --arvis</p>
+          <h2 data-i18n="how.title">Як ми працюємо</h2>
+        </div>
+        <ol class="log">
+          <li><span class="hash mono">a1f3c20</span><div><h3 data-i18n="how.1.t">Заявка</h3><p data-i18n="how.1.d">Пишете в Telegram, що потрібно. Можна голосовим.</p></div></li>
+          <li><span class="hash mono">b74e9d1</span><div><h3 data-i18n="how.2.t">Ціна й терміни</h3><p data-i18n="how.2.d">Уточнюємо деталі й називаємо точну ціну та термін.</p></div></li>
+          <li><span class="hash mono">c08a5f7</span><div><h3 data-i18n="how.3.t">Передоплата 50%</h3><p data-i18n="how.3.d">Після неї одразу беремося до роботи.</p></div></li>
+          <li><span class="hash mono">d4c2b88</span><div><h3 data-i18n="how.4.t">Розробка</h3><p data-i18n="how.4.d">Показуємо проміжні результати. Дві правки — безкоштовно.</p></div></li>
+          <li><span class="hash mono">e9f1036</span><div><h3 data-i18n="how.5.t">Здача й підтримка</h3><p data-i18n="how.5.d">Решта 50% після здачі. Місяць підтримки — у подарунок.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="cta" id="contact">
+      <div class="wrap cta-in">
+        <p class="prompt mono"><span class="ps">$</span> <span data-i18n="cta.cmd">arvis написати --telegram</span><span class="blink" aria-hidden="true"></span></p>
+        <h2 data-i18n="cta.title">Розкажіть про задачу</h2>
+        <p data-i18n="cta.text">Кількох слів про ідею достатньо — відповімо з ціною та терміном.</p>
+        <a class="btn btn-inv btn-lg" href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener" data-i18n="cta.btn">Написати в Telegram</a>
+        <p class="handle mono">Telegram: <a href="https://t.me/arvisstudio_bot" target="_blank" rel="noopener">@arvisstudio_bot</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <a class="brand" href="#top" aria-label="Arvis"><svg class="brand-mark" aria-hidden="true"><use href="#mark"/></svg><span class="brand-name">arvis</span></a>
+      <p data-i18n="foot.about">Студія цифрових рішень: ШІ, сайти, боти, застосунки, ігри, відео й дизайн.</p>
+      <p class="legal" data-i18n="foot.legal">Roblox — товарний знак Roblox Corporation. Arvis — незалежна студія й не пов’язана з Roblox Corporation.</p>
+      <p class="legal">© 2026 Arvis</p>
+    </div>
+  </footer>
+
+  <script src="main.js?v=20261120"></script>
+</body>
+</html>
