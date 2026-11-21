@@ -1,5 +1,19 @@
 [
  {
+  "slug": "glemping-dniproviy-skhil-2",
+  "url": "glemping-dniproviy-skhil-2/",
+  "host": "arvisstudio.github.io/portfolio/glemping-dniproviy-skhil-2",
+  "name": "Глемпінг «Дніпровий схил»",
+  "kind": "глемпінг",
+  "look": "3D прямо в браузері",
+  "text": "3D-острівець з будиночком на березі: гортаєш — проходить доба від світанку до ночі зі світлячками.",
+  "feats": [
+   "Бронювання: календар із зайнятими датами, вибір будиночка й кількості гостей, ціна за ночі рахується одразу",
+   "Світанок — назва й тиша",
+   "День — будиночки й що всередині"
+  ]
+ },
+ {
   "slug": "avtomiyka-pina",
   "url": "avtomiyka-pina/",
   "host": "arvisstudio.github.io/portfolio/avtomiyka-pina",
