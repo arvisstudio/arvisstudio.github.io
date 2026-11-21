@@ -1,5 +1,19 @@
 [
  {
+  "slug": "yuvelirna-maysternya-gran",
+  "url": "yuvelirna-maysternya-gran/",
+  "host": "arvisstudio.github.io/portfolio/yuvelirna-maysternya-gran",
+  "name": "Ювелірна майстерня «Грань»",
+  "kind": "ювелірна майстерня",
+  "look": "3D прямо в браузері",
+  "text": "3D-каблучка обертається в повітрі, від прокрутки камінь змінює колір, а метал — відтінок.",
+  "feats": [
+   "Конструктор каблучки: метал, камінь, розмір — 3D-модель змінюється, орієнтовна ціна, кнопка «Обговорити»",
+   "Каблучка в повітрі — назва",
+   "Метал — три відтінки золота"
+  ]
+ },
+ {
   "slug": "glemping-dniproviy-skhil-2",
   "url": "glemping-dniproviy-skhil-2/",
   "host": "arvisstudio.github.io/portfolio/glemping-dniproviy-skhil-2",
