@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кафе 7 — Черкаси</title>
+<meta name="description" content="Смачно, затишно й поруч">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6EFE4;--ink:#2B1D14;--acc:#D9541E}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.55 Manrope,system-ui,sans-serif}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.logo{font:700 22px/1 'Playfair Display',serif}
+.btn{display:inline-block;background:var(--acc);color:#fff;text-decoration:none;font-weight:800;padding:14px 22px;border-radius:14px;border:2px solid var(--acc)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+header .btn{padding:10px 16px;font-size:15px}
+.hero{padding:56px 0 64px}
+.hero small{display:inline-block;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:14px}
+h1{font:700 clamp(44px,9vw,96px)/1 'Playfair Display',serif;margin-bottom:18px;overflow-wrap:anywhere}
+.hero p{font-size:clamp(19px,2.6vw,24px);max-width:640px;margin-bottom:28px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+section{padding:48px 0;border-top:2px solid color-mix(in srgb,var(--ink) 12%,transparent)}
+h2{font:700 clamp(30px,5vw,46px)/1.1 'Playfair Display',serif;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:#fff;border-radius:20px;padding:22px;border:2px solid var(--ink);box-shadow:6px 6px 0 var(--ink)}
+.card svg{width:44px;height:44px;margin-bottom:12px}
+.card h3{font-size:20px;margin-bottom:6px}
+.card p{font-size:15px;opacity:.8}
+.about{font-size:clamp(19px,2.4vw,23px);max-width:760px}
+ol{list-style:none;padding:0;display:grid;gap:12px}
+ol li{display:flex;gap:14px;align-items:center;font-size:20px;font-weight:600}
+ol li span{flex:none;width:40px;height:40px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:800}
+.contacts p{font-size:19px;margin-bottom:8px}
+footer{padding:32px 0 48px;font-size:14px;opacity:.7}
+</style>
+</head>
+<body>
+<div style="background:#111;color:#fff;font:13px/1.4 system-ui,sans-serif;text-align:center;padding:8px 14px">Це демо-сайт від <b>Arvis</b> — так може виглядати сайт «Кафе 7». <a style="color:#fff" href="https://t.me/arvisstudio_bot">Замовити</a></div>
+<div class="wrap">
+<header><div class="logo">Кафе 7</div><a class="btn" href="tel:+380670000007">Подзвонити</a></header>
+<div class="hero"><small>кафе · Черкаси</small><h1>Кафе 7</h1><p>Смачно, затишно й поруч</p>
+<div class="row"><a class="btn" href="tel:+380670000007">Подзвонити</a><a class="btn ghost" href="https://www.google.com/maps/search/?api=1&amp;query=x" target="_blank" rel="noopener">Як дістатися</a></div></div>
+<section><h2>Що ми пропонуємо</h2><div class="grid"><div class="card"><svg viewBox="0 0 48 48" fill="#D9541E" stroke="#D9541E"><circle cx="24" cy="24" r="14"/></svg><h3>Меню</h3></div><div class="card"><svg viewBox="0 0 48 48" fill="#D9541E" stroke="#D9541E"><rect x="11" y="11" width="26" height="26" rx="6"/></svg><h3>Напої</h3></div><div class="card"><svg viewBox="0 0 48 48" fill="#D9541E" stroke="#D9541E"><path d="M24 9 L39 37 H9 Z"/></svg><h3>Із собою</h3></div><div class="card"><svg viewBox="0 0 48 48" fill="#D9541E" stroke="#D9541E"><path d="M10 24 H38 M24 10 V38" stroke-width="7" stroke-linecap="round" fill="none"/></svg><h3>Замовлення</h3></div></div></section>
+<section><h2>Про нас</h2><p class="about">Кафе у місті Черкаси. Тут — як міг би виглядати ваш сайт.</p></section>
+<section><h2>Чому до нас</h2><ol><li><span>1</span>Свіже щодня</li><li><span>2</span>Зручно з телефона</li><li><span>3</span>Поруч з вами</li></ol></section>
+<section class="contacts"><h2>Контакти</h2><p>Телефон: <a href="tel:+380670000007">+380 67 000 00 07</a></p><p>Місто: Черкаси</p><div class="row" style="margin-top:16px"><a class="btn" href="tel:+380670000007">Подзвонити</a><a class="btn ghost" href="https://www.google.com/maps/search/?api=1&amp;query=x" target="_blank" rel="noopener">Як дістатися</a></div></section>
+<footer>© Кафе 7 · демо-сайт</footer>
+</div>
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3556046dccae470a8d703f119cfbdda8"}'></script>
+</body>
+</html>
