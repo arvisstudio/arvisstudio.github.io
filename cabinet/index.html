@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Кабінет менеджера — Arvis</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800&family=Geologica:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Кабінет менеджера Arvis (Telegram Mini App). Дані приходять у посиланні після «#» — на сервер нічого не йде. */
+:root{--paper:#F4F0E6;--ink:#12141A;--teal:#12C2B0;--coral:#FF5A3C;--sun:#FFCF3F;--muted:#6b6b6b}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font:16px/1.45 Geologica,system-ui,sans-serif;padding:16px 14px 40px}
+h1{font:800 22px/1.1 Unbounded,sans-serif;margin-bottom:4px}
+h2{font:800 17px/1.2 Unbounded,sans-serif;margin:26px 0 10px}
+.sub{color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.stat{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px;text-align:center;box-shadow:3px 3px 0 var(--ink)}
+.stat b{display:block;font:800 22px/1 Unbounded,sans-serif}
+.stat span{font-size:12px;color:var(--muted)}
+.stat.hot{background:var(--sun)}
+.tabs{display:flex;gap:6px;margin-top:10px}
+.tabs button{flex:1;border:2px solid var(--ink);background:#fff;border-radius:999px;padding:6px;font:600 13px Geologica,sans-serif}
+.tabs button.on{background:var(--ink);color:#fff}
+.lead{background:#fff;border:2px solid var(--ink);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:4px 4px 0 var(--ink)}
+.lead h3{font-size:18px;margin-bottom:2px}
+.lead .meta{color:var(--muted);font-size:13px;margin-bottom:10px}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:middle}
+.t-new{background:#eee}.t-sent{background:var(--teal);color:#fff}.t-interest{background:var(--sun)}.t-no,.t-nocontact{background:#ddd;color:#555}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.btn{flex:1 1 auto;display:inline-flex;justify-content:center;align-items:center;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);
+  border:2px solid var(--ink);border-radius:12px;padding:9px 10px;font:700 14px Geologica,sans-serif;min-width:96px;cursor:pointer}
+.btn.main{background:var(--coral);color:#fff;border-color:var(--coral)}
+.btn.demo{background:var(--teal);color:#fff;border-color:var(--teal)}
+.msg{background:var(--paper);border-radius:12px;padding:10px;font-size:14px;margin-top:10px;white-space:pre-wrap}
+.copied{background:var(--sun)!important}
+details{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px 12px;margin-bottom:8px}
+summary{font-weight:700;cursor:pointer}
+details p{margin-top:8px;font-size:14px}
+.empty{background:#fff;border:2px dashed var(--ink);border-radius:16px;padding:18px;text-align:center}
+.tip{background:var(--ink);color:#fff;border-radius:16px;padding:14px;margin-top:18px;font-size:14px}
+.tip b{color:var(--sun)}
+</style>
+</head>
+<body>
+<h1 id="hi">Кабінет менеджера</h1>
+<p class="sub" id="date"></p>
+<div class="stats" id="stats"></div>
+<div class="tabs"><button id="tDay" class="on">Сьогодні</button><button id="tWeek">Тиждень</button></div>
+
+<h2>Твої заклади</h2>
+<div id="leads"></div>
+
+<h2>Що відповісти клієнту</h2>
+<div id="answers"></div>
+
+<div class="tip">💡 Пиши по одному, на «ви», спочатку покажи <b>демо-сайт</b> — люди частіше відповідають, коли бачать свою назву. Після відповіді натисни кнопку під закладом у чаті з ботом: так Льова бачить твою роботу, а «🤝 Цікаво» одразу кличе його на допомогу.</div>
+
+<script>
+const tg = window.Telegram && Telegram.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+const DEMO = "https://arvisstudio.github.io/demo/";
+const ST = { n: ["⏳ не написав", "t-new"], s: ["✅ написав", "t-sent"], c: ["📵 нема контакту", "t-nocontact"], i: ["🤝 цікаво", "t-interest"], x: ["✖ відмова", "t-no"] };
+const esc = (s) => String(s || "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+function data() {
+  try {
+    const raw = (location.hash.match(/[#&]d=([^&]+)/) || [])[1];
+    if (!raw) return null;
+    const b64 = raw.replace(/-/g, "+").replace(/_/g, "/");
+    const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
+    return JSON.parse(new TextDecoder().decode(Uint8Array.from(bin, (c) => c.charCodeAt(0))));
+  } catch (e) { return null; }
+}
+
+function firstMsg(l) {
+  const demo = l[6] ? DEMO + l[6] + "/" : "";
+  return demo
+    ? `Добрий день! Я з веб-студії Arvis. Ми зробили для «${l[0]}» демо-сайт — подивіться, як він міг би виглядати: ${demo}\nЦе безкоштовно і ні до чого не зобов'язує. Якщо сподобається — доробимо під вас: фото, меню, запис чи замовлення онлайн.`
+    : `Добрий день! Я з веб-студії Arvis. Можемо безкоштовно зробити для «${l[0]}» демо-сайт — щоб вас легше знаходили в Google. Показати, як це виглядатиме?`;
+}
+
+function copy(btn, text) {
+  const done = () => { btn.classList.add("copied"); btn.textContent = "✓ Скопійовано"; setTimeout(() => { btn.classList.remove("copied"); btn.textContent = "📋 Скопіювати"; }, 1800); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, () => fallback(text, done));
+  else fallback(text, done);
+}
+function fallback(text, done) {
+  const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select();
+  try { document.execCommand("copy"); done(); } catch (e) {} t.remove();
+}
+
+const D = data();
+if (!D) {
+  document.getElementById("leads").innerHTML = '<div class="empty">Відкрий кабінет кнопкою «🧭 Мій кабінет» у боті — тоді тут з\'являться твої заклади.</div>';
+} else {
+  document.getElementById("hi").textContent = "Привіт, " + (D.n || "менеджер") + "!";
+  document.getElementById("date").textContent = "Оновлено: " + (D.at || "");
+  const stats = (k) => {
+    const [g, w, i] = D[k] || [0, 0, 0];
+    document.getElementById("stats").innerHTML =
+      `<div class="stat"><b>${g}</b><span>видано</span></div><div class="stat"><b>${w}</b><span>написав</span></div><div class="stat hot"><b>${i}</b><span>цікаво</span></div>`;
+  };
+  stats("t");
+  document.getElementById("tDay").onclick = (e) => { stats("t"); e.target.classList.add("on"); document.getElementById("tWeek").classList.remove("on"); };
+  document.getElementById("tWeek").onclick = (e) => { stats("w"); e.target.classList.add("on"); document.getElementById("tDay").classList.remove("on"); };
+
+  const box = document.getElementById("leads");
+  if (!(D.l || []).length) box.innerHTML = '<div class="empty">Поки що закладів немає. Нові приходять щоранку о 9:30.</div>';
+  (D.l || []).forEach((l, i) => {
+    // l = [назва, місто, тип, телефон, instagram, статус, демо-слаг]
+    const [name, city, kind, phone, insta, st, demo] = l;
+    const tel = String(phone || "").replace(/[^\d+]/g, "");
+    const map = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(name + " " + city);
+    const s = ST[st] || ST.n;
+    const el = document.createElement("div");
+    el.className = "lead";
+    el.innerHTML = `<h3>${esc(name)}<span class="tag ${s[1]}">${s[0]}</span></h3><div class="meta">${esc(city)} · ${esc(kind)}</div>
+      <div class="row">
+        ${tel ? `<a class="btn main" href="tel:${esc(tel)}">📞 Подзвонити</a><a class="btn" href="viber://chat?number=${esc(tel.replace("+", "%2B"))}">💬 Viber</a>` : ""}
+        ${insta ? `<a class="btn" href="${esc(insta)}" target="_blank" rel="noopener">📸 Instagram</a>` : ""}
+        ${demo ? `<a class="btn demo" href="${DEMO + esc(demo)}/" target="_blank" rel="noopener">🌐 Їх демо</a>` : ""}
+        <a class="btn" href="${map}" target="_blank" rel="noopener">🗺 Карта</a>
+      </div>
+      <div class="msg" id="m${i}"></div>
+      <div class="row"><button class="btn" id="c${i}">📋 Скопіювати</button></div>`;
+    box.appendChild(el);
+    const text = firstMsg(l);
+    document.getElementById("m" + i).textContent = text;
+    document.getElementById("c" + i).onclick = (e) => copy(e.target, text);
+  });
+}
+
+const ANSWERS = [
+  ["«Дорого»", "Розумію. Демо-сайт ми вже зробили безкоштовно — подивіться, чи подобається. Ціну називаємо після короткої розмови, під ваші задачі; простий лендинг робимо за 1–2 дні."],
+  ["«У нас є Instagram»", "Instagram — це чудово, сайт його не замінює, а доповнює: у Google люди шукають «кав'ярня + місто», і Instagram там майже не видно. Сайт веде клієнтів і в Instagram теж."],
+  ["«Подумаю»", "Звісно! Демо-сайт залишається за посиланням — можете показати колегам. Можна я напишу вам у п'ятницю, щоб дізнатися думку?"],
+  ["«Немає часу»", "Від вас майже нічого не треба: фото і меню — решту робимо ми. Демо вже готове, подивіться, коли буде хвилинка."],
+  ["«Нам не потрібно»", "Дякую, що відповіли! Якщо колись знадобиться — демо-сайт залишається за посиланням. Гарного дня!"],
+  ["«Хто ви?»", "Arvis — невелика студія: робимо сайти й Telegram-ботів для місцевого бізнесу. Наші роботи: arvisstudio.github.io/portfolio/"],
+];
+document.getElementById("answers").innerHTML = ANSWERS.map(([q, a], i) =>
+  `<details><summary>${q}</summary><p id="a${i}">${esc(a)}</p><div class="row"><button class="btn" data-i="${i}">📋 Скопіювати</button></div></details>`).join("");
+document.querySelectorAll("#answers button").forEach((b) => b.onclick = () => copy(b, ANSWERS[+b.dataset.i][1]));
+</script>
+</body>
+</html>
