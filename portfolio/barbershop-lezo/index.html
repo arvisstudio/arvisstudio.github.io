@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Лезо — барбершоп (концепт від Arvis)</title>
+<meta name="description" content="Концепт сайту барбершопу від Arvis: хромована 3D-жердина крутиться від прокрутки, онлайн-запис за три дотики.">
+<meta name="theme-color" content="#d62a24">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Лезо — концепт сайту барбершопу від Arvis">
+<meta property="og:description" content="Хромована жердина зі склом крутиться від прокрутки, текст по колу — і запис на вільну годину.">
+<meta property="og:url" content="https://arvisstudio.github.io/portfolio/barbershop-lezo/">
+<meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/barbershop-lezo-og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,800;1,800;1,900&family=Golos+Text:wght@400;600;800&display=swap">
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<style>
+:root { --red: #d62a24; --cream: #fff6ea; --navy: #14213d; --steel: #c9ccd2;
+  --serif: "Playfair Display", Georgia, serif; --sans: "Golos Text", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--red); }
+body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--red); color: var(--cream); font: 400 17px/1.55 var(--sans); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
+.concept { position: relative; z-index: 6; background: var(--navy); color: var(--cream); font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
+.concept a { font-weight: 800; color: #ffd2c4; }
+#pole { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+section, header { position: relative; padding: 80px 16px; }
+section > *, header > * { position: relative; z-index: 2; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; position: relative; z-index: 3; }
+.brand { font: italic 900 30px/1 var(--serif); text-decoration: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 4px; border: 2px solid currentColor;
+  background: var(--cream); color: var(--navy); font: 800 16px/1 var(--sans); text-decoration: none; cursor: pointer; letter-spacing: .02em; }
+.nav .btn { background: transparent; color: var(--cream); min-height: 44px; }
+.hero { min-height: calc(100svh - 110px); display: grid; align-content: space-between; padding-top: 24px; padding-bottom: 32px; }
+h1 { font: italic 900 clamp(64px, min(19vw, 19vh), 230px)/.86 var(--serif); letter-spacing: -.03em; margin: 0; max-width: 6ch; }
+h1 span { display: block; }
+h1 span:nth-child(2) { padding-left: .5em; }
+.hero p { margin: 0; max-width: 17ch; font: 600 clamp(19px, 2.2vw, 26px)/1.3 var(--sans); }
+.hero .row { display: grid; gap: 18px; justify-items: start; }
+.tick { display: flex; gap: 10px; flex-wrap: wrap; font-weight: 600; font-size: 15px; }
+.tick span { border: 2px solid var(--cream); border-radius: 99px; padding: 6px 12px; }
+
+/* послуги */
+.svc { background: var(--cream); color: var(--navy); }
+h2 { font: italic 900 clamp(44px, 10vw, 128px)/.9 var(--serif); letter-spacing: -.02em; margin: 0 0 10px; }
+.note { margin: 0 0 28px; opacity: .75; font-weight: 600; }
+.list { list-style: none; margin: 0; padding: 0; max-width: 620px; counter-reset: s; }
+.list li { counter-increment: s; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 4px 12px; padding: 18px 0; border-top: 2px solid var(--navy); align-items: baseline; }
+.list li::before { content: counter(s, decimal-leading-zero); font: 800 15px/1 var(--sans); color: var(--red); }
+.list b { font: 800 clamp(21px, 2.6vw, 28px)/1.2 var(--serif); }
+.list span { font-weight: 800; font-size: 19px; }
+.list small { grid-column: 2 / -1; opacity: .75; font-size: 15px; }
+
+/* запис */
+.book { background: var(--navy); }
+.card { background: var(--cream); color: var(--navy); border-radius: 6px; padding: 20px; max-width: 720px; display: grid; gap: 22px; border-left: 10px solid var(--red); }
+.step h3 { margin: 0 0 10px; font: 800 15px/1.2 var(--sans); }
+.step h3 b { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--navy); color: var(--cream); font-size: 13px; margin-right: 8px; }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.opts button { font: 600 15px/1.15 var(--sans); min-height: 44px; padding: 8px 14px; border: 2px solid var(--navy); border-radius: 4px; background: transparent; color: var(--navy); cursor: pointer; text-align: left; }
+.opts button[aria-pressed="true"] { background: var(--navy); color: var(--cream); }
+.opts button:disabled { opacity: .35; text-decoration: line-through; cursor: not-allowed; }
+.slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.slots button { text-align: center; padding: 0; }
+.total { border-top: 2px solid var(--navy); padding-top: 16px; display: grid; gap: 12px; }
+.total p { margin: 0; font: 800 clamp(19px, 2.4vw, 24px)/1.3 var(--sans); }
+.total small { opacity: .7; }
+.total .btn { background: var(--red); color: var(--cream); border-color: var(--red); justify-self: start; }
+.done { margin: 0; background: #ffe3d9; padding: 14px; border-radius: 4px; font-weight: 600; }
+
+/* контакти */
+.info { background: var(--red); }
+.grid3 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; max-width: 900px; border-top: 2px solid var(--cream); }
+.grid3 div { padding: 18px 0; border-bottom: 2px solid var(--cream); }
+.grid3 b { display: block; font: italic 800 24px/1.2 var(--serif); margin-bottom: 4px; }
+footer { position: relative; z-index: 2; background: var(--navy); padding: 24px 16px 32px; font-size: 15px; }
+.js .rise { opacity: 0; transform: translateY(22px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); }
+.js .rise.in { opacity: 1; transform: none; }
+@media (min-width: 900px) {
+  section, header, .nav, footer { padding-left: 56px; padding-right: 56px; }
+  section { padding-top: 120px; padding-bottom: 120px; }
+  .svc > *, .book > *, .info > * { margin-left: 34%; }
+  .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .slots { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .js .rise { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+<div class="concept">Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи. <a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div>
+<canvas id="pole" aria-hidden="true"></canvas>
+<nav class="nav"><a class="brand" href="#top">Лезо</a><a class="btn" href="#book">Записатися</a></nav>
+<header class="hero" id="top">
+  <h1><span>Чітко.</span><span>Рівно.</span><span>Вчасно.</span></h1>
+  <div class="row rise">
+    <p>Барбершоп, де записуєшся за три дотики і не чекаєш у черзі.</p>
+    <div class="tick"><span>стрижка</span><span>борода</span><span>гоління</span></div>
+    <a class="btn" href="#book">Обрати годину</a>
+  </div>
+</header>
+
+<main>
+  <section class="svc" id="svc">
+    <h2 class="rise">Послуги</h2>
+    <p class="note rise">Приклад цін — справжні поставить барбершоп.</p>
+    <ul class="list">
+      <li class="rise"><b>Стрижка</b><span>400 ₴</span><small>45 хвилин, миття голови і укладка</small></li>
+      <li class="rise"><b>Стрижка + борода</b><span>600 ₴</span><small>1 година 15 хвилин</small></li>
+      <li class="rise"><b>Борода</b><span>300 ₴</span><small>форма, контур, догляд</small></li>
+      <li class="rise"><b>Гоління бритвою</b><span>350 ₴</span><small>гарячий рушник і небезпечна бритва</small></li>
+      <li class="rise"><b>Дитяча стрижка</b><span>300 ₴</span><small>до 12 років</small></li>
+    </ul>
+  </section>
+
+  <section class="book" id="book">
+    <h2 class="rise">Запис</h2>
+    <p class="note rise">Послуга, майстер, година — і все.</p>
+    <div class="card rise">
+      <div class="step"><h3><b>1</b>Послуга</h3><div class="opts" id="s"></div></div>
+      <div class="step"><h3><b>2</b>Майстер</h3><div class="opts" id="m"></div></div>
+      <div class="step"><h3><b>3</b>День</h3><div class="opts" id="d"></div></div>
+      <div class="step"><h3><b>4</b>Година</h3><div class="opts slots" id="h"></div></div>
+      <div class="total">
+        <p id="sum">Оберіть годину</p>
+        <small>Приклад: на справжньому сайті зайняті години підтягнуться з вашого журналу записів.</small>
+        <button class="btn" type="button" id="go">Записатися</button>
+        <p class="done" id="done" hidden>Це концепт: на справжньому сайті заявка прийде в Telegram, а клієнт отримає нагадування за годину.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="info" id="info">
+    <h2 class="rise">Де ми</h2>
+    <div class="grid3 rise">
+      <div><b>Адреса</b>Тут буде ваша адреса і карта.</div>
+      <div><b>Телефон</b>Тут буде ваш номер.</div>
+      <div><b>Відгуки</b>Тут будуть відгуки ваших клієнтів.</div>
+    </div>
+  </section>
+</main>
+<footer>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></footer>
+
+<script type="module">
+const still = /still/.test(location.search);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const weak = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 8) <= 4;
+const $ = (s) => document.querySelector(s);
+
+const rise = document.querySelectorAll('.rise');
+if (still || reduce) rise.forEach((el) => el.classList.add('in'));
+else { const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0, rootMargin: '0px 0px -8% 0px' }); rise.forEach((el) => io.observe(el)); }
+
+// ---------- запис ----------
+const SVC = [['Стрижка', 400, 45], ['Стрижка + борода', 600, 75], ['Борода', 300, 30], ['Гоління бритвою', 350, 40], ['Дитяча стрижка', 300, 30]];
+const MASTER = [['Будь-хто вільний', 0], ['Старший майстер', 100], ['Майстер', 0]];
+const WD = ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+const days = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() + i); return d; });
+const st = { s: 0, m: 0, d: 0, h: -1 };
+function opts(id, list, key, label) {
+  const box = $(id);
+  box.innerHTML = list.map((x, i) => `<button type="button" data-i="${i}" aria-pressed="${st[key] === i}">${label(x, i)}</button>`).join('');
+  box.onclick = (e) => {
+    const b = e.target.closest('button'); if (!b || b.disabled) return;
+    st[key] = +b.dataset.i; if (key !== 'h') st.h = -1;
+    draw();
+  };
+}
+// «зайняті» години — однакові для того самого дня (приклад, як виглядатиме журнал)
+const busy = (d, i) => ((d.getDate() * 7 + i * 13 + st.m * 5) % 5) === 0;
+function hours() {
+  const d = days[st.d], out = [];
+  for (let m = 10 * 60; m < 20 * 60; m += 30) out.push(m);
+  const now = new Date();
+  return out.map((m, i) => ({ m, off: busy(d, i) || (st.d === 0 && m <= now.getHours() * 60 + now.getMinutes() + 30) }));
+}
+function draw() {
+  opts('#s', SVC, 's', ([n, p]) => `${n} · ${p} ₴`);
+  opts('#m', MASTER, 'm', ([n, p]) => n + (p ? ` · +${p} ₴` : ''));
+  opts('#d', days, 'd', (d, i) => i === 0 ? 'Сьогодні' : i === 1 ? 'Завтра' : `${WD[d.getDay()]} ${d.getDate()}.${String(d.getMonth() + 1).padStart(2, '0')}`);
+  const hs = hours();
+  opts('#h', hs, 'h', ({ m }) => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`);
+  $('#h').querySelectorAll('button').forEach((b, i) => { b.disabled = hs[i].off; });
+  const [n, p, min] = SVC[st.s], extra = MASTER[st.m][1];
+  if (st.h >= 0) {
+    const m = hs[st.h].m, d = days[st.d];
+    $('#sum').textContent = `${n}, ${MASTER[st.m][0].toLowerCase()} — ${st.d === 0 ? 'сьогодні' : st.d === 1 ? 'завтра' : d.getDate() + '.' + String(d.getMonth() + 1).padStart(2, '0')} о ${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')} · ${min} хв · ${p + extra} ₴`;
+  } else $('#sum').textContent = `${n} · ${p + extra} ₴ — оберіть годину`;
+  $('#done').hidden = true;
+}
+draw();
+$('#go').onclick = () => { if (st.h < 0) { $('#sum').textContent = 'Спершу оберіть годину ↑'; return; } $('#done').hidden = false; };
+
+// ---------- 3D: хромована жердина зі склом, текст по колу ----------
+let THREE = null;
+try { THREE = await import('three'); } catch (e) { /* без 3D сайт працює */ }
+const canvas = $('#pole');
+let renderer = null;
+if (THREE) try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !weak, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
+if (renderer) {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : 1.75));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.set(0, 0, 14);
+  // оточення для хрому: студія з довгими білими софтбоксами
+  const pmrem = new THREE.PMREMGenerator(renderer), env = new THREE.Scene();
+  env.add(new THREE.Mesh(new THREE.BoxGeometry(30, 30, 30), new THREE.MeshBasicMaterial({ color: 0x2a2c33, side: THREE.BackSide })));
+  [[3, 24, '#ffffff', 6, -12, 0, 6], [3, 24, '#ffffff', 4, 12, 0, 2], [20, 3, '#ffe9e0', 3, 0, 13, 4], [12, 6, '#d62a24', 2.5, 0, -6, -13]].forEach(([w, h, c, k, x, y, z]) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(k), side: THREE.DoubleSide }));
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
+  });
+  scene.environment = pmrem.fromScene(env, 0.03).texture;
+  const key = new THREE.DirectionalLight(0xffffff, 1.2); key.position.set(-4, 5, 8); scene.add(key);
+  const seg = weak ? 32 : 64;
+  const chrome = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0.12 });
+
+  // жердина
+  const pole = new THREE.Group(); scene.add(pole);
+  const stripes = new THREE.ShaderMaterial({
+    uniforms: { uOff: { value: 0 } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }',
+    fragmentShader: `varying vec2 vUv; uniform float uOff;
+      void main(){
+        float f = fract(vUv.x * 3. + vUv.y * 2.4 + uOff);
+        vec3 red = vec3(.84,.16,.14), cream = vec3(1.,.965,.92), navy = vec3(.08,.13,.24);
+        vec3 c = f < .33 ? red : f < .5 ? cream : f < .83 ? navy : cream;
+        float edge = smoothstep(.0, .02, abs(fract(f * 6.) - .5) - .0);
+        gl_FragColor = vec4(c, 1.);
+        #include <colorspace_fragment>
+      }`,
+  });
+  const core = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.56, 4.2, seg, 1, true), stripes);
+  pole.add(core);
+  const glass = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.68, 4.2, seg, 1, true),
+    new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.02, transparent: true, opacity: 0.18, clearcoat: 1, envMapIntensity: 1.6, depthWrite: false }));
+  pole.add(glass);
+  const capProf = [[0, 0], [0.82, 0], [0.86, 0.06], [0.86, 0.22], [0.72, 0.3], [0.5, 0.36], [0.5, 0.5], [0.0, 0.5]].map(([x, y]) => new THREE.Vector2(x, y));
+  const capGeo = new THREE.LatheGeometry(capProf, seg);
+  const top = new THREE.Mesh(capGeo, chrome); top.position.y = 2.1; pole.add(top);
+  const bottom = new THREE.Mesh(capGeo, chrome); bottom.position.y = -2.1; bottom.rotation.x = Math.PI; pole.add(bottom);
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.42, seg, seg / 2), chrome); ball.position.y = 2.92; pole.add(ball);
+  const tip = new THREE.Mesh(new THREE.SphereGeometry(0.2, seg / 2, seg / 4), chrome); tip.position.y = -2.76; pole.add(tip);
+
+  // текст по колу: смуга з написом навколо жердини (видно тільки передню половину)
+  const tc = document.createElement('canvas'); tc.width = 2048; tc.height = 128;
+  const g = tc.getContext('2d');
+  g.font = 'italic 900 84px "Playfair Display", Georgia, serif'; g.textBaseline = 'middle';
+  const paint = () => {
+    g.clearRect(0, 0, tc.width, tc.height); g.fillStyle = '#fff6ea';
+    const txt = 'стрижка ✦ борода ✦ гоління ✦ ', w = g.measureText(txt).width;
+    for (let x = 0; x < tc.width; x += w) g.fillText(txt, x, 66);
+    ringTex.needsUpdate = true;
+  };
+  const ringTex = new THREE.CanvasTexture(tc); ringTex.colorSpace = THREE.SRGBColorSpace; ringTex.wrapS = THREE.RepeatWrapping; ringTex.repeat.x = 2; ringTex.anisotropy = 4;
+  paint(); document.fonts && document.fonts.ready.then(paint);
+  const ring = new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.45, 0.42, seg, 1, true), new THREE.MeshBasicMaterial({ map: ringTex, transparent: true, side: THREE.FrontSide, depthWrite: false }));
+  ring.rotation.x = 0.22; ring.position.y = 0.5; pole.add(ring);
+
+  let W = 1, H = 1;
+  function resize() {
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect;
+  }
+  resize(); addEventListener('resize', () => { resize(); draw3(0); });
+
+  // прогрес секції 0..1 (0 — секція внизу екрана, 1 — пішла вгору)
+  const secP = (el) => { const r = el.getBoundingClientRect(); return Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height))); };
+  const svc = $('#svc'), book = $('#book');
+  let lastY = scrollY, vel = 0, off = 0, spin = 0, time = 0;
+  function draw3(dt) {
+    const y = scrollY;
+    if (dt) { vel += ((y - lastY) / dt - vel) * Math.min(1, dt * 6); } lastY = y;
+    const fast = reduce ? 0 : Math.max(-4000, Math.min(4000, vel)) / 1000;   // швидкість прокрутки → оберти
+    time += dt;
+    off += dt * (0.25 + fast * 1.4); spin += dt * (0.3 + fast * 2.2);
+    stripes.uniforms.uOff.value = reduce ? 0.2 : -off;
+    ring.rotation.y = reduce ? 0.4 : -spin * 0.6;
+    const phone = innerWidth < 700;
+    // жердина: справа у першому екрані, ховається вліво під час послуг, повертається на записі
+    const ps = secP(svc), pb = secP(book);
+    const away = Math.min(1, Math.max(0, (ps - 0.15) / 0.25)) * (1 - Math.min(1, Math.max(0, (pb - 0.1) / 0.3)));
+    const sc = phone ? Math.min(1.1, H / 4.6) : Math.min(1.25, H / 3.6);
+    pole.scale.setScalar(sc);
+    pole.position.set(phone ? 0.74 * W + away * W * 1.2 : (0.42 - away * 1.02) * W, phone ? -0.25 * H : -0.05 * H, 0);
+    pole.rotation.z = (reduce ? 0 : Math.sin(time * 0.6) * 0.03) - fast * 0.03 - 0.06;
+    pole.rotation.y = spin * 0.15;
+    renderer.render(scene, camera);
+  }
+  draw3(0);
+  if (reduce || still) { addEventListener('scroll', () => draw3(0), { passive: true }); if (still) setTimeout(() => draw3(0), 400); }
+  else {
+    const gap = weak ? 1000 / 31 : 0; let last = performance.now();
+    (function tick(now) {
+      requestAnimationFrame(tick);
+      if (document.hidden || now - last < gap) return;
+      const dt = Math.min(0.05, (now - last) / 1000); last = now; draw3(dt);
+    })(last);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Емаль — стоматологія (концепт від Arvis)</title>
+<meta name="description" content="Концепт сайту стоматології від Arvis: 3D-зуб і лінза-рентген за пальцем, підбір прийому за скаргою і запис.">
+<meta name="theme-color" content="#12c2b0">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Емаль — концепт сайту стоматології від Arvis">
+<meta property="og:description" content="Блискучий 3D-зуб, а за пальцем їде лінза-рентген: під нею видно корені й канали.">
+<meta property="og:url" content="https://arvisstudio.github.io/portfolio/stomatolohiya-emal/">
+<meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/stomatolohiya-emal-og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@700;800&family=Onest:wght@400;600;700&display=swap">
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<style>
+:root { --teal: #12c2b0; --deep: #06262b; --white: #fffdf8; --coral: #ff5a3c; --mint: #c9f2ec;
+  --head: "Montserrat Alternates", system-ui, sans-serif; --sans: "Onest", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--teal); }
+body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--teal); color: var(--deep); font: 400 17px/1.55 var(--sans); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+.concept { position: relative; z-index: 6; background: var(--deep); color: var(--white); font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
+.concept a { color: var(--mint); font-weight: 700; }
+#tooth { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; touch-action: pan-y; }
+#lens { position: fixed; z-index: 1; left: 0; top: 0; border: 3px solid var(--white); border-radius: 4px; pointer-events: none; display: none; }
+#lens span { position: absolute; left: -3px; top: -30px; background: var(--white); color: var(--deep); font: 700 13px/1 var(--sans); padding: 6px 8px; letter-spacing: .08em; }
+header > *, main > section > * { position: relative; z-index: 2; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; position: relative; z-index: 3; }
+.brand { font: 800 24px/1 var(--head); text-decoration: none; letter-spacing: -.02em; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 16px; border: 2px solid var(--deep);
+  background: var(--deep); color: var(--white); font: 700 16px/1 var(--sans); text-decoration: none; cursor: pointer; }
+.nav .btn { background: transparent; color: var(--deep); min-height: 44px; padding: 0 16px; }
+header.hero { min-height: calc(100svh - 110px); padding: 14px 16px 30px; display: grid; align-content: space-between; }
+h1 { font: 800 clamp(66px, 20vw, 250px)/.85 var(--head); letter-spacing: -.05em; margin: 0; }
+.hero .low { display: grid; gap: 14px; justify-items: start; }
+.hero p { margin: 0; max-width: 22ch; font: 700 clamp(19px, 2.2vw, 26px)/1.25 var(--sans); }
+.try { font-size: 15px; font-weight: 600; display: flex; gap: 8px; align-items: center; }
+.try svg { width: 22px; height: 22px; }
+section { position: relative; padding: 90px 16px; }
+.why { min-height: 120vh; }
+.why h2, .pick h2, .info h2 { font: 800 clamp(40px, 8.5vw, 110px)/.92 var(--head); letter-spacing: -.04em; margin: 0 0 12px; max-width: 12ch; }
+.why ul { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 12px; max-width: 460px; }
+.why li { background: var(--white); border-radius: 16px; padding: 14px 16px; border: 2px solid var(--deep); }
+.why li b { display: block; font: 700 19px/1.2 var(--sans); }
+.pick { background: var(--white); }
+.sub { margin: 0 0 24px; font-weight: 600; opacity: .8; }
+.flow { display: grid; gap: 18px; max-width: 760px; }
+.flow h3 { margin: 0 0 10px; font: 700 15px/1.2 var(--sans); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { min-height: 44px; padding: 0 16px; border-radius: 14px; border: 2px solid var(--deep); background: transparent; color: var(--deep); font: 600 15px/1.1 var(--sans); cursor: pointer; }
+.chips button[aria-pressed="true"] { background: var(--teal); }
+.advice { background: var(--deep); color: var(--white); border-radius: 20px; padding: 18px; display: grid; gap: 8px; }
+.advice b { font: 800 clamp(22px, 3vw, 30px)/1.15 var(--head); letter-spacing: -.02em; }
+.advice .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+.advice .meta span { background: var(--teal); color: var(--deep); border-radius: 10px; padding: 5px 10px; font-weight: 700; font-size: 15px; }
+.slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.slots button { padding: 6px 4px; min-height: 52px; border-radius: 12px; border: 2px solid var(--deep); background: transparent; font: 600 14px/1.25 var(--sans); cursor: pointer; color: var(--deep); }
+.slots button[aria-pressed="true"] { background: var(--deep); color: var(--white); }
+.send { display: grid; gap: 10px; }
+.send small { opacity: .7; }
+.send .btn { justify-self: start; background: var(--coral); border-color: var(--coral); color: var(--white); }
+.done { margin: 0; background: var(--mint); padding: 12px 14px; border-radius: 14px; font-weight: 600; }
+.info { background: var(--teal); }
+.cols { display: grid; gap: 10px; max-width: 900px; }
+.cols div { background: var(--white); border-radius: 16px; padding: 16px; border: 2px solid var(--deep); }
+.cols b { display: block; font: 800 20px/1.2 var(--head); }
+footer { position: relative; z-index: 2; background: var(--deep); color: var(--white); padding: 24px 16px 32px; font-size: 15px; }
+.js .rise { opacity: 0; transform: translateY(20px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); }
+.js .rise.in { opacity: 1; transform: none; }
+@media (min-width: 900px) {
+  .nav, header.hero, section, footer { padding-left: 56px; padding-right: 56px; }
+  .cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .hero .low { max-width: 40%; }
+  .why > * { max-width: 44%; }
+  .slots { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .js .rise { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+<div class="concept">Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи. <a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div>
+<canvas id="tooth" aria-hidden="true"></canvas>
+<div id="lens" aria-hidden="true"><span>РЕНТГЕН</span></div>
+<nav class="nav"><a class="brand" href="#top">емаль</a><a class="btn" href="#pick">Записатися</a></nav>
+<header class="hero" id="top">
+  <h1>емаль</h1>
+  <div class="low rise">
+    <p>Стоматологія, де видно, що лікують, — ще до крісла.</p>
+    <span class="try"><svg viewBox="0 0 22 22" aria-hidden="true"><path d="M8 13V4a2 2 0 0 1 4 0v6l5 1.2a2 2 0 0 1 1.5 2.3L17.6 19H9l-4-5a1.6 1.6 0 0 1 2.4-2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Поводьте пальцем — під лінзою рентген</span>
+    <a class="btn" href="#pick">Що турбує?</a>
+  </div>
+</header>
+
+<main>
+  <section class="why" id="why">
+    <h2 class="rise">Пояснимо на знімку</h2>
+    <p class="rise" style="max-width:34ch;font-size:18px">Перед лікуванням лікар показує, де проблема і що буде робити. Без сюрпризів у чеку.</p>
+    <ul>
+      <li class="rise"><b>Знімок і план</b>Ціну називаємо до початку.</li>
+      <li class="rise"><b>Без болю</b>Анестезія — за потреби, навіть для чистки.</li>
+      <li class="rise"><b>Дітям — окремо</b>Тут буде ваш дитячий кабінет.</li>
+    </ul>
+  </section>
+
+  <section class="pick" id="pick">
+    <h2 class="rise">Що турбує?</h2>
+    <p class="sub rise">Оберіть — сайт підкаже, на який прийом записатися.</p>
+    <div class="flow rise">
+      <div><h3>Скарга</h3><div class="chips" id="pain"></div></div>
+      <div class="advice" id="adv"></div>
+      <div><h3>Вільний час</h3><div class="slots" id="slots"></div></div>
+      <div class="send">
+        <small>Приклад цін — справжні поставить клініка. Точну ціну лікар назве після огляду.</small>
+        <button class="btn" type="button" id="go">Записатися</button>
+        <p class="done" id="done" hidden>Це концепт: на справжньому сайті заявка прийде в Telegram, а адміністратор підтвердить час.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="info">
+    <h2>Де ми</h2>
+    <div class="cols">
+      <div><b>Адреса</b>Тут буде ваша адреса і карта.</div>
+      <div><b>Телефон</b>Тут буде ваш номер.</div>
+      <div><b>Відгуки</b>Тут будуть відгуки ваших пацієнтів.</div>
+    </div>
+  </section>
+</main>
+<footer>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></footer>
+
+<script type="module">
+const still = /still/.test(location.search);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const weak = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 8) <= 4;
+const $ = (s) => document.querySelector(s);
+const rise = document.querySelectorAll('.rise');
+if (still || reduce) rise.forEach((el) => el.classList.add('in'));
+else { const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0, rootMargin: '0px 0px -8% 0px' }); rise.forEach((el) => io.observe(el)); }
+
+// ---------- скарга → прийом → час ----------
+const PAIN = [
+  ['Болить зуб', 'Огляд і лікування', 'від 900 ₴', '60 хв'],
+  ['Кровлять ясна', 'Огляд пародонтолога', 'від 500 ₴', '40 хв'],
+  ['Хочу чистку', 'Професійна чистка', 'від 1200 ₴', '60 хв'],
+  ['Біла усмішка', 'Консультація щодо відбілювання', 'від 300 ₴', '30 хв'],
+  ['Криві зуби', 'Консультація ортодонта', 'від 400 ₴', '30 хв'],
+  ['Для дитини', 'Дитячий прийом', 'від 450 ₴', '30 хв'],
+];
+const WD = ['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
+let pain = 0, slot = -1;
+$('#pain').innerHTML = PAIN.map(([n], i) => `<button type="button" data-i="${i}" aria-pressed="${i === pain}">${n}</button>`).join('');
+$('#pain').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; pain = +b.dataset.i; slot = -1; $('#pain').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); show(); };
+function show() {
+  const [, what, price, dur] = PAIN[pain];
+  $('#adv').innerHTML = `<small>Вам підійде</small><b>${what}</b><div class="meta"><span>${price}</span><span>${dur}</span></div>`;
+  const out = [];
+  for (let d = 1; out.length < 10 && d < 12; d++) {
+    const day = new Date(); day.setDate(day.getDate() + d);
+    if (day.getDay() === 0) continue;
+    [10, 13, 16].forEach((h, k) => { if ((d * 3 + k + pain) % 4 !== 0 && out.length < 10) out.push(`${WD[day.getDay()]} ${day.getDate()}.${String(day.getMonth() + 1).padStart(2, '0')}<br>${h}:${k === 1 ? '30' : '00'}`); });
+  }
+  $('#slots').innerHTML = out.map((t, i) => `<button type="button" data-i="${i}" aria-pressed="${i === slot}">${t}</button>`).join('');
+  $('#done').hidden = true;
+}
+$('#slots').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; slot = +b.dataset.i; $('#slots').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); $('#done').hidden = true; };
+$('#go').onclick = () => { if (slot < 0) { $('#slots').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; } $('#done').hidden = false; };
+show();
+
+// ---------- 3D-зуб і лінза-рентген ----------
+let THREE = null;
+try { THREE = await import('three'); } catch (e) { /* без 3D */ }
+const canvas = $('#tooth'), lensEl = $('#lens');
+let renderer = null;
+if (THREE) try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !weak, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
+if (renderer) {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : 1.75));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.autoClear = false;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.set(0, 0, 12);
+  camera.updateMatrixWorld();
+  const pmrem = new THREE.PMREMGenerator(renderer), env = new THREE.Scene();
+  env.add(new THREE.Mesh(new THREE.BoxGeometry(30, 30, 30), new THREE.MeshBasicMaterial({ color: 0x2f6f69, side: THREE.BackSide })));
+  [[20, 5, '#ffffff', 5, 0, 13, 6], [4, 18, '#ffffff', 4, -13, 0, 5], [4, 18, '#c9f2ec', 2.5, 13, 0, 0], [10, 4, '#ff5a3c', 1.4, 0, -12, 3]].forEach(([w, h, c, k, x, y, z]) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(k), side: THREE.DoubleSide }));
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
+  });
+  scene.environment = pmrem.fromScene(env, 0.04).texture;
+  const key = new THREE.DirectionalLight(0xffffff, 1.2); key.position.set(-3, 5, 6); scene.add(key);
+  const seg = weak ? 48 : 96;
+
+  // коронка: сфера з чотирма горбиками і борозенкою посередині
+  const crownG = new THREE.SphereGeometry(1, seg, seg / 2);
+  { const p = crownG.attributes.position, v = new THREE.Vector3();
+    const cusps = [[0.45, 0.42], [-0.45, 0.42], [0.45, -0.42], [-0.45, -0.42]];
+    for (let i = 0; i < p.count; i++) {
+      v.fromBufferAttribute(p, i);
+      v.x *= 1.12; v.z *= 1.0; v.y *= 0.82;
+      if (v.y > 0.1) {
+        let b = 0; cusps.forEach(([cx, cz]) => { const dx = v.x - cx, dz = v.z - cz; b += Math.exp(-(dx * dx + dz * dz) / 0.12); });
+        const groove = Math.exp(-(v.x * v.x) / 0.02) * 0.12 + Math.exp(-(v.z * v.z) / 0.03) * 0.08;
+        v.y += (b * 0.2 - groove) * Math.min(1, (v.y - 0.1) * 2.5);
+      }
+      if (v.y < -0.3) { v.x *= 1 - (-v.y - 0.3) * 0.35; v.z *= 1 - (-v.y - 0.3) * 0.35; }
+      p.setXYZ(i, v.x, v.y, v.z);
+    }
+    crownG.computeVertexNormals(); }
+  // корені: три вигнуті конуси
+  function rootG(lean, len) {
+    const g = new THREE.CylinderGeometry(0.34, 0.06, len, 24, 12);
+    const p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) { const y = p.getY(i), t = (len / 2 - y) / len; p.setX(i, p.getX(i) + lean * t * t * 0.9); }
+    g.translate(0, -len / 2 - 0.35, 0); g.computeVertexNormals();
+    return g;
+  }
+  const roots = [[-0.42, 0.18, -0.5, 1.9], [0.42, 0.18, 0.5, 1.8], [0, -0.38, 0.05, 1.6]];
+  const enamel = new THREE.MeshPhysicalMaterial({ color: 0xfffdf8, roughness: 0.14, clearcoat: 1, clearcoatRoughness: 0.08, sheen: 0.3, sheenColor: new THREE.Color('#c9f2ec') });
+  const tooth = new THREE.Group(); scene.add(tooth);
+  const normal = new THREE.Group(), xray = new THREE.Group(); tooth.add(normal, xray);
+  normal.add(new THREE.Mesh(crownG, enamel));
+  const rootGeos = roots.map(([x, z, lean, len]) => { const g = rootG(lean, len); g.translate(x, 0, z); return g; });
+  rootGeos.forEach((g) => normal.add(new THREE.Mesh(g, enamel)));
+  // рентген: контур (світиться край, прозора середина) + пульпа й канали коралом
+  const xmat = new THREE.ShaderMaterial({
+    uniforms: { uCol: { value: new THREE.Color('#e8fffb') } }, transparent: true, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending,
+    vertexShader: 'varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
+    fragmentShader: 'varying vec3 vN; varying vec3 vV; uniform vec3 uCol; void main(){ float f = 1. - abs(dot(normalize(vN), normalize(vV))); gl_FragColor = vec4(uCol * (pow(f, 1.6) * .9 + .06), 1.); }',
+  });
+  xray.add(new THREE.Mesh(crownG, xmat));
+  rootGeos.forEach((g) => xray.add(new THREE.Mesh(g, xmat)));
+  const pulpM = new THREE.MeshBasicMaterial({ color: 0xff5a3c });
+  const pulp = new THREE.Mesh(new THREE.SphereGeometry(0.3, 24, 12), pulpM); pulp.scale.set(1.3, 0.75, 1); pulp.position.y = -0.05; xray.add(pulp);
+  roots.forEach(([x, z, lean, len]) => {
+    const g = new THREE.CylinderGeometry(0.07, 0.02, len * 0.92, 8, 8), p = g.attributes.position;
+    for (let i = 0; i < p.count; i++) { const y = p.getY(i), t = (len * 0.46 - y) / (len * 0.92); p.setX(i, p.getX(i) + lean * t * t * 0.9); }
+    g.translate(x, -len * 0.46 - 0.35, z); xray.add(new THREE.Mesh(g, pulpM));
+  });
+  const grid = new THREE.GridHelper(14, 28, 0x2c5f5a, 0x16403c); grid.rotation.x = Math.PI / 2; grid.position.z = -3;
+  const xbg = new THREE.Scene(); xbg.add(grid);
+
+  let W = 1, H = 1;
+  function resize() {
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect;
+  }
+  resize(); addEventListener('resize', () => { resize(); draw(0); });
+
+  // лінза: за курсором; на телефоні — сама їздить по зубу, а палець її веде
+  let lx = innerWidth * 0.5, ly = innerHeight * 0.45, tx = lx, ty = ly, manual = 0;
+  const setT = (x, y) => { tx = x; ty = y; manual = 3; };
+  addEventListener('pointermove', (e) => setT(e.clientX, e.clientY), { passive: true });
+  addEventListener('touchmove', (e) => setT(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  addEventListener('touchstart', (e) => setT(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+
+  const pick = $('#pick'), v3 = new THREE.Vector3();
+  let time = 0, shown = 0;
+  function draw(dt) {
+    time += dt;
+    const pTop = pick.getBoundingClientRect().top;
+    const visible = pTop > innerHeight * 0.2;
+    canvas.style.visibility = visible ? 'visible' : 'hidden';
+    lensEl.style.display = visible ? 'block' : 'none';
+    if (!visible) return;
+    const max = Math.max(1, pick.offsetTop - innerHeight * 0.4);
+    const p = Math.min(1, scrollY / max);
+    shown = (still || reduce || !dt) ? p : shown + (p - shown) * Math.min(1, dt * 5);
+    const phone = innerWidth < 700;
+    const sz = phone ? Math.min(1.05, W / 1.9) : Math.min(1.35, H / 3.4);
+    tooth.scale.setScalar(sz);
+    // зуб: у першому екрані — по центру, далі — праворуч і повертається, показуючи корені
+    tooth.position.set((phone ? 0.08 : 0.38) * W + shown * (phone ? 0.25 : 0.1) * W, (phone ? 0.05 : 0.08) * H + shown * 0.25 * H, 0);
+    tooth.rotation.set(0.35 + shown * 1.1 + Math.sin(time * 0.5) * (reduce ? 0 : 0.05), -0.5 + shown * 3.2 + (reduce ? 0 : time * 0.12), 0.12);
+    // лінза
+    const ls = Math.round(Math.min(innerWidth, innerHeight) * (phone ? 0.42 : 0.3));
+    if (manual > 0) manual -= dt; else if (!reduce && !still) {
+      tooth.updateMatrixWorld(); v3.set(0, -0.6, 0).applyMatrix4(tooth.matrixWorld).project(camera);
+      const cx = (v3.x * 0.5 + 0.5) * innerWidth, cy = (-v3.y * 0.5 + 0.5) * innerHeight;
+      tx = cx + Math.sin(time * 0.7) * ls * 0.55; ty = cy + Math.cos(time * 0.5) * ls * 0.35;
+    }
+    if (still || reduce) { tooth.updateMatrixWorld(); v3.set(0.2, -0.4, 0).applyMatrix4(tooth.matrixWorld).project(camera); tx = (v3.x * 0.5 + 0.5) * innerWidth + ls * 0.15; ty = (-v3.y * 0.5 + 0.5) * innerHeight; }
+    const k = (still || reduce || !dt) ? 1 : Math.min(1, dt * 7);
+    if (Number.isFinite(tx) && Number.isFinite(ty)) { lx += (tx - lx) * k; ly += (ty - ly) * k; }
+    if (!Number.isFinite(lx) || !Number.isFinite(ly)) { lx = innerWidth * 0.5; ly = innerHeight * 0.45; }
+    const x0 = Math.round(lx - ls / 2), y0 = Math.round(ly - ls / 2);
+    lensEl.style.width = lensEl.style.height = ls + 'px';
+    lensEl.style.transform = `translate(${x0}px, ${y0}px)`;
+    // кадр: звичайний зуб, потім у квадраті лінзи — рентген на темному
+    renderer.setScissorTest(false); renderer.setClearColor(0x000000, 0); renderer.clear();
+    normal.visible = true; xray.visible = false;
+    renderer.render(scene, camera);
+    renderer.setScissorTest(true);
+    renderer.setScissor(x0, innerHeight - y0 - ls, ls, ls);
+    renderer.setClearColor(0x06262b, 1); renderer.clear();
+    renderer.render(xbg, camera);
+    normal.visible = false; xray.visible = true;
+    renderer.render(scene, camera);
+    renderer.setScissorTest(false);
+  }
+  draw(0);
+  if (reduce || still) { addEventListener('scroll', () => draw(0), { passive: true }); if (still) setTimeout(() => draw(0), 400); }
+  else {
+    const gap = weak ? 1000 / 31 : 0; let last = performance.now();
+    (function tick(now) {
+      requestAnimationFrame(tick);
+      if (document.hidden || now - last < gap) return;
+      const dt = Math.min(0.05, (now - last) / 1000); last = now; draw(dt);
+    })(last);
+  }
+}
+</script>
+</body>
+</html>

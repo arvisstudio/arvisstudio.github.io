@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Пелюстка — квіти (концепт від Arvis)</title>
+<meta name="description" content="Концепт сайту квіткової крамниці від Arvis: тисячі 3D-пелюсток складаються в букет і слова, конструктор букета фарбує пелюстки під ваш вибір.">
+<meta name="theme-color" content="#ffc6d3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Пелюстка — концепт сайту квіткової крамниці від Arvis">
+<meta property="og:description" content="Букет із тисяч 3D-пелюсток розлітається вітром і збирається в слова. Збери свій — побачиш його кольори.">
+<meta property="og:url" content="https://arvisstudio.github.io/portfolio/kvity-pelyustka/">
+<meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/kvity-pelyustka-og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,700;1,600;1,700&family=Commissioner:wght@400;600;700&display=swap">
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+<script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
+<style>
+:root { --blush: #ffc6d3; --wine: #3a0f1e; --leaf: #2e7d4f; --coral: #e4572e; --cream: #fff4ee;
+  --serif: "Cormorant", Georgia, serif; --sans: "Commissioner", system-ui, sans-serif; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--blush); }
+body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--blush); color: var(--wine); font: 400 17px/1.55 var(--sans); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+.concept { position: relative; z-index: 6; background: var(--wine); color: var(--cream); font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
+.concept a { color: var(--blush); font-weight: 700; }
+#petals { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+main > section > *, header > * { position: relative; z-index: 2; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; position: relative; z-index: 3; }
+.brand { font: italic 700 30px/1 var(--serif); text-decoration: none; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 999px; border: 2px solid var(--wine);
+  background: var(--wine); color: var(--cream); font: 700 16px/1 var(--sans); text-decoration: none; cursor: pointer; }
+.nav .btn { background: transparent; color: var(--wine); min-height: 44px; padding: 0 18px; }
+header.hero { min-height: calc(100svh - 110px); padding: 10px 16px 30px; display: grid; align-content: space-between; }
+h1 { font: italic 700 clamp(72px, 22vw, 260px)/.78 var(--serif); letter-spacing: -.03em; margin: 0; }
+.hero .low { display: grid; gap: 14px; justify-items: start; }
+.hero p { margin: 0; max-width: 24ch; font: 600 clamp(19px, 2.2vw, 25px)/1.3 var(--sans); }
+section { position: relative; padding: 90px 16px; }
+.wind { min-height: 130vh; display: grid; align-content: center; }
+.big { font: italic 700 clamp(46px, 10vw, 140px)/.9 var(--serif); margin: 0; max-width: 10ch; }
+.facts { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 10px; max-width: 520px; }
+.facts li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 10px; font-weight: 600; font-size: 18px; background: var(--cream); border: 2px solid var(--wine); border-radius: 14px; padding: 8px 12px; justify-self: start; }
+.facts svg { width: 26px; height: 26px; }
+.word { min-height: 150vh; display: grid; align-content: end; padding-bottom: 14vh; }
+.word p { margin: 0; max-width: 30ch; font: 600 clamp(19px, 2.2vw, 24px)/1.35 var(--sans); background: var(--blush); }
+.build { background: var(--cream); padding-top: 50vh; }
+.build h2, .info h2 { font: italic 700 clamp(48px, 10vw, 128px)/.88 var(--serif); margin: 0 0 8px; }
+.sub { margin: 0 0 24px; font-weight: 600; opacity: .8; }
+.panel { background: #fff; border: 2px solid var(--wine); border-radius: 26px; padding: 18px; max-width: 640px; display: grid; gap: 18px; }
+.fl { display: grid; gap: 8px; }
+.fl div { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 10px; min-height: 52px; border-bottom: 1px solid #f0d7de; }
+.fl i { width: 18px; height: 18px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); }
+.fl b { font-weight: 700; } .fl small { display: block; font-weight: 400; opacity: .7; font-size: 15px; }
+.cnt { display: inline-flex; align-items: center; gap: 8px; }
+.cnt button { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--wine); background: transparent; color: var(--wine); font: 700 22px/1 var(--sans); cursor: pointer; }
+.cnt output { min-width: 26px; text-align: center; font: 700 20px/1 var(--sans); }
+.wrapc { display: flex; flex-wrap: wrap; gap: 8px; }
+.wrapc button { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 2px solid var(--wine); background: transparent; color: var(--wine); font: 600 15px/1 var(--sans); cursor: pointer; }
+.wrapc button[aria-pressed="true"] { background: var(--wine); color: var(--cream); }
+.panel h3 { margin: 0 0 8px; font: 700 15px/1 var(--sans); }
+.tot { border-top: 2px dashed var(--wine); padding-top: 14px; display: grid; gap: 10px; }
+.tot p { margin: 0; font: 700 clamp(20px, 2.6vw, 26px)/1.25 var(--sans); }
+.tot small { opacity: .7; }
+.done { margin: 0; background: var(--blush); padding: 12px 14px; border-radius: 14px; font-weight: 600; }
+.info { background: var(--cream); padding-top: 40px; }
+.three { display: grid; gap: 12px; max-width: 900px; }
+.three div { border-top: 2px solid var(--wine); padding-top: 12px; }
+.three b { display: block; font: italic 700 26px/1.1 var(--serif); }
+footer { position: relative; z-index: 2; background: var(--wine); color: var(--cream); padding: 24px 16px 32px; font-size: 15px; }
+.js .rise { opacity: 0; transform: translateY(22px); transition: opacity .7s, transform .8s cubic-bezier(.2, .8, .2, 1); }
+.js .rise.in { opacity: 1; transform: none; }
+@media (min-width: 900px) {
+  .nav, header.hero, section, footer { padding-left: 56px; padding-right: 56px; }
+  .build .wrapx { margin-left: auto; width: min(640px, 48%); }
+  .build { padding-top: 120px; }
+  .three { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .wind > *, .word > * { max-width: 46%; }
+}
+@media (prefers-reduced-motion: reduce) { .js .rise { opacity: 1; transform: none; transition: none; } }
+</style>
+</head>
+<body>
+<div class="concept">Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи. <a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div>
+<canvas id="petals" aria-hidden="true"></canvas>
+<nav class="nav"><a class="brand" href="#top">Пелюстка</a><a class="btn" href="#build">Зібрати букет</a></nav>
+<header class="hero" id="top">
+  <h1>Пелюс&shy;тка</h1>
+  <div class="low rise"><p>Квіти, які збираєш сам — і бачиш свій букет ще до оплати.</p><a class="btn" href="#build">Зібрати букет</a></div>
+</header>
+
+<main>
+  <section class="wind" id="wind">
+    <h2 class="big rise">Подуй — і він розлетиться</h2>
+    <ul class="facts">
+      <li class="rise"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M13 23V11M13 11c0-5 4-8 9-8 0 5-4 8-9 8ZM13 15c0-4-3-6-8-6 0 4 3 6 8 6Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Сезонні квіти — щотижня нові</li>
+      <li class="rise"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M2 8h14v10H2zM16 12h5l3 3v3h-8z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="7" cy="20" r="2" fill="currentColor"/><circle cx="20" cy="20" r="2" fill="currentColor"/></svg>Доставка по місту до дверей</li>
+      <li class="rise"><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M3 6h20v14H3zM3 6l10 8 10-8" fill="none" stroke="currentColor" stroke-width="2"/></svg>Листівка, написана від руки</li>
+    </ul>
+  </section>
+
+  <section class="word" id="word">
+    <p class="rise">Скажіть, кому букет, — і ми напишемо це на листівці. Пальцем по екрану можна розвіяти пелюстки.</p>
+  </section>
+
+  <section class="build" id="build">
+    <div class="wrapx">
+      <h2 class="rise">Збери букет</h2>
+      <p class="sub rise">Додавайте квіти — 3D-букет зверху фарбується під ваш вибір.</p>
+      <div class="panel rise">
+        <div class="fl" id="fl"></div>
+        <div><h3>Пакування</h3><div class="wrapc" id="wrap"></div></div>
+        <div class="tot">
+          <p id="tot"></p>
+          <small>Приклад цін — справжні поставить крамниця.</small>
+          <button class="btn" type="button" id="go">Замовити букет</button>
+          <p class="done" id="done" hidden>Це концепт: на справжньому сайті замовлення прийде в Telegram разом зі складом букета і текстом листівки.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info">
+    <h2>Заходьте</h2>
+    <div class="three">
+      <div><b>Адреса</b>Тут буде ваша адреса і карта.</div>
+      <div><b>Телефон</b>Тут буде ваш номер.</div>
+      <div><b>Відгуки</b>Тут будуть відгуки ваших покупців.</div>
+    </div>
+  </section>
+</main>
+<footer>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></footer>
+
+<script type="module">
+const still = /still/.test(location.search);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const weak = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 8) <= 4;
+const $ = (s) => document.querySelector(s);
+const rise = document.querySelectorAll('.rise');
+if (still || reduce) rise.forEach((el) => el.classList.add('in'));
+else { const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0, rootMargin: '0px 0px -8% 0px' }); rise.forEach((el) => io.observe(el)); }
+
+// ---------- конструктор букета ----------
+const FL = [['Троянда', 70, '#c9184a', 3], ['Півонія', 120, '#ff8fab', 2], ['Тюльпан', 45, '#ffb000', 2], ['Хризантема', 55, '#fff4ee', 0], ['Евкаліпт', 40, '#6a9f7e', 1]];
+const WRAP = [['Крафт', 80], ['Коробка', 200], ['Без пакування', 0]];
+let wrap = 0;
+$('#fl').innerHTML = FL.map(([n, p, c, k], i) => `<div><i style="background:${c};border:1px solid #3a0f1e33"></i><b>${n}<small>${p} ₴ за ${i === 4 ? 'гілку' : 'квітку'}</small></b><span class="cnt"><button type="button" data-i="${i}" data-d="-1" aria-label="Менше: ${n}">−</button><output id="c${i}">${k}</output><button type="button" data-i="${i}" data-d="1" aria-label="Більше: ${n}">+</button></span></div>`).join('');
+$('#wrap').innerHTML = WRAP.map(([n, p], i) => `<button type="button" data-i="${i}" aria-pressed="${i === wrap}">${n}${p ? ` +${p} ₴` : ''}</button>`).join('');
+$('#fl').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; const f = FL[+b.dataset.i]; f[3] = Math.max(0, Math.min(25, f[3] + +b.dataset.d)); total(); };
+$('#wrap').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; wrap = +b.dataset.i; $('#wrap').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); total(); };
+$('#go').onclick = () => { $('#done').hidden = false; };
+let recolor = () => {};
+function total() {
+  let sum = 0, n = 0;
+  FL.forEach(([, p, , k], i) => { sum += p * k; n += k; $('#c' + i).textContent = k; });
+  sum += n ? WRAP[wrap][1] : 0;
+  $('#tot').textContent = n ? `${n} ${n % 10 === 1 && n % 100 !== 11 ? 'квітка' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'квітки' : 'квітів'} · ${sum} ₴` : 'Додайте хоча б одну квітку';
+  $('#done').hidden = true;
+  recolor();
+}
+total();
+
+// ---------- 3D-пелюстки ----------
+let THREE = null;
+try { THREE = await import('three'); } catch (e) { /* без 3D */ }
+const canvas = $('#petals');
+let renderer = null;
+if (THREE) try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !weak, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
+if (renderer) {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : 1.75));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+  camera.position.set(0, 0, 12);
+  scene.add(new THREE.HemisphereLight(0xfff4ee, 0xd98aa0, 1.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.8); sun.position.set(3, 5, 6); scene.add(sun);
+
+  // пелюстка: крапля, вигнута «човником»
+  const ps = new THREE.Shape();
+  ps.moveTo(0, 0); ps.bezierCurveTo(0.16, 0.06, 0.15, 0.24, 0, 0.32); ps.bezierCurveTo(-0.15, 0.24, -0.16, 0.06, 0, 0);
+  const pg = new THREE.ShapeGeometry(ps, weak ? 4 : 7);
+  const pa = pg.attributes.position;
+  for (let i = 0; i < pa.count; i++) { const x = pa.getX(i), y = pa.getY(i); pa.setZ(i, x * x * 2.4 - y * 0.18); }
+  pg.translate(0, -0.12, 0); pg.computeVertexNormals();
+  const N = weak ? 1400 : 2800;
+  const mat = new THREE.MeshStandardMaterial({ roughness: 0.55, side: THREE.DoubleSide });
+  const mesh = new THREE.InstancedMesh(pg, mat, N);
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  mesh.frustumCulled = false;
+  scene.add(mesh);
+  const stems = new THREE.Group(); scene.add(stems);
+  const stemM = new THREE.MeshStandardMaterial({ color: 0x2e7d4f, roughness: 0.6 });
+
+  // випадкові числа з зерном — однакова картинка при кожному відкритті (і на скриншотах)
+  let seed = 7; const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+  const HEADS = 7, leafShare = 0.07;
+  const heads = [...Array(HEADS)].map((_, h) => {
+    const a = h / HEADS * Math.PI * 2 + 0.4, r = h === 0 ? 0 : 0.95 + (h % 2) * 0.25;
+    return new THREE.Vector3(Math.cos(a) * r * 1.05, 0.85 + Math.sin(a) * r * 0.55 + (h === 0 ? 0.35 : 0), Math.sin(a) * 0.5 - (h % 3) * 0.12);
+  });
+  // для кожної пелюстки: голівка, місце в букеті, місце на вітрі, місце в слові, оберти
+  const P = [];
+  const up = new THREE.Vector3(0, 1, 0), tmp = new THREE.Vector3(), m4 = new THREE.Matrix4(), qa = new THREE.Quaternion(), qb = new THREE.Quaternion(), q = new THREE.Quaternion(), e3 = new THREE.Euler();
+  for (let i = 0; i < N; i++) {
+    const leaf = i < N * leafShare;
+    const h = leaf ? -1 : i % HEADS, k = Math.floor(i / HEADS), per = Math.ceil(N * (1 - leafShare) / HEADS);
+    let pos, dir;
+    if (leaf) {
+      const a = Math.PI * (1.05 + rnd() * 0.9), r = 1.2 + rnd() * 0.7;
+      pos = new THREE.Vector3(Math.cos(a) * r * 1.15, 0.75 + Math.sin(a) * r * 0.5, -0.5 + rnd() * 0.3);
+      dir = new THREE.Vector3(Math.cos(a), Math.sin(a) * 0.6, 0.5).normalize();
+    } else {
+      // напівсфера з «золотим кутом» — як справжня квітка
+      const t = (k % per) / per, phi = Math.acos(1 - t * 1.15), th = k * 2.39996;
+      dir = new THREE.Vector3(Math.sin(phi) * Math.cos(th), Math.sin(phi) * Math.sin(th), Math.cos(phi)).normalize();
+      dir.applyAxisAngle(new THREE.Vector3(1, 0, 0), -0.35);
+      pos = heads[h].clone().addScaledVector(dir, 0.42 * (0.55 + t * 0.5));
+    }
+    const qB = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), dir).multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), rnd() * 6.28));
+    P.push({ leaf, h, pos, qB, s: leaf ? 1.3 + rnd() * 0.5 : 0.85 + rnd() * 0.4,
+      wind: new THREE.Vector3(rnd() * 2 - 1, rnd() * 2 - 1, rnd() * 2 - 1.4), spin: new THREE.Vector3(rnd() * 3, rnd() * 3, rnd() * 3), word: new THREE.Vector3(), delay: rnd() * 0.35,
+      d: new THREE.Vector3(), col: new THREE.Color() });
+  }
+  // стебла від кожної голівки вниз до пучка
+  heads.forEach((hp) => {
+    const end = new THREE.Vector3(hp.x * 0.12, -2.6, 0);
+    const len = hp.distanceTo(end);
+    const s = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.05, len, 6), stemM);
+    s.position.copy(hp).add(end).multiplyScalar(0.5);
+    s.quaternion.setFromUnitVectors(up, tmp.subVectors(hp, end).normalize());
+    stems.add(s);
+  });
+
+  // слово з пелюсток: малюємо текст на прихованому canvas і беремо зафарбовані точки
+  let W = 1, H = 1;
+  function wordPoints() {
+    const phone = innerWidth < 700;
+    const lines = phone ? ['ДЛЯ', 'ТЕБЕ'] : ['ДЛЯ ТЕБЕ'];
+    const c = document.createElement('canvas'); c.width = 600; c.height = phone ? 420 : 200;
+    const g = c.getContext('2d');
+    g.fillStyle = '#000'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.font = `italic 700 ${phone ? 190 : 150}px Cormorant, Georgia, serif`;
+    lines.forEach((l, i) => g.fillText(l, 300, (i + 0.5) * c.height / lines.length));
+    const d = g.getImageData(0, 0, c.width, c.height).data, pts = [];
+    for (let y = 0; y < c.height; y += 3) for (let x = 0; x < c.width; x += 3) if (d[(y * c.width + x) * 4 + 3] > 128) pts.push([x, y]);
+    const sc = Math.min(W * (phone ? 1.96 : 1.5), 10) / c.width;
+    P.forEach((p, i) => {
+      const [x, y] = pts.length ? pts[(i * 7919) % pts.length] : [300, 100];
+      p.word.set((x - 300) * sc + (rnd() - 0.5) * 0.04, -(y - c.height / 2) * sc + H * 0.12, (rnd() - 0.5) * 0.3);
+    });
+  }
+
+  // кольори: голівки ділимо між обраними квітами пропорційно кількості
+  const leafC = new THREE.Color('#2e7d4f'), creamC = new THREE.Color('#fff4ee');
+  const goalCol = P.map(() => new THREE.Color());
+  recolor = () => {
+    const chosen = FL.filter((f) => f[3] > 0 && f[0] !== 'Евкаліпт'), tot = chosen.reduce((s, f) => s + f[3], 0);
+    const euc = FL[4][3] > 0;
+    const headCol = [];
+    if (!tot) for (let h = 0; h < HEADS; h++) headCol.push(creamC);
+    else {
+      const quota = chosen.map((f) => ({ c: new THREE.Color(f[2]), n: f[3] / tot * HEADS }));
+      quota.forEach((x) => { for (let k = 0; k < Math.floor(x.n); k++) headCol.push(x.c); x.n -= Math.floor(x.n); });
+      quota.sort((a, b) => b.n - a.n);
+      for (let k = 0; headCol.length < HEADS; k++) headCol.push(quota[k % quota.length].c);
+    }
+    P.forEach((p, i) => {
+      if (p.leaf) goalCol[i].copy(euc ? new THREE.Color('#6a9f7e') : leafC);
+      else goalCol[i].copy(headCol[p.h]).offsetHSL(0, 0, ((i * 13) % 10) / 100 - 0.05);
+    });
+    if (still || reduce) P.forEach((p, i) => p.col.copy(goalCol[i]));
+  };
+  recolor();
+  P.forEach((p, i) => p.col.copy(goalCol[i]));
+
+  function resize() {
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+    H = Math.tan(THREE.MathUtils.degToRad(16)) * camera.position.z; W = H * camera.aspect;
+    wordPoints();
+  }
+  resize(); addEventListener('resize', () => { resize(); draw(0); });
+  if (document.fonts) document.fonts.ready.then(() => { wordPoints(); draw(0); });
+
+  // палець/курсор розвіює пелюстки
+  const ptr = new THREE.Vector3(99, 99, 0); let ptrOn = 0;
+  addEventListener('pointermove', (e) => { ptr.set((e.clientX / innerWidth * 2 - 1) * W, -(e.clientY / innerHeight * 2 - 1) * H, 0); ptrOn = 1; }, { passive: true });
+  addEventListener('touchmove', (e) => { const t = e.touches[0]; ptr.set((t.clientX / innerWidth * 2 - 1) * W, -(t.clientY / innerHeight * 2 - 1) * H, 0); ptrOn = 1; }, { passive: true });
+
+  const sec = (id) => $(id);
+  const wind = sec('#wind'), word = sec('#word'), build = sec('#build'), info = document.querySelector('.info');
+  const prog = (el) => { const r = el.getBoundingClientRect(); return Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height))); };
+  let time = 0, sW = 0, sT = 0, sB = 0;
+  const bq = new THREE.Vector3(), wp = new THREE.Vector3(), sc3 = new THREE.Vector3();
+  const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  function draw(dt) {
+    time += dt;
+    const ins = still || reduce || !dt;
+    // три перемикачі: вітер (0→1), слово (0→1), букет у конструкторі (0→1)
+    const gW = sm(0.08, 0.45, prog(wind)), gT = sm(0.18, 0.4, prog(word)), gB = sm(0.0, 0.32, prog(build));
+    const kk = ins ? 1 : Math.min(1, dt * 3);
+    sW += (gW - sW) * kk; sT += (gT - sT) * kk; sB += (gB - sB) * kk;
+    const infoTop = info.getBoundingClientRect().top;
+    canvas.style.visibility = infoTop < innerHeight * 0.35 ? 'hidden' : 'visible';
+    if (infoTop < innerHeight * 0.35) return;
+    const phone = innerWidth < 700;
+    // де стоїть букет: у першому екрані — по центру, у конструкторі — зліва (комп'ютер) або зверху (телефон)
+    const bs = (phone ? Math.min(1, W / 2.6) * (1 - 0.3 * sB) : Math.min(1.3, H / 3));
+    const bx = phone ? 0 : (0.3 - 0.8 * sB) * W, by = (phone ? -0.08 + 0.52 * sB : -0.12) * H;
+    stems.position.set(bx, by, 0); stems.scale.setScalar(bs * (1 - sW) * (1 - sT));
+    stems.visible = stems.scale.x > 0.02;
+    const rotY = reduce ? 0 : Math.sin(time * 0.3) * 0.25;
+    stems.rotation.y = rotY;
+    const cut = 1 - sB;   // у конструкторі: слова й вітру вже нема
+    for (let i = 0; i < N; i++) {
+      const p = P[i];
+      // букет
+      bq.copy(p.pos).applyAxisAngle(up, rotY).multiplyScalar(bs).add(tmp.set(bx, by, 0));
+      // вітер: пелюстки летять по всьому екрану і кружляють
+      const tw = time * 0.35 + i;
+      wp.set(p.wind.x * W * 1.4 + Math.sin(tw + p.wind.y * 3) * 0.6, p.wind.y * H * 1.3 + Math.cos(tw * 0.8 + p.wind.x * 4) * 0.5 + (reduce ? 0 : -((time * 0.3 + p.delay * 5) % 2) * 0.6), p.wind.z * 3 - 1);
+      // змішування з запізненням для кожної пелюстки
+      const lw = Math.min(1, Math.max(0, (sW * cut * 1.35 - p.delay))) , lt = Math.min(1, Math.max(0, (sT * cut * 1.35 - p.delay)));
+      tmp.copy(bq).lerp(wp, lw).lerp(p.word, lt);
+      // палець: відштовхує
+      if (ptrOn && !reduce) {
+        sc3.subVectors(tmp, ptr); sc3.z = 0; const dd = sc3.length();
+        if (dd < 1.4) p.d.addScaledVector(sc3.normalize(), (1.4 - dd) * 0.08);
+      }
+      p.d.multiplyScalar(ins ? 0 : 0.94);
+      tmp.add(p.d);
+      qa.copy(p.qB);
+      e3.set(p.spin.x * time * 0.6, p.spin.y * time * 0.6, p.spin.z), qb.setFromEuler(e3);
+      q.copy(qa).slerp(qb, Math.max(lw * (1 - lt * 0.8), 0));
+      const s = p.s * (p.leaf ? 1 : 1) * (0.7 + 0.3 * bs) * (1 - 0.66 * lt) * (1 - 0.35 * lw * (1 - lt)) * (p.leaf ? 1 - lt : 1);
+      m4.compose(tmp, q, sc3.set(s, s, s));
+      mesh.setMatrixAt(i, m4);
+      if (!ins) p.col.lerp(goalCol[i], dt * 3);
+      mesh.setColorAt(i, p.col);
+    }
+    mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor.needsUpdate = true;
+    renderer.render(scene, camera);
+  }
+  draw(0);
+  if (reduce || still) { addEventListener('scroll', () => draw(0), { passive: true }); if (still) setTimeout(() => draw(0), 500); }
+  else {
+    const gap = weak ? 1000 / 31 : 0; let last = performance.now();
+    (function tick(now) {
+      requestAnimationFrame(tick);
+      if (document.hidden || now - last < gap) return;
+      const dt = Math.min(0.05, (now - last) / 1000); last = now; draw(dt);
+    })(last);
+  }
+}
+</script>
+</body>
+</html>
