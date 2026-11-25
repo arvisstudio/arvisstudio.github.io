@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Півоберта — СТО (концепт від Arvis)</title>
-<meta name="description" content="Концепт сайту СТО від Arvis: 3D-колесо розбирається на деталі від прокрутки, калькулятор ремонту з прикладом ціни й часу.">
+<meta name="description" content="Концепт сайту СТО від Arvis: машина заїжджає зламаною, а виїжджає цілою. Колесо розбирається на деталі, кожна веде свій розділ, у калькуляторі вони збираються назад.">
 <meta name="theme-color" content="#ffcf3f">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Півоберта — концепт сайту СТО від Arvis">
-<meta property="og:description" content="Колесо розкладається на шину, диск, гальма й супорт — і калькулятор ремонту.">
+<meta property="og:description" content="Колесо розбирається, камера пролітає крізь маточину, деталі ведуть розділи, а в калькуляторі збираються назад.">
 <meta property="og:url" content="https://arvisstudio.github.io/portfolio/sto-pivoberta/">
 <meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/sto-pivoberta-og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -19,333 +19,423 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+<link rel="modulepreload" href="../engine/arvis-scroll.js">
 <script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
 <style>
-:root { --y: #ffcf3f; --k: #12141a; --w: #fffdf5; --o: #ff5a3c; --g: #e9e4d6;
+:root { --y: #ffcf3f; --k: #12141a; --w: #fffdf5; --o: #ff5a3c; --g: #e9e4d6; --steel: #2c3e50;
+  --bg: #ffcf3f; --ink: #12141a;
   --cond: "Oswald", "Arial Narrow", sans-serif; --sans: "IBM Plex Sans", system-ui, sans-serif; }
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--y); }
-body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--y); color: var(--k); font: 400 17px/1.55 var(--sans); }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--bg); color: var(--ink); font: 400 17px/1.55 var(--sans); }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--o); outline-offset: 3px; }
 .concept { position: relative; z-index: 6; background: var(--k); color: var(--w); font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
 .concept a { color: var(--y); font-weight: 700; }
 #wheel { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-.wrap > *, header > * { position: relative; z-index: 2; }
-.nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 3px solid var(--k); position: relative; z-index: 3; }
-.brand { font: 700 24px/1 var(--cond); text-transform: uppercase; letter-spacing: .02em; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+header, main, section, footer { position: relative; }
+section > *, header > * { position: relative; z-index: 2; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 3px solid var(--k); position: relative; z-index: 4; }
+.brand { font: 700 24px/1 var(--cond); text-transform: uppercase; letter-spacing: .02em; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
 .brand svg { width: 26px; height: 26px; }
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 3px solid var(--k); background: var(--k); color: var(--y);
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 22px; border: 3px solid var(--k); background: var(--k); color: var(--y);
   font: 700 17px/1 var(--cond); text-transform: uppercase; letter-spacing: .04em; text-decoration: none; cursor: pointer; }
 .nav .btn { min-height: 44px; padding: 0 14px; font-size: 15px; }
-header.hero { position: relative; min-height: calc(100svh - 110px); padding: 26px 16px 30px; display: grid; align-content: start; gap: 18px; overflow: hidden; overflow: clip; }
-h1 { font: 700 clamp(70px, 23vw, 300px)/.82 var(--cond); text-transform: uppercase; letter-spacing: -.01em; margin: 0; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+h2 { font: 700 clamp(44px, 10vw, 128px)/.9 var(--cond); text-transform: uppercase; margin: 0 0 10px; }
+.lead { margin: 0; max-width: 32ch; font: 600 clamp(18px, 2vw, 22px)/1.4 var(--sans); }
+.pad { padding: 0 16px; }
+
+/* 1. колесо: крути пальцем */
+.hero { min-height: calc(100svh - 110px); padding: 24px 0 28px; display: grid; align-content: space-between; touch-action: pan-y; cursor: grab; }
+h1 { font: 700 clamp(70px, 23vw, 300px)/.82 var(--cond); text-transform: uppercase; margin: 0; padding: 0 16px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 0; padding: 0 16px; list-style: none; }
 .tags li { background: var(--k); color: var(--y); padding: 5px 10px; font: 500 15px/1.2 var(--cond); text-transform: uppercase; letter-spacing: .05em; }
-.hero p { max-width: 22ch; margin: 0; font-weight: 700; font-size: clamp(19px, 2.2vw, 26px); line-height: 1.25; }
-.hero .low { position: absolute; left: 16px; right: 16px; bottom: 28px; display: grid; gap: 14px; justify-items: start; z-index: 2; }
+.spin-hint { margin: 10px 16px 0; display: inline-flex; gap: 8px; align-items: center; font-weight: 600; font-size: 15px; background: var(--w); border: 2px solid var(--k); padding: 6px 10px; }
+.hero .low { padding: 0 16px; display: grid; gap: 14px; justify-items: start; }
 .hero .low p { background: var(--y); }
 
-/* липка сцена: колесо розбирається */
-.explode { position: relative; height: 340vh; }
+/* 2. розбирання: липка сцена, у кінці камера влітає в маточину — її край відкриває наступний розділ */
+.explode { height: 260vh; }
 .stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; overflow: clip; }
-.stick h2 { position: absolute; left: 16px; right: 16px; top: 22px; margin: 0; font: 700 clamp(34px, 7vw, 84px)/.95 var(--cond); text-transform: uppercase; z-index: 2; }
-.stick .bar { position: absolute; left: 16px; right: 16px; bottom: 22px; height: 6px; background: rgba(18, 20, 26, .2); z-index: 2; }
-.stick .bar i { display: block; height: 100%; width: 0; background: var(--k); }
-.lab { position: absolute; left: 0; top: 0; z-index: 3; max-width: min(320px, calc(100vw - 32px)); background: var(--w); border: 2px solid var(--k); padding: 6px 9px; font-size: 16px; line-height: 1.25; opacity: 0; transition: opacity .3s; pointer-events: none; }
-.lab b { display: block; font: 700 16px/1.1 var(--cond); text-transform: uppercase; }
-.lab::before { content: ""; position: absolute; left: -9px; top: 10px; width: 12px; height: 12px; border-radius: 50%; background: var(--o); border: 2px solid var(--k); }
+.stick h2 { position: absolute; left: 16px; right: 16px; top: 22px; font-size: clamp(34px, 7vw, 84px); }
+.hole { position: absolute; inset: 0; z-index: 3; background: var(--k); color: var(--y); clip-path: circle(calc(var(--m, 0) * 150vmax) at 50% 50%); display: grid; place-items: center; text-align: center; }
+.hole b { font: 700 clamp(28px, 7vw, 84px)/1.05 var(--cond); text-transform: uppercase; padding: 0 24px; }
 
-/* калькулятор */
-.calc { background: var(--k); color: var(--w); padding: 80px 16px; position: relative; z-index: 2; }
-.calc h2, .info h2 { font: 700 clamp(44px, 9vw, 120px)/.9 var(--cond); text-transform: uppercase; margin: 0 0 10px; }
-.calc .sub { margin: 0 0 26px; color: var(--y); font-weight: 600; }
-.box { background: var(--w); color: var(--k); border: 3px solid var(--y); padding: 18px; display: grid; gap: 20px; max-width: 820px; }
+/* 3. деталі: кожна веде свій розділ */
+.part { min-height: 105vh; padding: 14vh 0 10vh; }
+.part .head { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; padding: 0 16px; }
+.slot { width: 96px; height: 96px; border: 3px solid currentColor; display: grid; place-items: center; }
+.slot svg { width: 64px; height: 64px; opacity: var(--ico, 0); transform: scale(calc(.6 + var(--ico, 0) * .4)); }
+.part h2 { margin: 0; }
+.part ul { list-style: none; padding: 0 16px; margin: 26px 0 0; max-width: 620px; border-top: 3px solid currentColor; }
+.part li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 14px 0; border-bottom: 3px solid currentColor; font-weight: 600; }
+.part li b { font: 700 18px/1.2 var(--cond); white-space: nowrap; }
+.part .note { padding: 0 16px; margin: 12px 0 0; font-size: 15px; font-weight: 600; opacity: .85; }
+
+/* 4. діагностика: жовта смуга сканера відкриває підписи «знос» */
+.diag { height: 200vh; }
+.diag .stick { display: grid; align-content: center; justify-items: center; gap: 18px; padding: 70px 16px 30px; }
+.scan { position: relative; width: min(520px, 92vw); aspect-ratio: 4 / 3; border: 3px solid currentColor; background: var(--w); overflow: hidden; }
+.scan svg.parts { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bar { position: absolute; top: 0; bottom: 0; width: 14px; left: calc(var(--s, 0) * 104% - 14px); background: var(--y); border-left: 3px solid var(--k); border-right: 3px solid var(--k); }
+.wear { position: absolute; background: var(--k); color: var(--y); font: 700 15px/1.2 var(--cond); text-transform: uppercase; padding: 5px 8px; letter-spacing: .03em; opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .3s; }
+.wear.on { opacity: 1; transform: none; }
+
+/* 5. калькулятор */
+.calc { padding: 12vh 0 12vh; }
+.box { background: var(--w); color: var(--k); border: 3px solid var(--k); padding: 18px; display: grid; gap: 20px; max-width: 820px; margin: 0 16px; }
+.spot { height: 210px; background: #f3edda; border: 2px dashed var(--k); position: relative; }
+.spot small { position: absolute; left: 10px; bottom: 8px; font-size: 14px; font-weight: 600; }
 .box h3 { margin: 0 0 10px; font: 700 18px/1 var(--cond); text-transform: uppercase; letter-spacing: .04em; }
 .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 3px solid var(--k); }
 .seg button { min-height: 48px; font: 600 15px/1.15 var(--sans); border: 0; border-right: 3px solid var(--k); background: transparent; cursor: pointer; padding: 4px; color: var(--k); }
 .seg button:last-child { border-right: 0; }
 .seg button[aria-pressed="true"] { background: var(--k); color: var(--y); }
 .jobs { display: grid; gap: 6px; }
-.jobs label { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 48px; padding: 6px 10px; border: 2px solid var(--g); cursor: pointer; }
-.jobs input { width: 22px; height: 22px; accent-color: var(--k); margin: 0; }
+.jobs label { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 50px; padding: 6px 10px; border: 2px solid var(--g); cursor: pointer; }
+.jobs input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.bolt { width: 30px; height: 30px; transition: transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+.jobs input:checked + .bolt { transform: rotate(90deg); }
+.jobs input:focus-visible + .bolt { outline: 3px solid var(--o); outline-offset: 2px; }
 .jobs label:has(input:checked) { border-color: var(--k); background: #fff3c7; }
-.jobs span { font-weight: 600; }
-.jobs em { font-style: normal; font-weight: 700; white-space: nowrap; }
+.jobs span { font-weight: 600; } .jobs em { font-style: normal; font-weight: 700; white-space: nowrap; }
+.miles { display: grid; gap: 8px; }
+.odo { display: inline-flex; gap: 2px; font: 700 30px/1 var(--cond); }
+.odo i { display: block; width: .72em; height: 1.1em; overflow: hidden; background: var(--k); color: var(--y); text-align: center; font-style: normal; }
+.odo i span { display: block; transition: transform .6s cubic-bezier(.2, .9, .25, 1.15); }
+.odo i span b { display: block; height: 1.1em; line-height: 1.1em; font-weight: 700; }
+input[type=range] { width: 100%; min-height: 44px; accent-color: var(--k); }
+.advice { margin: 0; font-weight: 600; font-size: 15px; }
 .res { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; border-top: 3px solid var(--k); padding-top: 14px; }
 .res div { background: var(--y); padding: 12px; }
 .res small { display: block; font-weight: 600; font-size: 14px; }
 .res b { font: 700 clamp(28px, 4vw, 40px)/1.05 var(--cond); }
 .res .btn, .res .done, .res .fine { grid-column: 1 / -1; }
-.fine { margin: 0; font-size: 14px; opacity: .75; }
+.wrench { width: 24px; height: 24px; }
+.btn.go .wrench { animation: none; }
+.btn.go.turn .wrench { animation: turn .6s cubic-bezier(.3, 1.4, .5, 1); }
+@keyframes turn { to { transform: rotate(360deg); } }
+.shake { animation: shake .45s; }
+@keyframes shake { 20% { transform: translateX(-6px) rotate(-1deg); } 40% { transform: translateX(5px) rotate(1deg); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+.fine { margin: 0; font-size: 14px; opacity: .8; }
 .done { margin: 0; background: #fff3c7; border: 2px solid var(--k); padding: 12px; font-weight: 600; }
-.info { padding: 80px 16px; position: relative; z-index: 2; background: var(--y); }
-.cols { display: grid; gap: 0; border-top: 3px solid var(--k); max-width: 900px; }
-.cols div { padding: 16px 0; border-bottom: 3px solid var(--k); }
+
+/* 6. приїжджайте + колесо котиться підвалом */
+.info { padding: 12vh 0 10vh; }
+.cols { display: grid; border-top: 3px solid currentColor; max-width: 900px; margin: 0 16px; }
+.cols div { padding: 16px 0; border-bottom: 3px solid currentColor; }
 .cols b { display: block; font: 700 22px/1.2 var(--cond); text-transform: uppercase; }
-footer { position: relative; z-index: 2; background: var(--k); color: var(--w); padding: 24px 16px 32px; font-size: 15px; }
+footer { z-index: 2; background: var(--k); color: var(--w); padding: 70px 16px 96px; font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; overflow: hidden; overflow: clip; }
+.road { position: absolute; left: 0; right: 0; top: 6px; height: 60px; pointer-events: none; }
+.road .trail { fill: none; stroke: var(--y); stroke-width: 6; stroke-dasharray: 6 10; }
+.road .wheel2 { transform-box: fill-box; transform-origin: center; }
+.sticky { position: fixed; z-index: 5; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translate(-50%, 160%); transition: transform .45s cubic-bezier(.2, 1.3, .4, 1); box-shadow: 4px 4px 0 var(--o); }
+.sticky.on { transform: translate(-50%, 0); }
+.js .rise { opacity: 0; transform: translateY(22px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); }
+.js .rise.in { opacity: 1; transform: none; }
 @media (min-width: 900px) {
-  .nav, header.hero, .calc, .info, footer { padding-left: 48px; padding-right: 48px; }
-  .hero .low { left: 48px; right: auto; bottom: 48px; }
-  .stick h2 { left: 48px; top: 40px; max-width: 9ch; }
-  .stick .bar { left: 48px; right: 48px; }
-  .calc, .info { padding-top: 120px; padding-bottom: 120px; }
-  .cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .lab { max-width: 260px; }
+  .nav, .pad, h1, .tags, .hero .low, .part .head, .part ul, .part .note { padding-left: 48px; padding-right: 48px; }
+  .spin-hint { margin-left: 48px; }
+  .stick h2 { left: 48px; }
+  .box { margin: 0 48px; } .cols { margin: 0 48px; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .part ul, .part .note { max-width: 720px; }
+  footer { padding-left: 48px; padding-bottom: 40px; }
 }
+@media (prefers-reduced-motion: reduce) { .js .rise { opacity: 1; transform: none; transition: none; } .sticky, .bolt, .odo i span { transition: none; } }
 </style>
 </head>
 <body>
 <div class="concept">Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи. <a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div>
 <canvas id="wheel" aria-hidden="true"></canvas>
 <nav class="nav"><a class="brand" href="#top"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="5"/><path d="M20 3a17 17 0 0 1 0 34Z" fill="currentColor"/></svg>Півоберта</a><a class="btn" href="#calc">Порахувати</a></nav>
-<header class="hero" id="top">
-  <h1>Пів&shy;оберта</h1>
-  <ul class="tags"><li>шиномонтаж</li><li>гальма</li><li>ходова</li><li>розвал</li></ul>
-  <div class="low"><p>Розкажемо, що ламається, ще до того, як ви приїдете.</p><a class="btn" href="#calc">Порахувати ремонт</a></div>
+
+<header class="hero" id="top" data-sec="hero" data-bg="#ffcf3f" data-ink="#12141a">
+  <div>
+    <h1>Пів&shy;оберта</h1>
+    <ul class="tags"><li>шиномонтаж</li><li>гальма</li><li>ходова</li><li>розвал</li></ul>
+    <p class="spin-hint" id="hint"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12a8 8 0 1 1 3 6.2M4 18v-5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>Крутни колесо пальцем — сильніше</p>
+  </div>
+  <div class="low"><p class="lead">Машина заїжджає зламаною, а виїжджає цілою. Гортай — розберемо колесо.</p><a class="btn" href="#calc">Порахувати ремонт</a></div>
 </header>
 
 <main>
-  <section class="explode" id="explode" aria-label="Колесо по деталях">
+  <section class="explode" id="explode" data-sec="explode" data-bg="#ffcf3f" data-ink="#12141a" aria-label="Колесо розбирається">
     <div class="stick">
-      <h2>Що ми робимо з колесом</h2>
-      <div class="lab" data-part="0"><b>Шина</b>Шиномонтаж, латки, сезонна заміна</div>
-      <div class="lab" data-part="1"><b>Диск</b>Балансування, рихтування</div>
-      <div class="lab" data-part="2"><b>Гальмівний диск</b>Заміна або проточка</div>
-      <div class="lab" data-part="3"><b>Супорт і колодки</b>Ремонт гальм за годину</div>
-      <div class="lab" data-part="4"><b>Маточина</b>Підшипник, діагностика ходової</div>
-      <div class="bar"><i id="bar"></i></div>
+      <h2>Розбираємо</h2>
+      <div class="hole" id="hole" aria-hidden="true"><b>Крізь маточину —<br>до кожної деталі</b></div>
     </div>
   </section>
 
-  <section class="calc" id="calc">
-    <h2>Калькулятор</h2>
-    <p class="sub">Оберіть авто і що зробити — побачите приклад ціни й часу.</p>
+  <section class="part" id="p-rim" data-sec="rim" data-bg="#12141a" data-ink="#ffcf3f">
+    <div class="head"><div class="slot" data-part="1"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="32" r="7" fill="currentColor"/><path d="M32 25V8M38 35l15 8M26 35l-15 8" stroke="currentColor" stroke-width="5"/></svg></div><h2>Диск</h2></div>
+    <ul><li>Балансування<b>від 400 ₴</b></li><li>Рихтування литого диска<b>від 700 ₴</b></li><li>Фарбування<b>від 1200 ₴</b></li></ul>
+    <p class="note">Приклад ціни — справжні поставить СТО.</p>
+  </section>
+  <section class="part" id="p-tire" data-sec="tire" data-bg="#fffdf5" data-ink="#12141a">
+    <div class="head"><div class="slot" data-part="0"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-width="9"/><circle cx="32" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="3"/><path d="M8 24l6 2M8 40l6-2M56 24l-6 2M56 40l-6-2" stroke="currentColor" stroke-width="3"/></svg></div><h2>Шина</h2></div>
+    <ul><li>Шиномонтаж, 4 колеса<b>від 600 ₴</b></li><li>Латка проколу<b>від 200 ₴</b></li><li>Сезонне зберігання<b>від 800 ₴</b></li></ul>
+    <p class="note">Приклад ціни — справжні поставить СТО.</p>
+  </section>
+  <section class="part" id="p-brake" data-sec="brake" data-bg="#ff5a3c" data-ink="#12141a">
+    <div class="head"><div class="slot" data-part="2"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="32" cy="32" r="6" fill="currentColor"/><path d="M44 10a26 26 0 0 1 12 18l-10 3a16 16 0 0 0-7-11z" fill="currentColor"/></svg></div><h2>Гальма</h2></div>
+    <ul><li>Колодки, одна вісь<b>від 500 ₴</b></li><li>Гальмівні диски, вісь<b>від 900 ₴</b></li><li>Прокачка рідини<b>від 450 ₴</b></li></ul>
+    <p class="note">Приклад ціни — справжні поставить СТО.</p>
+  </section>
+  <section class="part" id="p-susp" data-sec="susp" data-bg="#2c3e50" data-ink="#fffdf5">
+    <div class="head"><div class="slot" data-part="5"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24M20 56h24M22 14l20 6-20 6 20 6-20 6 20 6-20 6" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/></svg></div><h2>Підвіска</h2></div>
+    <ul><li>Діагностика ходової<b>від 300 ₴</b></li><li>Розвал-сходження<b>від 700 ₴</b></li><li>Заміна амортизатора<b>від 900 ₴</b></li></ul>
+    <p class="note">Приклад ціни — справжні поставить СТО.</p>
+  </section>
+
+  <section class="diag" id="diag" data-sec="diag" data-bg="#fffdf5" data-ink="#12141a">
+    <div class="stick">
+      <h2 style="position:static">Діагностика</h2>
+      <div class="scan" id="scan">
+        <svg class="parts" viewBox="0 0 400 300" aria-hidden="true">
+          <circle cx="150" cy="150" r="110" fill="#e9e4d6" stroke="#12141a" stroke-width="4"/><circle cx="150" cy="150" r="34" fill="#12141a"/>
+          <g stroke="#12141a" stroke-width="3"><path d="M150 60v20M150 220v20M60 150h20M220 150h20M86 86l14 14M200 200l14 14M214 86l-14 14M100 200l-14 14"/></g>
+          <path d="M235 75a110 110 0 0 1 30 150l-34-10a72 72 0 0 0-20-100z" fill="#ff5a3c" stroke="#12141a" stroke-width="4"/>
+          <rect x="300" y="40" width="34" height="220" rx="6" fill="#2c3e50" stroke="#12141a" stroke-width="4"/>
+          <path d="M306 70h22M306 100h22M306 130h22M306 160h22M306 190h22M306 220h22" stroke="#fffdf5" stroke-width="4"/>
+        </svg>
+        <div class="bar" aria-hidden="true"></div>
+        <span class="wear" data-x="0.2" style="left:6%;top:12%">Диск: биття</span>
+        <span class="wear" data-x="0.45" style="left:28%;top:70%">Колодки: стерлися</span>
+        <span class="wear" data-x="0.66" style="left:52%;top:8%">Супорт: закис</span>
+        <span class="wear" data-x="0.85" style="left:58%;top:84%">Амортизатор: потік</span>
+      </div>
+      <p class="lead" style="text-align:center">Жовта смуга сканера йде разом з прокруткою — так ми шукаємо знос. Підписи — приклад.</p>
+    </div>
+  </section>
+
+  <section class="calc" id="calc" data-sec="calc" data-bg="#12141a" data-ink="#fffdf5">
+    <div class="pad"><h2>Калькулятор</h2><p class="lead" style="margin-bottom:22px">Відмічай роботи — деталі прилітають і збираються в колесо.</p></div>
     <div class="box">
+      <div class="spot" id="spot"><small>ваше колесо</small></div>
       <div><h3>Авто</h3><div class="seg" id="car"></div></div>
       <div><h3>Роботи</h3><div class="jobs" id="jobs"></div></div>
+      <div class="miles"><h3>Пробіг</h3><div class="odo" id="odo" aria-hidden="true"></div><input type="range" id="km" min="0" max="300000" step="10000" value="90000" aria-label="Пробіг, кілометрів"><p class="advice" id="adv"></p></div>
       <div class="res">
         <div><small>Приклад ціни</small><b id="price">0 ₴</b></div>
         <div><small>Займе приблизно</small><b id="time">—</b></div>
-        <p class="fine">Приклад цін, запчастини окремо. Справжні ціни поставить СТО.</p>
-        <button class="btn" type="button" id="go">Записатися на ремонт</button>
+        <p class="fine">Приклад ціни, запчастини окремо. Справжні ціни поставить СТО.</p>
+        <button class="btn go" type="button" id="go"><svg class="wrench" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6a4 4 0 0 0 5 5l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-2-2z" fill="currentColor"/></svg>Розрахувати і записатися</button>
         <p class="done" id="done" hidden>Це концепт: на справжньому сайті заявка прийде в Telegram, а майстер передзвонить і назве точну ціну.</p>
       </div>
     </div>
   </section>
 
-  <section class="info">
-    <h2>Приїжджайте</h2>
-    <div class="cols">
+  <section class="info" id="info" data-sec="info" data-bg="#ffcf3f" data-ink="#12141a">
+    <div class="pad"><h2 class="rise">Приїжджайте</h2></div>
+    <div class="cols rise">
       <div><b>Адреса</b>Тут буде ваша адреса і карта заїзду.</div>
       <div><b>Телефон</b>Тут буде ваш номер.</div>
       <div><b>Відгуки</b>Тут будуть відгуки ваших клієнтів.</div>
     </div>
   </section>
 </main>
-<footer>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></footer>
+<footer id="foot">
+  <svg class="road" id="road" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path class="trail" id="trail" d="M1000 50H0"/></svg>
+  <svg id="w2" viewBox="0 0 40 40" width="44" height="44" aria-hidden="true" style="position:absolute;top:10px;left:0"><g class="wheel2" id="w2g"><circle cx="20" cy="20" r="18" fill="#12141a" stroke="#ffcf3f" stroke-width="3"/><circle cx="20" cy="20" r="8" fill="none" stroke="#ffcf3f" stroke-width="3"/><path d="M20 2v10M20 28v10M2 20h10M28 20h10" stroke="#ffcf3f" stroke-width="3"/></g></svg>
+  Сайт зроблено командою&nbsp;<a href="https://arvisstudio.github.io">Arvis</a>
+</footer>
+<a class="btn sticky" id="sticky" href="#calc"><svg class="wrench" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6a4 4 0 0 0 5 5l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 0-2-2z" fill="currentColor"/></svg>Порахувати</a>
 
 <script type="module">
-const still = /still/.test(location.search);
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const weak = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 8) <= 4;
-const coarse = matchMedia('(pointer: coarse)').matches;
-// ---- набір Arvis для 3D: цикл кадрів, що не падає ----
-// втрата WebGL-контексту → полотно ховається, сайт працює далі; вікно 0×0 → не малюємо; пішли зі сторінки → звільняємо GPU;
-// повільні кадри → менше пікселів, потім 30 к/с
-const kit = { dead: false, paused: false, gap: weak ? 1000 / 31 : 0, w: innerWidth, h: innerHeight, onDead: null };
-function kill3D() {
-  if (kit.dead) return;
-  kit.dead = true;
-  if (kit.renderer) kit.renderer.domElement.style.display = 'none';
-  if (kit.onDead) try { kit.onDead(); } catch (e) { /* нічого */ }
-}
-function guard3D(canvas, renderer, onResize) {
-  kit.renderer = renderer; kit.onResize = onResize; kit.pr = renderer.getPixelRatio();
-  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); kill3D(); });
-  addEventListener('pagehide', (e) => { kit.paused = true; if (!e.persisted) try { renderer.dispose(); } catch (err) { /* нічого */ } });
-  addEventListener('pageshow', (e) => { if (e.persisted) kit.paused = false; });
-}
-function safeDraw(fn, dt) {
-  if (kit.dead || kit.paused || !(innerWidth > 0 && innerHeight > 0)) return;
-  try {
-    if (innerWidth !== kit.w || innerHeight !== kit.h) { kit.w = innerWidth; kit.h = innerHeight; if (kit.onResize) kit.onResize(); }
-    fn(dt);
-  } catch (e) { kill3D(); }
-}
-function loop(fn) {
-  let last = performance.now(), acc = 0, n = 0;
-  (function tick(now) {
-    if (kit.dead) return;
-    requestAnimationFrame(tick);
-    if (document.hidden || kit.paused) { last = now; return; }
-    if (now - last < kit.gap) return;
-    const raw = (now - last) / 1000; last = now;
-    acc += raw; n++;
-    if (n === 45) {
-      if (acc / n > 1 / 40 && kit.renderer) {
-        if (kit.pr > 1.01) { kit.pr = Math.max(1, kit.pr - 0.35); kit.renderer.setPixelRatio(kit.pr); if (kit.onResize) try { kit.onResize(); } catch (e) { /* нічого */ } }
-        else kit.gap = 1000 / 31;
-      }
-      acc = 0; n = 0;
-    }
-    safeDraw(fn, Math.min(0.05, raw));
-  })(last);
-}
-const $ = (s) => document.querySelector(s);
+import { reduce, weak, calm, clamp, lerp, seg, smooth, sec, track, blendColors, reveal, createStage, studioEnv, run, stickyCTA, arvisCursor, haptic, S } from '../engine/arvis-scroll.js';
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+track(); reveal();
+stickyCTA($('#sticky'), $('#top'), $('#calc'));
+arvisCursor($('#foot'));
 
-// ---------- калькулятор ----------
+// ---------- калькулятор (працює і без 3D) ----------
 const CARS = [['Легкова', 1], ['Кросовер', 1.2], ['Бус', 1.4]];
-const JOBS = [['Шиномонтаж, 4 колеса', 600, 40, 1], ['Балансування', 400, 30, 1], ['Колодки, одна вісь', 500, 45, 0], ['Гальмівні диски, вісь', 900, 70, 0],
-  ['Діагностика ходової', 300, 30, 0], ['Розвал-сходження', 700, 50, 0], ['Заміна мастила', 350, 25, 0]];
+// [назва, ціна, хвилини, деталь колеса: 0 шина, 1 диск, 2 гальм. диск, 3 супорт, 4 маточина, 5 пружина]
+const JOBS = [['Шиномонтаж, 4 колеса', 600, 40, 0, 1], ['Балансування', 400, 30, 1, 1], ['Колодки, одна вісь', 500, 45, 3, 0], ['Гальмівні диски, вісь', 900, 70, 2, 0],
+  ['Діагностика ходової', 300, 30, 5, 0], ['Розвал-сходження', 700, 50, 4, 0], ['Заміна мастила', 350, 25, 4, 0]];
+const BOLT = '<svg class="bolt" viewBox="0 0 30 30" aria-hidden="true"><path d="M15 2l11 6.5v13L15 28 4 21.5v-13z" fill="#ffcf3f" stroke="#12141a" stroke-width="2.5"/><path d="M9 15h12" stroke="#12141a" stroke-width="3" stroke-linecap="round"/></svg>';
 let car = 0;
 $('#car').innerHTML = CARS.map(([n], i) => `<button type="button" data-i="${i}" aria-pressed="${i === car}">${n}</button>`).join('');
-$('#jobs').innerHTML = JOBS.map(([n, p, , on], i) => `<label><input type="checkbox" data-i="${i}"${on ? ' checked' : ''}><span>${n}</span><em>від ${p} ₴</em></label>`).join('');
+$('#jobs').innerHTML = JOBS.map(([n, p, , , on], i) => `<label><input type="checkbox" data-i="${i}"${on ? ' checked' : ''}>${BOLT}<span>${n}</span><em>від ${p} ₴</em></label>`).join('');
 $('#car').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; car = +b.dataset.i; $('#car').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); calc(); };
-$('#jobs').onchange = calc;
-$('#go').onclick = () => { $('#done').hidden = false; };
+$('#jobs').onchange = (e) => { if (e.target.checked) haptic(8); calc(); };
+const km = $('#km'), odo = $('#odo');
+odo.innerHTML = [...Array(6)].map(() => `<i><span>${[...Array(10)].map((_, d) => `<b>${d}</b>`).join('')}</span></i>`).join('');
+function miles() {
+  const v = +km.value, s = String(v).padStart(6, '0');
+  [...s].forEach((c, i) => { odo.children[i].firstChild.style.transform = `translateY(${-c * 1.1}em)`; });
+  $('#adv').textContent = v >= 150000 ? 'Великий пробіг — варто додати діагностику ходової.' : v >= 60000 ? 'Час перевірити колодки й диски.' : 'Свіже авто — вистачить сезонного шиномонтажу.';
+}
+km.addEventListener('input', miles); miles();
+let partsOn = new Set();
 function calc() {
-  let p = 0, t = 0;
-  $('#jobs').querySelectorAll('input:checked').forEach((c) => { const j = JOBS[+c.dataset.i]; p += j[1]; t += j[2]; });
+  let p = 0, t = 0; partsOn = new Set();
+  $('#jobs').querySelectorAll('input:checked').forEach((c) => { const j = JOBS[+c.dataset.i]; p += j[1]; t += j[2]; partsOn.add(j[3]); });
   p = Math.round(p * CARS[car][1] / 10) * 10; t = Math.round(t * (1 + (CARS[car][1] - 1) / 2));
   $('#price').textContent = `${p.toLocaleString('uk-UA')} ₴`;
-  $('#time').textContent = t ? (t >= 60 ? `${Math.floor(t / 60)} год ${t % 60 ? (t % 60) + ' хв' : ''}` : `${t} хв`) : '—';
+  $('#time').textContent = t ? (t >= 60 ? `${Math.floor(t / 60)} год ${t % 60 ? (t % 60) + ' хв' : ''}`.trim() : `${t} хв`) : '—';
   $('#done').hidden = true;
 }
 calc();
+$('#go').onclick = (e) => {
+  const b = e.currentTarget;
+  if (!partsOn.size) { const j = $('#jobs'); j.classList.remove('shake'); void j.offsetWidth; j.classList.add('shake'); $('#time').textContent = 'оберіть роботу'; return; }
+  b.classList.remove('turn'); void b.offsetWidth; b.classList.add('turn');
+  $('#done').hidden = false; haptic(10);
+};
+
+// ---------- діагностика: смуга сканера ----------
+const scan = $('#scan'), wears = $$('.wear');
+function scanner(c) {
+  const s = calm ? 1 : seg(c, 0.2, 0.8);
+  scan.style.setProperty('--s', s.toFixed(3));
+  wears.forEach((w) => w.classList.toggle('on', s >= +w.dataset.x));
+}
+// ---------- підвал: колесо котиться і лишає слід ----------
+const trail = $('#trail'), w2 = $('#w2'), w2g = $('#w2g'), foot = $('#foot');
+function roll() {
+  const r = foot.getBoundingClientRect(), k = calm ? 1 : clamp((innerHeight - r.top) / Math.max(1, r.height + 60));
+  const W = foot.clientWidth, x = (1 - k) * (W - 44);
+  w2.style.transform = `translateX(${x.toFixed(1)}px)`; w2g.style.transform = `rotate(${(-x / 20 * 57.3).toFixed(1)}deg)`;
+  trail.style.strokeDashoffset = 0; trail.setAttribute('d', `M1000 50H${(x / W * 1000 + 20).toFixed(0)}`);
+}
 
 // ---------- 3D-колесо ----------
 let THREE = null;
 try { THREE = await import('three'); } catch (e) { /* без 3D */ }
-const canvas = $('#wheel');
-let renderer = null;
-if (THREE) try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !weak, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
-const labs = [...document.querySelectorAll('.lab')];
-if (!renderer) labs.forEach((l, i) => { l.style.opacity = 1; l.style.position = 'relative'; l.style.margin = '6px 16px'; });
-else try {
-  renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : coarse ? 1.5 : 1.75));
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+const stage = createStage(THREE, $('#wheel'), { onLost: () => $$('.slot').forEach((s) => s.style.setProperty('--ico', 1)) });
+let wheel3 = null;
+if (!stage) $$('.slot').forEach((s) => s.style.setProperty('--ico', 1));
+else {
+  const { renderer } = stage;
+  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(30, 1, 0.1, 200);
   camera.position.set(0, 0, 13);
-  const pmrem = new THREE.PMREMGenerator(renderer), env = new THREE.Scene();
-  env.add(new THREE.Mesh(new THREE.BoxGeometry(30, 30, 30), new THREE.MeshBasicMaterial({ color: 0x5c5546, side: THREE.BackSide })));
-  [[24, 4, '#ffffff', 5, 0, 13, 4], [4, 20, '#fff2c0', 3, -13, 0, 4], [4, 20, '#ffffff', 3, 13, 0, -2], [12, 4, '#ffcf3f', 2, 0, -12, 6]].forEach(([w, h, c, k, x, y, z]) => {
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(k), side: THREE.DoubleSide }));
-    m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
-  });
-  scene.environment = pmrem.fromScene(env, 0.04).texture;
+  scene.environment = studioEnv(THREE, renderer, 0x5c5546, [[24, 4, '#ffffff', 5, 0, 13, 4], [4, 20, '#fff2c0', 3, -13, 0, 4], [4, 20, '#ffffff', 3, 13, 0, -2], [12, 4, '#ffcf3f', 2, 0, -12, 6]]);
   const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(-5, 6, 8); scene.add(key);
-  const seg = weak ? 40 : 80;
-  const V = (pts) => pts.map(([x, y]) => new THREE.Vector2(x, y));
-
-  // колесо: вісь — Y (потім повернемо на глядача); кожна деталь — своя група, що від'їжджає вздовж осі
+  const segs = weak ? 40 : 72, V = (pts) => pts.map(([x, y]) => new THREE.Vector2(x, y));
   const wheel = new THREE.Group(); scene.add(wheel);
   const parts = [];
-  const part = (offset) => { const g = new THREE.Group(); g.userData.off = offset; wheel.add(g); parts.push(g); return g; };
-  // 0 шина: профіль із протектором
+  const part = (off) => { const g = new THREE.Group(); g.userData = { off, fly: 0, v: 0 }; wheel.add(g); parts.push(g); return g; };
+  // 0 шина
   const tire = part(-1.6);
-  const tp = [[1.2, -0.46], [1.62, -0.5], [1.84, -0.44], [1.96, -0.3], [1.98, 0.3], [1.84, 0.44], [1.62, 0.5], [1.2, 0.46]];
-  tire.add(new THREE.Mesh(new THREE.LatheGeometry(V(tp), seg), new THREE.MeshStandardMaterial({ color: 0x1b1b1d, roughness: 0.78, metalness: 0 })));
+  tire.add(new THREE.Mesh(new THREE.LatheGeometry(V([[1.2, -0.46], [1.62, -0.5], [1.84, -0.44], [1.96, -0.3], [1.98, 0.3], [1.84, 0.44], [1.62, 0.5], [1.2, 0.46]]), segs), new THREE.MeshStandardMaterial({ color: 0x1b1b1d, roughness: 0.78 })));
   const grooveM = new THREE.MeshStandardMaterial({ color: 0x0b0b0c, roughness: 0.9 });
-  [-0.2, 0, 0.2].forEach((y) => { const r = new THREE.Mesh(new THREE.TorusGeometry(1.985, 0.025, 6, seg), grooveM); r.rotation.x = Math.PI / 2; r.position.y = y; tire.add(r); });
-  // 1 диск: обід + 5 спиць
+  [-0.2, 0, 0.2].forEach((y) => { const r = new THREE.Mesh(new THREE.TorusGeometry(1.985, 0.025, 6, segs), grooveM); r.rotation.x = Math.PI / 2; r.position.y = y; tire.add(r); });
+  // 1 диск зі спицями
   const rim = part(0);
   const metal = new THREE.MeshStandardMaterial({ color: 0xdfe2e6, metalness: 1, roughness: 0.22 });
-  rim.add(new THREE.Mesh(new THREE.LatheGeometry(V([[1.22, -0.44], [1.32, -0.42], [1.24, -0.3], [1.18, 0.3], [1.3, 0.4], [1.2, 0.44], [1.1, 0.4], [1.12, -0.4]]), seg), metal));
+  rim.add(new THREE.Mesh(new THREE.LatheGeometry(V([[1.22, -0.44], [1.32, -0.42], [1.24, -0.3], [1.18, 0.3], [1.3, 0.4], [1.2, 0.44], [1.1, 0.4], [1.12, -0.4]]), segs), metal));
   const spokeG = new THREE.BoxGeometry(0.2, 0.12, 1.05);
-  for (let i = 0; i < 5; i++) { const s = new THREE.Mesh(spokeG, metal); const a = i / 5 * Math.PI * 2; s.position.set(Math.cos(a) * 0.66, 0.34, Math.sin(a) * 0.66); s.rotation.y = -a + Math.PI / 2; rim.add(s); }
-  rim.add(new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.38, 0.2, 32), metal).translateY(0.34));
-  // 2 гальмівний диск з вентиляцією
-  const disc = part(1.6);
-  disc.add(new THREE.Mesh(new THREE.CylinderGeometry(1.02, 1.02, 0.12, seg), new THREE.MeshStandardMaterial({ color: 0x9a9ca0, metalness: 0.9, roughness: 0.42 })));
+  for (let i = 0; i < 5; i++) { const s = new THREE.Mesh(spokeG, metal), a = i / 5 * Math.PI * 2; s.position.set(Math.cos(a) * 0.66, 0.34, Math.sin(a) * 0.66); s.rotation.y = -a + Math.PI / 2; rim.add(s); }
+  // 2 гальмівний диск
+  const disc = part(1.4);
+  disc.add(new THREE.Mesh(new THREE.CylinderGeometry(1.02, 1.02, 0.12, segs), new THREE.MeshStandardMaterial({ color: 0x9a9ca0, metalness: 0.9, roughness: 0.42 })));
   const holeM = new THREE.MeshStandardMaterial({ color: 0x2a2a2c, roughness: 0.7 }), holeG = new THREE.CylinderGeometry(0.045, 0.045, 0.14, 8);
-  for (let i = 0; i < (weak ? 18 : 30); i++) { const h = new THREE.Mesh(holeG, holeM); const a = i / (weak ? 18 : 30) * Math.PI * 2, r = 0.62 + (i % 3) * 0.12; h.position.set(Math.cos(a) * r, 0, Math.sin(a) * r); disc.add(h); }
-  disc.add(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.2, 32), new THREE.MeshStandardMaterial({ color: 0x6d6f73, metalness: 0.8, roughness: 0.5 })));
-  // 3 супорт — коралова скоба на краю диска
-  const cal = part(2.9);
-  const calM = new THREE.MeshPhysicalMaterial({ color: 0xff5a3c, roughness: 0.32, clearcoat: 1 });
-  const calBody = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.5, 24, 1, false, -0.55, 1.1), calM);
-  cal.add(calBody);
-  const padM = new THREE.MeshStandardMaterial({ color: 0x3a3a3a, roughness: 0.8 });
-  [-0.13, 0.13].forEach((y) => { const p = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 0.06, 16, 1, false, -0.45, 0.9), padM); p.position.y = y; cal.add(p); });
-  // 4 маточина з болтами
-  const hub = part(4.1);
+  for (let i = 0; i < (weak ? 18 : 30); i++) { const h = new THREE.Mesh(holeG, holeM), a = i / (weak ? 18 : 30) * Math.PI * 2, r = 0.62 + (i % 3) * 0.12; h.position.set(Math.cos(a) * r, 0, Math.sin(a) * r); disc.add(h); }
+  // 3 супорт
+  const cal = part(2.5);
+  cal.add(new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 0.5, 24, 1, false, -0.55, 1.1), new THREE.MeshPhysicalMaterial({ color: 0xff5a3c, roughness: 0.32, clearcoat: 1 })));
+  // 4 маточина
+  const hub = part(3.5);
   hub.add(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.42, 0.7, 32), metal));
-  const boltG = new THREE.CylinderGeometry(0.07, 0.07, 0.5, 12);
-  for (let i = 0; i < 5; i++) { const b = new THREE.Mesh(boltG, metal); const a = i / 5 * Math.PI * 2 + 0.6; b.position.set(Math.cos(a) * 0.24, 0.3, Math.sin(a) * 0.24); hub.add(b); }
-  const anchors = parts.map(() => new THREE.Vector3());
-  const anchorLocal = [new THREE.Vector3(1.98, 0, 0), new THREE.Vector3(1.25, 0, 0.0), new THREE.Vector3(0.9, 0, 0.5), new THREE.Vector3(1.2, 0, 0.3), new THREE.Vector3(0.4, 0.3, 0)];
-
+  for (let i = 0; i < 5; i++) { const b = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.5, 12), metal), a = i / 5 * Math.PI * 2 + 0.6; b.position.set(Math.cos(a) * 0.24, 0.3, Math.sin(a) * 0.24); hub.add(b); }
+  // 5 пружина підвіски (спіраль)
+  const spring = part(4.6);
+  { class Helix extends THREE.Curve { getPoint(t, out = new THREE.Vector3()) { const a = t * Math.PI * 2 * 6; return out.set(Math.cos(a) * 0.5, t * 2.2 - 1.1, Math.sin(a) * 0.5); } }
+    spring.add(new THREE.Mesh(new THREE.TubeGeometry(new Helix(), weak ? 120 : 220, 0.09, 8, false), new THREE.MeshPhysicalMaterial({ color: 0x2c3e50, roughness: 0.3, clearcoat: 1 }))); }
+  const PARTS_FOR = { rim: 1, tire: 0, brake: 2, susp: 5 };
   let W = 1, H = 1;
-  function resize() {
-    renderer.setSize(innerWidth, innerHeight, false);
-    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-    H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect;
-  }
-  resize(); addEventListener('resize', () => { resize(); safeDraw(draw, 0); });
+  stage.onResize = (w, h) => { camera.aspect = w / h; camera.updateProjectionMatrix(); H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect; };
+  const fromScreen = (x, y) => [(x / innerWidth * 2 - 1) * W, -(y / innerHeight * 2 - 1) * H];
 
-  const ex = $('#explode'), calcEl = $('#calc'), bar = $('#bar');
-  let lastY = scrollY, vel = 0, spin = 0, shownE = 0, time = 0;
-  const v3 = new THREE.Vector3();
-  function draw(dt) {
-    const y = scrollY;
-    if (dt) vel += ((y - lastY) / dt - vel) * Math.min(1, dt * 6); lastY = y;
-    time += dt;
-    // колесо видно тільки до калькулятора: далі не малюємо зовсім
-    const cTop = calcEl.getBoundingClientRect().top;
-    const visible = cTop > 0;
-    canvas.style.visibility = visible ? 'visible' : 'hidden';
-    if (!visible) return;
-    const r = ex.getBoundingClientRect();
-    const pe = Math.min(1, Math.max(0, -r.top / (r.height - innerHeight)));   // прогрес липкої сцени
-    const enter = Math.min(1, Math.max(0, 1 - r.top / innerHeight));         // 0 — сцена ще внизу, 1 — прилипла
-    shownE = (still || reduce || !dt) ? pe : shownE + (pe - shownE) * Math.min(1, dt * 6);
-    bar.style.width = (pe * 100).toFixed(1) + '%';
-    const phone = innerWidth < 700;
-    const fast = reduce ? 0 : Math.max(-3000, Math.min(3000, vel)) / 1000;
-    spin += dt * (0.25 + fast * 3) * (1 - shownE * 0.7);
-    // розбирання: деталі роз'їжджаються вздовж осі (0.15…0.75 прогресу), у кінці трохи збираються назад
-    const k = Math.min(1, Math.max(0, (shownE - 0.08) / 0.42));
-    const e = k * k * (3 - 2 * k);
-    parts.forEach((g, i) => { g.position.y = g.userData.off * e * (phone ? 0.62 : 1); g.rotation.y = spin * (i === 3 ? 0 : 1); });
-    // поза: у першому екрані — внизу праворуч, ребром; у сцені — по центру, вісь по діагоналі
-    const sz = phone ? Math.min(1, W / 1.8) : Math.min(1.25, H / 3.2);
-    const hx = (phone ? 0.42 : 0.45) * W, hy = (phone ? -0.42 : -0.12) * H;
-    const cx = phone ? 0 : 0.18 * W, cy = phone ? -0.08 * H : -0.04 * H;
-    wheel.position.set(hx + (cx - hx) * enter, hy + (cy - hy) * enter, 0);
-    wheel.scale.setScalar(sz * (1 - (phone ? 0.22 : 0.32) * e));
-    wheel.rotation.set(Math.PI / 2 - 0.15 + (0.95 - (phone ? 0.55 : 0.75)) * e * 0 - 0.75 * enter * 1 + 0.2, 0, -0.35 - 0.5 * e + fast * 0.02);
-    wheel.rotation.x = Math.PI / 2 - 0.2 - 0.85 * enter;
-    wheel.rotation.z = -0.25 - (phone ? 0.75 : 0.95) * e;
-    renderer.render(scene, camera);
-    // підписи: на телефоні — по одній по черзі, на комп'ютері — всі, розсунуті, щоб не налазили
-    const ready = e > 0.98 && enter > 0.98;
-    const seq = Math.min(labs.length - 1, Math.floor((shownE - 0.6) / 0.4 * labs.length));
-    const pos = [];
-    labs.forEach((l, i) => {
-      const show = ready && (phone ? i === seq || (still && i === 1) : true);
-      l.style.opacity = show ? 1 : 0;
-      if (!show) return;
-      v3.copy(anchorLocal[i]); parts[i].localToWorld(v3); v3.project(camera);
-      pos.push({ l, x: (v3.x * 0.5 + 0.5) * innerWidth, y: (-v3.y * 0.5 + 0.5) * innerHeight, h: l.offsetHeight, w: l.offsetWidth });
-    });
-    pos.sort((a, b) => a.y - b.y);
-    let floor = 110;
-    for (const q of pos) {
-      const y0 = Math.max(floor, Math.min(innerHeight - q.h - 40, q.y - 12));
-      floor = y0 + q.h + 8;
-      const x0 = phone ? 16 : Math.min(innerWidth - q.w - 8, Math.max(8, q.x + 14));
-      q.l.style.transform = `translate(${x0.toFixed(0)}px, ${(phone ? innerHeight - q.h - 46 : y0).toFixed(0)}px)`;
+  // крути колесо пальцем: інерція ×0,95 за кадр, понад 8 рад/с — деталі розлітаються і пружиною повертаються
+  let ang = 0, angV = 0, drag = null, burst = 0, burstV = 0;
+  const heroEl = $('#top');
+  heroEl.addEventListener('pointerdown', (e) => { drag = { x: e.clientX, t: performance.now() }; }, { passive: true });
+  addEventListener('pointermove', (e) => { if (!drag) return; const now = performance.now(), dx = e.clientX - drag.x, dt = Math.max(8, now - drag.t) / 1000; angV = clamp(-dx / 60 / dt, -20, 20); ang -= dx / 60; drag = { x: e.clientX, t: now }; }, { passive: true });
+  addEventListener('pointerup', () => { drag = null; }, { passive: true });
+  addEventListener('pointercancel', () => { drag = null; }, { passive: true });
+
+  const wheelCv = $('#wheel'), spot = $('#spot'), hole = $('#hole'), slots = Object.fromEntries($$('.slot').map((s) => [s.dataset.part, s]));
+  const flyIn = parts.map(() => ({ v: 0, k: 0 }));
+  wheel3 = (dt, t) => {
+    const phone = innerWidth < 700, step = dt || 0.016;
+    const hero = sec('hero'), ex = sec('explode'), calcS = sec('calc');
+    // інерція і розліт від сильної прокрутки пальцем
+    if (!drag && !calm) { angV *= Math.pow(0.95, step * 60); ang += angV * step; }
+    if (Math.abs(angV) > 8 && burst < 0.5) { burstV = 6; $('#hint').textContent = 'Ого! Деталі розлетілись — і повернулись на місце'; haptic(15); }
+    burstV += (-burst * 260 - burstV * 18) * step; burst += burstV * step;   // пружина: жорсткість 260, згасання 18
+    if (calm) burst = 0;
+    const sc = phone ? Math.min(1, W / 1.9) : Math.min(1.25, H / 3.2);
+    // фази: перший екран → розбирання → політ у маточину → деталі по розділах → калькулятор
+    const e = calm ? 0.6 : smooth(0.05, 0.42, ex.c), fly = calm ? 0 : smooth(0.48, 0.86, ex.c);
+    hole.style.setProperty('--m', (calm ? 0 : smooth(0.62, 0.96, ex.c)).toFixed(3));
+    const toCalc = smooth(0.12, 0.3, calcS.raw);
+    let x = phone ? 0.22 * W : 0.38 * W, y = phone ? -0.42 * H : -0.12 * H, s = sc;
+    const enter = smooth(0, 0.5, ex.raw * 2);
+    x = lerp(x, 0, enter); y = lerp(y, -0.05 * H, enter);
+    s *= 1 + fly * 9;                                       // камера «влітає» в маточину: колесо росте, отвір — у центр екрана
+    let rx = Math.PI / 2 - 0.2 - 0.85 * enter, rz = -0.25 - 0.95 * e;
+    rx = lerp(rx, Math.PI / 2, fly); rz = lerp(rz, 0, fly);
+    const inParts = ex.c > 0.97 && toCalc === 0;
+    // у розділі «деталь»: одна деталь летить до свого значка і стає SVG-іконкою
+    let solo = -1, soloK = 0;
+    for (const [id, pi] of Object.entries(PARTS_FOR)) {
+      const sP = sec(id), k = seg(sP.raw, 0.04, 0.3);
+      slots[pi].style.setProperty('--ico', (calm ? 1 : smooth(0.28, 0.36, sP.raw)).toFixed(3));
+      if (solo < 0 && sP.raw > 0.01 && sP.raw < 0.35 && !calm) { solo = pi; soloK = k; }
     }
-  }
-  guard3D(canvas, renderer, resize);
-  kit.onDead = () => labs.forEach((l) => { l.style.opacity = 1; l.style.position = 'relative'; l.style.margin = '6px 16px'; l.style.transform = 'none'; });
-  const once = () => safeDraw(draw, 0);
-  once();
-  if (reduce || still) { addEventListener('scroll', once, { passive: true }); if (still) setTimeout(once, 400); }
-  else loop(draw);
-} catch (e) { canvas.style.display = 'none'; kit.dead = true; (() => labs.forEach((l) => { l.style.opacity = 1; l.style.position = 'relative'; l.style.margin = '6px 16px'; l.style.transform = 'none'; }))(); }
+    wheel.visible = !inParts || solo >= 0 || toCalc > 0;
+    if (toCalc > 0) {
+      // калькулятор: колесо у віконці, деталі прилітають, коли відмічаєш роботу
+      const r = spot.getBoundingClientRect(), [wx, wy] = fromScreen(r.left + r.width / 2, r.top + r.height / 2);
+      x = lerp(0, wx, toCalc); y = lerp(-0.05 * H, wy, toCalc); s = lerp(sc, r.height / innerHeight * H * 0.44, toCalc);
+      rx = 1.1; rz = -0.4;
+    }
+    wheel.position.set(x, y, 0); wheel.scale.setScalar(s);
+    wheel.rotation.set(rx, 0, rz);
+    parts.forEach((g, i) => {
+      let off = g.userData.off * (e * (1 - fly)) + g.userData.off * burst * 0.8;
+      let vis = true, local = null;
+      if (inParts && toCalc === 0) {
+        vis = i === solo;
+        if (vis) {
+          const r = slots[i].getBoundingClientRect(), [tx, ty] = fromScreen(r.left + r.width / 2, r.top + r.height / 2);
+          local = [lerp(0, tx, soloK), lerp(0, ty, soloK), lerp(sc * 1.4, r.width / innerHeight * H * 0.42, soloK)];
+        }
+      }
+      if (toCalc > 0.5) {
+        // деталь прилітає з осі пружиною, коли робота відмічена
+        const want = partsOn.has(i) || i === 1 ? 1 : 0, f = flyIn[i];
+        f.v += ((want - f.k) * 200 - f.v * 16) * step; f.k += f.v * step; if (calm) f.k = want;
+        off = g.userData.off + (1 - f.k) * 4; vis = f.k > 0.02;
+      }
+      if (!local && toCalc <= 0.5 && i >= 4 && (e + burst < 0.15 || toCalc > 0)) vis = false;   // маточина й пружина ховаються в зібраному колесі
+      g.visible = vis;
+      if (local) {   // деталь окремо: власне положення на екрані
+        g.position.set(0, 0, 0);
+        g.matrixAutoUpdate = true;
+      } else g.position.set(0, off, 0);
+      g.userData.local = local;
+      g.rotation.y = ang + t * 0.2 * (calm ? 0 : 1) + S.v / 800;
+    });
+    if (inParts && solo >= 0 && parts[solo].userData.local) {
+      const [tx, ty, ts] = parts[solo].userData.local;
+      wheel.position.set(tx, ty, 0); wheel.scale.setScalar(ts); wheel.rotation.set(0.9, 0, -0.3);
+    }
+    wheelCv.style.zIndex = toCalc > 0.55 ? 4 : 1;   // у віконці калькулятора колесо — над панеллю (полотно без дотиків)
+    const on = wheel.visible && (hero.raw < 1 || ex.raw > 0) && calcS.raw < 0.75 && !(ex.c > 0.9 && ex.c <= 0.97);
+    stage.show(on);
+    if (on) renderer.render(scene, camera);
+  };
+}
+
+run((dt, t) => {
+  blendColors();
+  scanner(sec('diag').c);
+  roll();
+  if (wheel3) wheel3(dt, t);
+});
 </script>
 </body>
 </html>
