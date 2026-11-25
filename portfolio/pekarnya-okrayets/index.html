@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Окраєць — пекарня (концепт від Arvis)</title>
-<meta name="description" content="Концепт сайту пекарні від Arvis: 3D-хліб точковим растром, як на старій листівці, і хліб на ранок, відкладений до вашого приходу.">
-<meta name="theme-color" content="#2d1b0e">
+<meta name="description" content="Концепт сайту пекарні від Arvis: одна ніч пекаря з 04:00 до 08:00. Прокрутка — це час: борошно, тісто, підйом, піч і ранок, коли за кнопкою «Хліб на ранок» сходить сонце.">
+<meta name="theme-color" content="#1f2a44">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Окраєць — концепт сайту пекарні від Arvis">
-<meta property="og:description" content="Хліб, круасан і бублик у 3D, намальовані крапками. Гортаєш — растр дрібнішає, хліб допікається.">
+<meta property="og:description" content="Ніч пекаря: борошно з крапок стає тістом, тісто підходить, проходить крізь піч — і вранці хліб чекає на вас.">
 <meta property="og:url" content="https://arvisstudio.github.io/portfolio/pekarnya-okrayets/">
 <meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/pekarnya-okrayets-og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -19,169 +19,180 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Yeseva+One&family=Mulish:wght@400;600;800&display=swap">
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+<link rel="modulepreload" href="../engine/arvis-scroll.js">
 <script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
 <style>
-:root { --crust: #2d1b0e; --wheat: #f7c548; --red: #d7263d; --cream: #fff3d6;
+:root { --night: #1f2a44; --wheat: #f7c548; --crust: #8a4b1f; --cream: #fff3d6; --red: #b01c31; --ember: #f08a24;
+  --bg: #1f2a44; --ink: #f7e7c4;
   --serif: "Yeseva One", Georgia, serif; --sans: "Mulish", system-ui, sans-serif; }
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--crust); }
-body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--crust); color: var(--wheat); font: 400 17px/1.55 var(--sans); }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--bg); color: var(--ink); font: 400 17px/1.55 var(--sans); }
 a { color: inherit; }
-:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
-.concept { position: relative; z-index: 6; background: var(--wheat); color: var(--crust); font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
-.concept a { color: var(--red); font-weight: 800; }
+:focus-visible { outline: 3px solid var(--wheat); outline-offset: 3px; }
+.concept { position: relative; z-index: 6; background: var(--wheat); color: #2d1b0e; font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
+.concept a { color: #2d1b0e; font-weight: 800; }
 #dots { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-header > *, main > section > * { position: relative; z-index: 2; }
-.nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; position: relative; z-index: 3; border-bottom: 1px dashed rgba(247, 197, 72, .5); }
-.brand { font: 400 26px/1 var(--serif); text-decoration: none; }
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 2px solid var(--wheat); background: var(--wheat); color: var(--crust);
+header, main, section, footer { position: relative; }
+section > *, header > * { position: relative; z-index: 2; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; z-index: 4; }
+.brand { font: 400 26px/1 var(--serif); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 22px; border: 2px solid currentColor; background: var(--wheat); color: #2d1b0e;
   font: 800 16px/1 var(--sans); text-decoration: none; cursor: pointer; border-radius: 10px; }
-.nav .btn { background: transparent; color: var(--wheat); min-height: 44px; padding: 0 14px; }
-header.hero { min-height: calc(100svh - 110px); padding: 22px 16px 30px; display: grid; align-content: space-between; }
-h1 { font: 400 clamp(64px, 19vw, 250px)/.85 var(--serif); margin: 0; letter-spacing: -.01em; }
-.stamp { display: inline-block; margin-top: 12px; border: 2px solid var(--wheat); border-radius: 50%; padding: 18px 14px; font: 800 13px/1.2 var(--sans); text-align: center; transform: rotate(-8deg); letter-spacing: .06em; }
-.hero .low { display: grid; gap: 14px; justify-items: start; }
-.hero p { margin: 0; max-width: 21ch; font: 800 clamp(20px, 2.3vw, 27px)/1.25 var(--sans); }
-section { position: relative; padding: 90px 16px; }
-.goods { min-height: 260vh; }
-.item { min-height: 80vh; display: grid; align-content: center; gap: 8px; max-width: 520px; }
+.nav .btn { background: transparent; color: var(--ink); min-height: 44px; padding: 0 14px; }
+h2 { font: 400 clamp(44px, 10vw, 120px)/.95 var(--serif); margin: 0 0 10px; }
+.lead { margin: 0; max-width: 30ch; font: 600 clamp(18px, 2vw, 22px)/1.4 var(--sans); }
+.pad { padding: 0 16px; }
+.time { display: inline-block; font: 800 14px/1 var(--sans); letter-spacing: .12em; background: var(--cream); color: #2d1b0e; padding: 5px 8px; margin-bottom: 10px; }
+
+/* годинник у куті: йде разом із прокруткою (04:00 → 08:00) */
+.clock { position: fixed; z-index: 5; right: 12px; top: 64px; width: 64px; height: 64px; pointer-events: none; }
+.clock .h, .clock .m { transform-origin: 32px 32px; }
+.clock text { font: 800 11px/1 var(--sans); }
+
+/* межі розділів — лінії згину тіста */
+.fold { position: absolute; left: 0; right: 0; top: -22px; height: 44px; width: 100%; z-index: 2; pointer-events: none; }
+.fold path { fill: none; stroke: currentColor; stroke-width: 2; stroke-dasharray: 6 6; opacity: .5; }
+
+/* 1. 04:00 — борошно */
+.hero { min-height: calc(100svh - 38px); display: grid; align-content: space-between; padding: 14px 0 28px; }
+h1 { font: 400 clamp(64px, 19vw, 250px)/.85 var(--serif); margin: 0; padding: 0 16px; }
+.hero .low { display: grid; gap: 14px; justify-items: start; padding: 0 16px; }
+.knead, .rise, .menu, .order, .info { padding: 18vh 0 16vh; }
+.knead, .rise { min-height: 130vh; }
+.knead .pad, .rise .pad { max-width: 560px; }
+/* 4. піч: розділ стає зевом печі */
+.oven { height: 240vh; }
+.oven .stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; overflow: clip; display: grid; place-items: center; }
+.mouth { position: absolute; left: 50%; top: 56%; width: 64vmin; height: 52vmin; transform: translate(-50%, -50%) scale(calc(1 + var(--z, 0) * 9)); border-radius: 50% 50% 0 0 / 70% 70% 0 0; background: var(--ember); border: 10px solid #4a2a14; box-shadow: 0 0 0 16px #6b3d1c; }
+.mouth::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: 14%; height: 8%; background: #ffd27a; border-radius: 99px; }
+.oven .label { position: absolute; top: 12vh; left: 16px; right: 16px; z-index: 3; opacity: calc(1 - var(--z, 0) * 3); }
+/* 5. меню */
+.goods { display: grid; gap: 34vh; padding: 12vh 0 20vh; }
+.item { display: grid; gap: 8px; max-width: 520px; padding: 0 16px; }
 .item small { font: 800 14px/1 var(--sans); letter-spacing: .12em; color: var(--red); background: var(--cream); justify-self: start; padding: 5px 8px; }
-.item h2 { font: 400 clamp(46px, 9vw, 110px)/.95 var(--serif); margin: 0; }
+.item h3 { font: 400 clamp(40px, 8vw, 96px)/.95 var(--serif); margin: 0; }
 .item p { margin: 0; max-width: 30ch; font-size: 18px; }
+.item .row { display: flex; gap: 12px; align-items: center; }
 .item b { font: 800 22px/1 var(--sans); }
-.order { background: var(--cream); color: var(--crust); }
-.order h2, .info h2 { font: 400 clamp(44px, 9vw, 110px)/.95 var(--serif); margin: 0 0 10px; }
-.sub { margin: 0 0 26px; font-weight: 600; }
-.sheet { border: 2px solid var(--crust); border-radius: 14px; padding: 18px; display: grid; gap: 16px; max-width: 680px; background: #fff9ea; }
-.line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding-bottom: 10px; border-bottom: 1px dashed var(--crust); min-height: 56px; }
-.line b { font-weight: 800; } .line small { display: block; opacity: .7; font-size: 15px; }
+.add { min-height: 44px; padding: 0 16px; border-radius: 10px; border: 2px solid currentColor; background: transparent; color: inherit; font: 800 15px/1 var(--sans); cursor: pointer; }
+.fly { position: fixed; z-index: 7; width: 34px; height: 22px; border-radius: 50% 50% 40% 40%; background: var(--crust); border: 2px solid #2d1b0e; pointer-events: none; }
+/* 6. 08:00 — сонце сходить за кнопкою */
+.order { overflow: hidden; overflow: clip; }
+.sun { position: absolute; left: 50%; bottom: 0; width: 70vmin; height: 70vmin; margin-left: -35vmin; border-radius: 50%; background: #ffcf3f; transform: translateY(calc(70% - var(--c, 0) * 60%)); z-index: 1; }
+.sheet { border: 2px solid #2d1b0e; border-radius: 14px; padding: 18px; display: grid; gap: 16px; max-width: 680px; background: #fff9ea; color: #2d1b0e; margin: 0 16px; }
+.line { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding-bottom: 10px; border-bottom: 1px dashed #2d1b0e; min-height: 56px; }
+.line b { font-weight: 800; } .line small { display: block; opacity: .75; font-size: 15px; }
 .pm { display: inline-flex; gap: 8px; align-items: center; }
-.pm button { width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--crust); background: transparent; font: 800 20px/1 var(--sans); cursor: pointer; color: var(--crust); }
+.pm button { width: 44px; height: 44px; border-radius: 10px; border: 2px solid #2d1b0e; background: transparent; font: 800 20px/1 var(--sans); cursor: pointer; color: #2d1b0e; }
 .pm output { min-width: 22px; text-align: center; font: 800 20px/1 var(--sans); }
-.when { display: grid; gap: 8px; }
-.when h3 { margin: 0; font: 800 15px/1.2 var(--sans); }
+.when { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 12px; align-items: center; }
+.when svg { width: 84px; height: 84px; }
+.when .hand { transform-origin: 42px 42px; transition: transform .8s cubic-bezier(.3, 1.5, .5, 1); }
 .times { display: flex; flex-wrap: wrap; gap: 8px; }
-.times button { min-height: 44px; padding: 0 14px; border-radius: 10px; border: 2px solid var(--crust); background: transparent; font: 700 15px/1 var(--sans); cursor: pointer; color: var(--crust); }
-.times button[aria-pressed="true"] { background: var(--crust); color: var(--wheat); }
+.times button { min-height: 44px; padding: 0 14px; border-radius: 10px; border: 2px solid #2d1b0e; background: transparent; font: 700 15px/1 var(--sans); cursor: pointer; color: #2d1b0e; }
+.times button[aria-pressed="true"] { background: #2d1b0e; color: var(--wheat); }
 .res { display: grid; gap: 10px; }
 .res p { margin: 0; font: 800 clamp(20px, 2.5vw, 26px)/1.25 var(--sans); }
-.res small { opacity: .7; }
+.res small { opacity: .8; }
 .res .btn { justify-self: start; background: var(--red); border-color: var(--red); color: var(--cream); }
 .done { margin: 0; background: var(--wheat); padding: 12px 14px; border-radius: 10px; font-weight: 700; }
-.info { background: var(--crust); }
-.trio { display: grid; gap: 0; max-width: 900px; border-top: 1px dashed var(--wheat); }
-.trio div { padding: 16px 0; border-bottom: 1px dashed var(--wheat); }
+.trio { display: grid; border-top: 1px dashed currentColor; max-width: 900px; margin: 0 16px; }
+.trio div { padding: 16px 0; border-bottom: 1px dashed currentColor; }
 .trio b { display: block; font: 400 26px/1.15 var(--serif); }
-footer { position: relative; z-index: 2; padding: 24px 16px 32px; font-size: 15px; background: var(--crust); border-top: 2px solid var(--wheat); }
-.js .rise { opacity: 0; transform: translateY(20px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); }
-.js .rise.in { opacity: 1; transform: none; }
+footer { z-index: 2; padding: 18px 16px 96px; font-size: 15px; background: #2d1b0e; color: var(--cream); display: flex; flex-wrap: wrap; align-items: center; }
+.sticky { position: fixed; z-index: 6; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translate(-50%, 160%); transition: transform .45s cubic-bezier(.2, 1.3, .4, 1); box-shadow: 4px 4px 0 #2d1b0e; color: #2d1b0e; border-color: #2d1b0e; }
+.sticky.on { transform: translate(-50%, 0); }
+.sticky svg { width: 24px; height: 24px; }
+.sticky.bump { animation: bump .4s ease; }
+@keyframes bump { 40% { transform: translate(-50%, -8px) scale(1.06); } }
+.crumb { position: fixed; z-index: 7; width: 6px; height: 6px; border-radius: 50%; background: #c58b4a; pointer-events: none; animation: crumb .8s ease-in forwards; }
+@keyframes crumb { to { transform: translate(var(--dx), 120px); opacity: 0; } }
+.steam { position: fixed; z-index: 7; width: 60px; height: 90px; pointer-events: none; animation: steam 1.4s ease-out forwards; }
+.steam path { fill: none; stroke: var(--cream); stroke-width: 4; stroke-linecap: round; }
+@keyframes steam { from { transform: translate(-50%, -20%); opacity: .9; } to { transform: translate(-50%, -110%); opacity: 0; } }
+.js .rise-in { opacity: 0; transform: translateY(20px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); }
+.js .rise-in.in { opacity: 1; transform: none; }
 @media (min-width: 900px) {
-  .nav, header.hero, section, footer { padding-left: 56px; padding-right: 56px; }
+  .nav, .pad, h1, .hero .low, .item { padding-left: 56px; padding-right: 56px; }
+  .sheet, .trio { margin: 0 56px; }
   .trio { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .hero .low { max-width: 44%; }
+  .clock { right: 28px; width: 76px; height: 76px; }
+  footer { padding-left: 56px; padding-bottom: 40px; }
 }
-@media (max-width: 899px) {
-  .item { align-content: end; padding-bottom: 6vh; }
-  .item p, .item h2 { background: var(--crust); }
-}
-@media (prefers-reduced-motion: reduce) { .js .rise { opacity: 1; transform: none; transition: none; } }
+@media (prefers-reduced-motion: reduce) { .js .rise-in { opacity: 1; transform: none; transition: none; } .sticky, .when .hand { transition: none; } }
 </style>
 </head>
 <body>
 <div class="concept">Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи. <a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div>
 <canvas id="dots" aria-hidden="true"></canvas>
-<nav class="nav"><a class="brand" href="#top">Окраєць</a><a class="btn" href="#order">Відкласти хліб</a></nav>
-<header class="hero" id="top">
-  <div><h1>Окраєць</h1><span class="stamp">ПЕКАРНЯ<br>З ПЕЧІ</span></div>
-  <div class="low rise"><p>Свіжий хліб щоранку — відкладемо ваш, щоб не скінчився.</p><a class="btn" href="#order">Відкласти на ранок</a></div>
+<svg class="clock" id="clock" viewBox="0 0 64 64" aria-hidden="true">
+  <circle cx="32" cy="32" r="29" fill="#fff3d6" stroke="#2d1b0e" stroke-width="3"/>
+  <path d="M32 6v5M58 32h-5M32 58v-5M6 32h5" stroke="#2d1b0e" stroke-width="2.5"/>
+  <path class="h" id="ch" d="M32 32V18" stroke="#2d1b0e" stroke-width="4" stroke-linecap="round"/>
+  <path class="m" id="cm" d="M32 32V10" stroke="#d7263d" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="3" fill="#2d1b0e"/>
+  <text x="32" y="46" text-anchor="middle" fill="#2d1b0e" id="ct">04:00</text>
+</svg>
+<nav class="nav"><a class="brand" href="#top">Окраєць</a><a class="btn" href="#order">Хліб на ранок</a></nav>
+
+<header class="hero" id="top" data-sec="hero" data-bg="#1f2a44" data-ink="#f7e7c4">
+  <div><span class="time pad" style="margin-left:16px">04:00 · БОРОШНО</span><h1>Окраєць</h1></div>
+  <div class="low"><p class="lead">Одна ніч пекаря: гортай — і годинник у куті піде до ранку. Борошно з крапок збереться в тісто.</p><a class="btn" href="#order">Відкласти на ранок</a></div>
 </header>
 
 <main>
-  <section class="goods" id="goods">
-    <div class="item rise" data-obj="0"><small>01 · ХЛІБ</small><h2>Житній на заквасці</h2><p>Хрустка скоринка, кисленький м'якуш.</p><b>55 ₴</b></div>
-    <div class="item rise" data-obj="1"><small>02 · ВИПІЧКА</small><h2>Круасан</h2><p>Шари масла й тіста, хрусткий зверху і м'який усередині.</p><b>45 ₴</b></div>
-    <div class="item rise" data-obj="2"><small>03 · ДО ЧАЮ</small><h2>Бублик з маком</h2><p>Такий, як у дитинстві, — з хрусткою спинкою.</p><b>25 ₴</b></div>
+  <section class="knead" id="knead" data-sec="knead" data-bg="#26335a" data-ink="#f7e7c4">
+    <svg class="fold" viewBox="0 0 400 44" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22C80 4 140 40 200 22s120-18 200 0"/></svg>
+    <div class="pad"><span class="time">05:00 · ЗАМІС</span><h2 class="rise-in">Місимо</h2><p class="lead rise-in">Тісто розтягується і складається — кожна межа розділу тут як лінія згину.</p></div>
   </section>
-
-  <section class="order" id="order">
-    <h2 class="rise">Хліб на ранок</h2>
-    <p class="sub rise">Обираєте, що відкласти, і коли зайдете. Приклад цін — справжні поставить пекарня.</p>
-    <div class="sheet rise">
+  <section class="rise" id="rise" data-sec="rise" data-bg="#3b3f5c" data-ink="#f7e7c4">
+    <svg class="fold" viewBox="0 0 400 44" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22C60 40 140 4 200 22s140 18 200 0"/></svg>
+    <div class="pad"><span class="time">06:00 · ПІДЙОМ</span><h2 class="rise-in">Як ми печемо</h2><p class="lead rise-in">Тісто відпочиває і підходить. Тут буде ваша історія: закваска, мука, години.</p></div>
+  </section>
+  <section class="oven" id="oven" data-sec="oven" data-bg="#2d1b0e" data-ink="#f7e7c4">
+    <div class="stick">
+      <div class="label pad"><span class="time">07:00 · ПІЧ</span><h2>У піч</h2></div>
+      <div class="mouth" aria-hidden="true"></div>
+    </div>
+  </section>
+  <section class="menu" id="menu" data-sec="menu" data-bg="#fbe3b0" data-ink="#2d1b0e">
+    <div class="pad"><span class="time">07:40 · ГОТОВО</span><h2>З печі</h2><p class="lead">Приклад цін — справжні поставить пекарня. Торкнись хліба — посипляться крихти, затримай палець — піде пара, проведи — розламаєш.</p></div>
+    <div class="goods" id="goods">
+      <div class="item" data-obj="0"><small>01 · ХЛІБ</small><h3>Житній на заквасці</h3><p>Хрустка скоринка, кисленький м'якуш.</p><div class="row"><b>55 ₴</b><button class="add" type="button" data-g="0">Додати</button></div></div>
+      <div class="item" data-obj="1"><small>02 · ВИПІЧКА</small><h3>Круасан</h3><p>Шари масла й тіста, хрусткий зверху.</p><div class="row"><b>45 ₴</b><button class="add" type="button" data-g="2">Додати</button></div></div>
+      <div class="item" data-obj="2"><small>03 · ДО ЧАЮ</small><h3>Бублик з маком</h3><p>З хрусткою спинкою.</p><div class="row"><b>25 ₴</b><button class="add" type="button" data-g="3">Додати</button></div></div>
+    </div>
+  </section>
+  <section class="order" id="order" data-sec="order" data-bg="#f7d98b" data-ink="#2d1b0e">
+    <div class="sun" aria-hidden="true"></div>
+    <div class="pad"><span class="time">08:00 · РАНОК</span><h2>Хліб на ранок</h2><p class="lead" style="margin-bottom:22px">Обираєте, що відкласти, і коли зайдете.</p></div>
+    <div class="sheet">
       <div id="lines"></div>
-      <div class="when"><h3>Заберу завтра о</h3><div class="times" id="times"></div></div>
-      <div class="res">
-        <p id="res"></p>
-        <small>Оплата — на місці.</small>
-        <button class="btn" type="button" id="go">Відкласти</button>
-        <p class="done" id="done" hidden>Це концепт: на справжньому сайті замовлення прийде в Telegram, і хліб чекатиме на полиці з вашим ім'ям.</p>
+      <div class="when">
+        <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="38" fill="#fff3d6" stroke="#2d1b0e" stroke-width="3"/><path class="hand" id="wh" d="M42 42V24" stroke="#2d1b0e" stroke-width="5" stroke-linecap="round"/><path class="hand" id="wm" d="M42 42V12" stroke="#d7263d" stroke-width="3" stroke-linecap="round"/><circle cx="42" cy="42" r="3" fill="#2d1b0e"/></svg>
+        <div><b>Заберу завтра о</b><div class="times" id="times"></div></div>
       </div>
+      <div class="res"><p id="res"></p><small>Приклад цін. Оплата — на місці.</small><button class="btn" type="button" id="go">Відкласти</button>
+        <p class="done" id="done" hidden>Це концепт: на справжньому сайті замовлення прийде в Telegram, і хліб чекатиме на полиці з вашим ім'ям.</p></div>
     </div>
   </section>
-
-  <section class="info">
-    <h2>Заходьте</h2>
-    <div class="trio">
-      <div><b>Адреса</b>Тут буде ваша адреса і карта.</div>
-      <div><b>Телефон</b>Тут буде ваш номер.</div>
-      <div><b>Відгуки</b>Тут будуть відгуки ваших покупців.</div>
-    </div>
+  <section class="info" id="info" data-sec="info" data-bg="#fff3d6" data-ink="#2d1b0e">
+    <div class="pad"><h2 class="rise-in">Заходьте</h2></div>
+    <div class="trio rise-in"><div><b>Адреса</b>Тут буде ваша адреса і карта.</div><div><b>Телефон</b>Тут буде ваш номер.</div><div><b>Відгуки</b>Тут будуть відгуки ваших покупців.</div></div>
   </section>
 </main>
-<footer>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></footer>
+<footer id="foot">Сайт зроблено командою&nbsp;<a href="https://arvisstudio.github.io">Arvis</a></footer>
+<a class="btn sticky" id="sticky" href="#order"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.5 13h-11zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Хліб на ранок</a>
 
 <script type="module">
-const still = /still/.test(location.search);
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const weak = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 8) <= 4;
-const coarse = matchMedia('(pointer: coarse)').matches;
-// ---- набір Arvis для 3D: цикл кадрів, що не падає ----
-// втрата WebGL-контексту → полотно ховається, сайт працює далі; вікно 0×0 → не малюємо; пішли зі сторінки → звільняємо GPU;
-// повільні кадри → менше пікселів, потім 30 к/с
-const kit = { dead: false, paused: false, gap: weak ? 1000 / 31 : 0, w: innerWidth, h: innerHeight, onDead: null };
-function kill3D() {
-  if (kit.dead) return;
-  kit.dead = true;
-  if (kit.renderer) kit.renderer.domElement.style.display = 'none';
-  if (kit.onDead) try { kit.onDead(); } catch (e) { /* нічого */ }
-}
-function guard3D(canvas, renderer, onResize) {
-  kit.renderer = renderer; kit.onResize = onResize; kit.pr = renderer.getPixelRatio();
-  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); kill3D(); });
-  addEventListener('pagehide', (e) => { kit.paused = true; if (!e.persisted) try { renderer.dispose(); } catch (err) { /* нічого */ } });
-  addEventListener('pageshow', (e) => { if (e.persisted) kit.paused = false; });
-}
-function safeDraw(fn, dt) {
-  if (kit.dead || kit.paused || !(innerWidth > 0 && innerHeight > 0)) return;
-  try {
-    if (innerWidth !== kit.w || innerHeight !== kit.h) { kit.w = innerWidth; kit.h = innerHeight; if (kit.onResize) kit.onResize(); }
-    fn(dt);
-  } catch (e) { kill3D(); }
-}
-function loop(fn) {
-  let last = performance.now(), acc = 0, n = 0;
-  (function tick(now) {
-    if (kit.dead) return;
-    requestAnimationFrame(tick);
-    if (document.hidden || kit.paused) { last = now; return; }
-    if (now - last < kit.gap) return;
-    const raw = (now - last) / 1000; last = now;
-    acc += raw; n++;
-    if (n === 45) {
-      if (acc / n > 1 / 40 && kit.renderer) {
-        if (kit.pr > 1.01) { kit.pr = Math.max(1, kit.pr - 0.35); kit.renderer.setPixelRatio(kit.pr); if (kit.onResize) try { kit.onResize(); } catch (e) { /* нічого */ } }
-        else kit.gap = 1000 / 31;
-      }
-      acc = 0; n = 0;
-    }
-    safeDraw(fn, Math.min(0.05, raw));
-  })(last);
-}
-const $ = (s) => document.querySelector(s);
-const rise = document.querySelectorAll('.rise');
-if (still || reduce) rise.forEach((el) => el.classList.add('in'));
-else { const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0, rootMargin: '0px 0px -8% 0px' }); rise.forEach((el) => io.observe(el)); }
+import { reduce, weak, calm, clamp, lerp, seg, smooth, sec, track, blendColors, reveal, createStage, run, stickyCTA, arvisCursor, haptic, setVar, S } from '../engine/arvis-scroll.js';
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+track(); reveal('.rise-in');
+stickyCTA($('#sticky'), $('#top'), $('#order'));
+arvisCursor($('#foot'));
 
-// ---------- хліб на ранок ----------
+// ---------- хліб на ранок (працює і без 3D) ----------
 const GOODS = [['Житній на заквасці', 55, 1], ['Пшеничний батон', 40, 0], ['Круасан', 45, 2], ['Бублик з маком', 25, 0], ['Чіабата', 50, 0]];
 const TIMES = ['7:00', '7:30', '8:00', '8:30', '9:00', '10:00', '11:00'];
 let tsel = 2;
@@ -189,153 +200,200 @@ $('#lines').innerHTML = GOODS.map(([n, p], i) => `<div class="line"><b>${n}<smal
 $('#times').innerHTML = TIMES.map((t, i) => `<button type="button" data-i="${i}" aria-pressed="${i === tsel}">${t}</button>`).join('');
 $('#lines').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; const g = GOODS[+b.dataset.i]; g[2] = Math.max(0, Math.min(20, g[2] + +b.dataset.d)); sum(); };
 $('#times').onclick = (e) => { const b = e.target.closest('button'); if (!b) return; tsel = +b.dataset.i; $('#times').querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); sum(); };
-$('#go').onclick = () => { $('#done').hidden = false; };
+$('#go').onclick = () => { $('#done').hidden = false; haptic(10); };
 function sum() {
   let t = 0, n = 0;
   GOODS.forEach(([, p, k], i) => { t += p * k; n += k; $('#g' + i).textContent = k; });
   $('#res').textContent = n ? `${n} шт. · ${t} ₴ · заберу завтра о ${TIMES[tsel]}` : 'Додайте щось на полицю';
+  // стрілки годинника докручуються до обраного часу
+  const [h, m] = TIMES[tsel].split(':').map(Number);
+  $('#wh').style.transform = `rotate(${(h % 12 + m / 60) * 30}deg)`; $('#wm').style.transform = `rotate(${(h * 60 + m) * 6}deg)`;
   $('#done').hidden = true;
 }
 sum();
+// «Додати» в меню: буханка стрибає в паперовий пакет на липкій кнопці
+const sticky = $('#sticky');
+$('#goods').addEventListener('click', (e) => {
+  const b = e.target.closest('.add'); if (!b) return;
+  const g = GOODS[+b.dataset.g]; g[2] = Math.min(20, g[2] + 1); sum(); haptic(8);
+  b.textContent = 'Додано ✓'; setTimeout(() => { b.textContent = 'Додати'; }, 1200);
+  if (reduce) return;
+  const from = b.getBoundingClientRect(), to = sticky.getBoundingClientRect(), f = document.createElement('i');
+  f.className = 'fly'; f.style.left = from.left + 'px'; f.style.top = from.top + 'px'; document.body.appendChild(f);
+  const dx = to.left + to.width / 2 - from.left, dy = (sticky.classList.contains('on') ? to.top : innerHeight - 40) - from.top;
+  f.animate([{ transform: 'translate(0,0) rotate(0)' }, { transform: `translate(${dx * 0.5}px, ${dy * 0.5 - 120}px) rotate(200deg)` }, { transform: `translate(${dx}px, ${dy}px) rotate(380deg) scale(.5)`, opacity: 0.2 }],
+    { duration: 700, easing: 'cubic-bezier(.3,.6,.4,1)' }).onfinish = () => { f.remove(); sticky.classList.remove('bump'); void sticky.offsetWidth; sticky.classList.add('bump'); };
+});
 
-// ---------- 3D у крапках ----------
+// ---------- годинник у куті: 04:00 → 08:00 разом із прокруткою ----------
+const ch = $('#ch'), cm = $('#cm'), ct = $('#ct');
+let lastMin = -1;
+function clock() {
+  const mins = Math.round(4 * 60 + (calm ? 1 : S.p) * 4 * 60);
+  if (mins === lastMin) return; lastMin = mins;
+  const h = Math.floor(mins / 60), m = mins % 60;
+  ch.style.transform = `rotate(${(h % 12 + m / 60) * 30}deg)`; cm.style.transform = `rotate(${m * 6}deg)`;
+  ct.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+
+// ---------- 3D у крапках (напівтон) ----------
 let THREE = null;
 try { THREE = await import('three'); } catch (e) { /* без 3D */ }
-const canvas = $('#dots');
-let renderer = null;
-if (THREE) try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
-if (renderer) try {
-  const DPR = Math.min(devicePixelRatio, weak ? 1.25 : coarse ? 1.5 : 2);
-  renderer.setPixelRatio(DPR);
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-  camera.position.set(0, 3.4, 10.4); camera.lookAt(0, 0, 0);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.06));
-  const key = new THREE.DirectionalLight(0xffffff, 3.2); key.position.set(-6, 5, 2); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xffffff, 0.9); rim.position.set(5, -1, -3); scene.add(rim);
-  const fill = new THREE.DirectionalLight(0xffffff, 0.8); fill.position.set(3, 2, 10); scene.add(fill);
-  const mat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.85 });
-  const seg = weak ? 48 : 96;
-
-  // житній: витягнута сфера з трьома косими надрізами
-  const loafG = new THREE.SphereGeometry(1, seg, seg / 2);
-  { const p = loafG.attributes.position, v = new THREE.Vector3();
-    for (let i = 0; i < p.count; i++) {
-      v.fromBufferAttribute(p, i);
+const stage = createStage(THREE, $('#dots'), { antialias: false });
+let bake3 = null;
+if (stage) {
+  const { renderer } = stage;
+  renderer.toneMapping = THREE.NoToneMapping;
+  renderer.localClippingEnabled = true;
+  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+  camera.position.set(0, 3.2, 10.6); camera.lookAt(0, 0, 0);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.12));
+  const key = new THREE.DirectionalLight(0xffffff, 2.8); key.position.set(-5, 6, 3); scene.add(key);
+  const fill = new THREE.DirectionalLight(0xffffff, 0.7); fill.position.set(3, 2, 10); scene.add(fill);
+  const segs = weak ? 40 : 72;
+  // тісто: та сама сітка сфери морфиться в батон (однакова кількість вершин)
+  const ballG = new THREE.SphereGeometry(1, segs, segs / 2);
+  const loafPos = ballG.attributes.position.array.slice();
+  { const v = new THREE.Vector3();
+    for (let i = 0; i < loafPos.length; i += 3) {
+      v.set(loafPos[i], loafPos[i + 1], loafPos[i + 2]);
       const s = v.x * 1.35 + v.z * 0.9, f = s - Math.floor(s) - 0.5;
       const cut = v.y > 0.3 ? Math.exp(-f * f / 0.004) * 0.16 * Math.min(1, (v.y - 0.3) * 3) : 0;
-      v.multiplyScalar(1 - cut); v.x *= 1.6; v.y *= 0.98; v.z *= 1.0;
-      if (v.y < -0.45) v.y = -0.45 - (v.y + 0.45) * 0.2;   // приплюснуте дно
-      p.setXYZ(i, v.x, v.y, v.z);
-    }
-    loafG.computeVertexNormals(); }
-  // круасан: дуга, товста посередині, з рубчиками
+      v.multiplyScalar(1 - cut); v.x *= 1.6; v.y *= 0.98; if (v.y < -0.45) v.y = -0.45 - (v.y + 0.45) * 0.2;
+      loafPos[i] = v.x; loafPos[i + 1] = v.y; loafPos[i + 2] = v.z;
+    } }
+  ballG.morphAttributes.position = [new THREE.Float32BufferAttribute(loafPos, 3)];
+  // ліва і права половини (для розламу): та сама сітка, обрізана площиною x = 0
+  const L = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0), Rr = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0);
+  const mkMat = (pl) => new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.85, clippingPlanes: [pl], side: THREE.DoubleSide });
+  const dough = new THREE.Group(); scene.add(dough);
+  const halfL = new THREE.Mesh(ballG, mkMat(L)), halfR = new THREE.Mesh(ballG, mkMat(Rr));
+  dough.add(halfL, halfR);
+  // м'якуш на зламі — світлий еліпс (у напівтоні це дрібні крапки)
+  const crumbM = new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0x777777, roughness: 1, side: THREE.DoubleSide });
+  const crumbL = new THREE.Mesh(new THREE.CircleGeometry(1, 40), crumbM), crumbR = crumbL.clone();
+  crumbL.rotation.y = Math.PI / 2; crumbR.rotation.y = -Math.PI / 2; crumbL.scale.set(0.92, 0.95, 1); crumbR.scale.set(0.92, 0.95, 1);
+  halfL.add(crumbL); halfR.add(crumbR); crumbL.visible = crumbR.visible = false;
+  // борошно: 420 крупинок, що злітаються в кулю тіста
+  const FN = weak ? 240 : 420, flour = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.06, 0), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1 }), FN);
+  flour.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(flour);
+  const fl = [...Array(FN)].map((_, i) => { const a = i * 2.39996, y = 1 - (i / FN) * 2, r = Math.sqrt(1 - y * y); return { s: new THREE.Vector3((Math.random() - 0.5) * 12, (Math.random() - 0.5) * 7, (Math.random() - 0.5) * 4), t: new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r) }; });
+  // меню: круасан і бублик (батон — це саме тісто)
   function croissantG() {
     const U = weak ? 80 : 140, Vn = weak ? 20 : 32, pos = [], idx = [];
     for (let i = 0; i <= U; i++) {
-      const u = i / U, a = (u - 0.5) * 2.7, R = 1.25;
-      const c = new THREE.Vector3(Math.sin(a) * R, -Math.cos(a) * R + R * 0.7, 0);
-      const n = new THREE.Vector3(Math.sin(a), -Math.cos(a), 0);
+      const u = i / U, a = (u - 0.5) * 2.7, R0 = 1.25, c = [Math.sin(a) * R0, -Math.cos(a) * R0 + R0 * 0.7], n = [Math.sin(a), -Math.cos(a)];
       const r = 0.62 * Math.pow(Math.sin(Math.PI * u), 0.75) * (1 + 0.14 * Math.cos(u * Math.PI * 2 * 6.5)) + 0.04;
-      for (let j = 0; j <= Vn; j++) {
-        const v = j / Vn * Math.PI * 2;
-        pos.push(c.x + r * Math.cos(v) * n.x, c.y + r * Math.cos(v) * n.y, r * Math.sin(v) * 0.85);
-      }
+      for (let j = 0; j <= Vn; j++) { const v = j / Vn * Math.PI * 2; pos.push(c[0] + r * Math.cos(v) * n[0], c[1] + r * Math.cos(v) * n[1], r * Math.sin(v) * 0.85); }
     }
     for (let i = 0; i < U; i++) for (let j = 0; j < Vn; j++) { const a = i * (Vn + 1) + j, b = a + Vn + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
-    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
-    return g;
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals(); return g;
   }
-  // бублик: тор із маком (дрібні горбики)
-  const bagelG = new THREE.TorusGeometry(1.0, 0.46, seg / 3, seg);
-  { const p = bagelG.attributes.position, nn = bagelG.attributes.normal, v = new THREE.Vector3(), n = new THREE.Vector3();
-    for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); n.fromBufferAttribute(nn, i);
-      const bump = n.z > 0.2 ? (Math.sin(v.x * 37) * Math.sin(v.y * 41) > 0.82 ? 0.035 : 0) : 0; v.addScaledVector(n, bump); p.setXYZ(i, v.x, v.y, v.z); }
-    bagelG.computeVertexNormals(); }
-  const objs = [new THREE.Mesh(loafG, mat), new THREE.Mesh(croissantG(), mat), new THREE.Mesh(bagelG, mat)];
-  objs[2].rotation.x = -0.45;
-  const holder = objs.map((m) => { const g = new THREE.Group(); g.add(m); scene.add(g); return g; });
-
-  // постобробка: малюємо сцену в маленьку текстуру, потім перетворюємо яскравість на крапки (Bayer 8×8)
-  const rt = new THREE.WebGLRenderTarget(64, 64, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter });
+  const plain = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.85 });
+  const croissant = new THREE.Mesh(croissantG(), plain), bagel = new THREE.Mesh(new THREE.TorusGeometry(1, 0.46, segs / 3, segs), plain);
+  bagel.rotation.x = -0.45; scene.add(croissant, bagel);
+  // напівтон: рендеримо в текстуру, у кожній клітинці — кружок, радіус від яскравості; колір — від сирого тіста до скоринки (uBake)
+  const rt = new THREE.WebGLRenderTarget(64, 64);
   const post = new THREE.ShaderMaterial({
-    uniforms: { tMap: { value: rt.texture }, uCell: { value: 6 }, uInk: { value: new THREE.Color('#f7c548') }, uBg: { value: new THREE.Color('#2d1b0e') }, uRed: { value: new THREE.Color('#d7263d') } },
+    uniforms: { tMap: { value: rt.texture }, uRes: { value: new THREE.Vector2(64, 64) }, uCell: { value: 8 }, uBake: { value: 0 }, uRaw: { value: new THREE.Color('#f3e6c8') }, uCrust: { value: new THREE.Color('#5a2a0e') }, uGold: { value: new THREE.Color('#e0a04a') }, uDark: { value: new THREE.Color('#2d1b0e') } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0., 1.); }',
-    fragmentShader: `varying vec2 vUv; uniform sampler2D tMap; uniform float uCell; uniform vec3 uInk, uBg, uRed;
-      float b2(vec2 a){ a = floor(a); return fract(dot(a, vec2(.5, a.y * .75))); }
-      float b4(vec2 a){ return b2(.5 * a) * .25 + b2(a); }
-      float b8(vec2 a){ return b4(.5 * a) * .25 + b2(a); }
+    fragmentShader: `varying vec2 vUv; uniform sampler2D tMap; uniform float uCell, uBake; uniform vec2 uRes; uniform vec3 uRaw, uCrust, uGold, uDark;
       void main(){
-        vec2 cell = floor(gl_FragCoord.xy / uCell);
-        vec4 c = texture2D(tMap, vUv);
-        if (c.a < .5) discard;
+        vec2 cell = floor(gl_FragCoord.xy / uCell), res = uRes;
+        vec4 c = texture2D(tMap, (cell + .5) * uCell / res);
+        if (c.a < .4) discard;
         float lum = dot(c.rgb, vec3(.3, .59, .11));
-        float th = b8(cell) * .98 + .01;
         vec2 local = fract(gl_FragCoord.xy / uCell) - .5;
-        float dotR = uCell > 3.5 ? step(length(local), .46) : 1.;  // великі клітинки — круглі крапки, як у друку
-        float on = step(th, lum) * dotR;
-        vec3 col = mix(uBg, uInk, on);
+        float r = .52 * sqrt(clamp(lum, 0., 1.));
+        if (length(local) > r) discard;
+        vec3 col = mix(uRaw, mix(uCrust, uGold, smoothstep(.2, .9, lum)), uBake);   // сире тісто → скоринка (тінь темна, світло золоте)
         gl_FragColor = vec4(col, 1.);
         #include <colorspace_fragment>
       }`,
-    depthTest: false, depthWrite: false,
+    depthTest: false, depthWrite: false, transparent: true,
   });
-  const quadScene = new THREE.Scene(), quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  quadScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), post));
-
-  let W = 1, H = 1, cellNow = 6;
-  function setRT(cell) {
-    const pr = renderer.getPixelRatio(), w = Math.max(16, Math.round(innerWidth * pr / cell)), h = Math.max(16, Math.round(innerHeight * pr / cell));
-    if (rt.width !== w || rt.height !== h) rt.setSize(w, h);
-    post.uniforms.uCell.value = cell;
-  }
-  function resize() {
-    renderer.setSize(innerWidth, innerHeight, false);
-    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-    H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect;
-    setRT(Math.round(cellNow));
-  }
-  resize(); addEventListener('resize', () => { resize(); safeDraw(draw, 0); });
-
-  const goods = $('#goods'), order = $('#order');
-  const items = [...document.querySelectorAll('.item')];
-  let time = 0, sObj = 0;
-  function draw(dt) {
-    time += dt;
-    const oTop = order.getBoundingClientRect().top;
-    const visible = oTop > innerHeight * 0.25;
-    canvas.style.visibility = visible ? 'visible' : 'hidden';
-    if (!visible) return;
-    // яка річ зараз: за тим, чий опис ближче до середини екрана
+  const quad = new THREE.Scene(), qcam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  quad.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), post));
+  let W = 1, H = 1;
+  stage.onResize = (w, h) => {
+    camera.aspect = w / h; camera.updateProjectionMatrix(); H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.length(); W = H * camera.aspect;
+    const rw = Math.round(w * renderer.getPixelRatio()), rh = Math.round(h * renderer.getPixelRatio());
+    rt.setSize(rw, rh); post.uniforms.uRes.value.set(rw, rh);
+  };
+  // взаємодія з хлібом: дотик — крихти, утримання — пара, провести — розлам
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  let brk = 0, brkV = 0, brkGoal = 0, down = null, holdT = 0;
+  const hit = (x, y) => { ndc.set(x / innerWidth * 2 - 1, -(y / innerHeight * 2 - 1)); ray.setFromCamera(ndc, camera); return dough.visible && ray.intersectObjects([halfL, halfR]).length > 0; };
+  const crumbs = (x, y) => { if (reduce) return; for (let i = 0; i < 10; i++) { const c = document.createElement('i'); c.className = 'crumb'; c.style.left = x + 'px'; c.style.top = y + 'px'; c.style.setProperty('--dx', `${(Math.random() - 0.5) * 80}px`); document.body.appendChild(c); setTimeout(() => c.remove(), 850); } };
+  const steam = (x, y) => { if (reduce) return; const s = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); s.setAttribute('viewBox', '0 0 60 90'); s.setAttribute('class', 'steam'); s.innerHTML = '<path d="M20 90c-10-20 10-30 0-50s10-30 0-40"/><path d="M40 90c10-20-10-30 0-50s-10-30 0-40"/>'; s.style.left = x + 'px'; s.style.top = y + 'px'; document.body.appendChild(s); setTimeout(() => s.remove(), 1450); };
+  addEventListener('pointerdown', (e) => { if (hit(e.clientX, e.clientY)) { down = { x: e.clientX, y: e.clientY, t: performance.now() }; holdT = 0; } }, { passive: true });
+  addEventListener('pointermove', (e) => { if (down && Math.abs(e.clientX - down.x) > 60) { brkGoal = brkGoal ? 0 : 1; down = null; haptic(12); } }, { passive: true });
+  addEventListener('pointerup', (e) => { if (down && performance.now() - down.t < 300) crumbs(e.clientX, e.clientY); down = null; }, { passive: true });
+  addEventListener('pointercancel', () => { down = null; }, { passive: true });
+  const items = $$('.item'), ovenEl = $('#oven'), fm = new THREE.Matrix4(), fv = new THREE.Vector3();
+  let sObj = 0;
+  bake3 = (dt, t) => {
+    const step = dt || 0.016, phone = innerWidth < 700;
+    const hero = sec('hero'), knead = sec('knead'), rise = sec('rise'), oven = sec('oven'), menu = sec('menu');
+    // утримання пальця на хлібі — пара
+    if (down) { holdT += step; if (holdT > 0.45) { steam(down.x, down.y); holdT = -0.6; } }
+    // фази ночі
+    const gather = calm ? 1 : smooth(0.0, 0.7, clamp(scrollY / Math.max(1, hero.el.offsetHeight) + 0.15));   // борошно → куля
+    const kneadW = calm ? 0 : Math.sin(knead.c * Math.PI * 3) * smooth(0, 0.2, knead.raw) * (1 - smooth(0.8, 1, knead.c));
+    const proof = smooth(0.1, 0.8, rise.c);             // підйом 1 → 1,4 і куля → батон
+    const into = smooth(0.25, 0.7, oven.c);             // заходить у піч
+    const zoom = smooth(0.35, 0.85, oven.c);            // камера крізь зів
+    setVar(ovenEl, '--z', (calm ? 0 : zoom).toFixed(3));
+    const baked = smooth(0.0, 0.3, menu.raw);
+    post.uniforms.uBake.value = calm ? 1 : Math.max(smooth(0.5, 0.65, S.p), baked);
+    // клітинка растру: грубо вночі, дрібніше, коли хліб готовий
+    const cell = Math.round(lerp(weak ? 11 : 10, phone ? 5 : 6, Math.max(baked, smooth(0.4, 0.62, S.p))));
+    post.uniforms.uCell.value = cell * renderer.getPixelRatio();
+    const sc = phone ? Math.min(0.95, W / 2.4) : Math.min(1.35, H / 2.8);
+    // яка річ у меню ближче до центру екрана
     let target = 0, best = 1e9;
     items.forEach((el, i) => { const r = el.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - innerHeight / 2); if (d < best) { best = d; target = i; } });
-    if (goods.getBoundingClientRect().top > innerHeight * 0.5) target = 0;
-    sObj = (still || reduce || !dt) ? target : sObj + (target - sObj) * Math.min(1, dt * 4);
-    // растр: від грубого (8 px) до дрібного (3 px), поки гортаєш, — хліб «допікається»
-    const max = Math.max(1, order.offsetTop - innerHeight * 0.5);
-    const bake = Math.min(1, scrollY / max);
-    const cell = (weak ? 10 : 9) - bake * 4;
-    if (Math.abs(Math.round(cell) - cellNow) >= 1) { cellNow = Math.round(cell); setRT(cellNow); }
-    const phone = innerWidth < 700;
-    const sc = phone ? Math.min(1.1, W / 2.25) : Math.min(1.5, H / 2.6);
-    holder.forEach((g, i) => {
-      const d = i - sObj, vis = Math.max(0, 1 - Math.abs(d));
-      g.visible = vis > 0.01;
-      g.scale.setScalar(sc * [1, 1.3, 1.15][i] * (0.25 + 0.75 * vis));
-      g.position.set((phone ? 0 : 0.42 * W) + d * W * 0.9, (phone ? 0.12 * H : -0.16 * H) - Math.abs(d) * 0.5, 0);
-      g.rotation.y = 0.55 + (reduce ? 0 : time * 0.35 + scrollY * 0.002) + d * 1.5;
-      g.rotation.x = 0.08 + Math.sin(time * 0.5) * (reduce ? 0 : 0.06);
-      if (i === 2) { g.rotation.y = d * 1.5 + (reduce ? 0 : Math.sin(time * 0.5) * 0.3); objs[2].rotation.z = reduce ? 0 : time * 0.4 + scrollY * 0.002; }   // бублик — завжди обличчям до нас
-    });
+    const inMenu = menu.raw > 0.08 && menu.raw < 0.92;
+    sObj = calm ? target : lerp(sObj, inMenu ? target : 0, Math.min(1, step * 4));
+    // тісто/батон
+    const showDough = gather > 0.95 && (!inMenu || sObj < 0.5) && (zoom < 0.98 || inMenu);
+    halfL.morphTargetInfluences[0] = halfR.morphTargetInfluences[0] = inMenu ? 1 : proof;
+    const squash = 1 + kneadW * 0.35;
+    let dx = phone ? 0.05 * W : 0.4 * W, dy = phone ? 0.02 * H : -0.12 * H, ds = sc * (0.75 + proof * 0.4) * (1 + into * 0.15);
+    if (into > 0) { dx = lerp(dx, 0, into); dy = lerp(dy, -0.12 * H, into); }
+    if (inMenu) { dx = phone ? 0 : 0.42 * W; dy = phone ? 0.18 * H : -0.05 * H; ds = sc; }
+    dough.visible = showDough;
+    dough.position.set(dx, dy, 0); dough.scale.set(ds * squash, ds / squash, ds * (inMenu ? 1 : 1 / Math.sqrt(squash)));
+    dough.rotation.set(0.08, 0.55 + (calm ? 0 : t * 0.25 + scrollY * 0.0015), kneadW * 0.3);
+    // розлам: дві половини розходяться пружиною (0,3 с)
+    brkV += ((brkGoal - brk) * 260 - brkV * 22) * step; brk += brkV * step; if (calm) brk = brkGoal;
+    halfL.position.x = -brk * 0.45; halfR.position.x = brk * 0.45; halfL.rotation.z = brk * 0.15; halfR.rotation.z = -brk * 0.15;
+    crumbL.visible = crumbR.visible = brk > 0.03;
+    // борошно злітається
+    flour.visible = gather < 0.99 && !calm;
+    if (flour.visible) {
+      fl.forEach((f, i) => { const k = smooth(0, 1, clamp(gather * 1.3 - (i % 30) / 100)); fv.copy(f.t).multiplyScalar(0.75); fv.lerpVectors(f.s, fv, k).multiplyScalar(sc); fm.makeTranslation(fv.x + dx, fv.y + dy, fv.z); flour.setMatrixAt(i, fm); });
+      flour.instanceMatrix.needsUpdate = true;
+    }
+    // круасан і бублик у меню
+    [croissant, bagel].forEach((o, k) => { const d = (k + 1) - sObj, vis = inMenu ? Math.max(0, 1 - Math.abs(d)) : 0;
+      o.visible = vis > 0.02; o.scale.setScalar(sc * [1.3, 1.15][k] * (0.25 + 0.75 * vis));
+      o.position.set((phone ? 0 : 0.42 * W) + d * W * 0.9, (phone ? 0.18 * H : -0.05 * H) - Math.abs(d) * 0.5, 0);
+      o.rotation.y = 0.55 + (calm ? 0 : t * 0.35) + d * 1.5; if (k === 1) o.rotation.z = calm ? 0 : t * 0.4; });
+    const any = dough.visible || flour.visible || croissant.visible || bagel.visible;
+    stage.show(any);
+    if (!any) return;
     renderer.setRenderTarget(rt); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(scene, camera);
-    renderer.setRenderTarget(null); renderer.clear(); renderer.render(quadScene, quadCam);
-  }
-  guard3D(canvas, renderer, resize);
-  const once = () => safeDraw(draw, 0);
-  once();
-  if (reduce || still) { addEventListener('scroll', once, { passive: true }); if (still) setTimeout(once, 400); }
-  else loop(draw);
-} catch (e) { canvas.style.display = 'none'; kit.dead = true;  }
+    renderer.setRenderTarget(null); renderer.clear(); renderer.render(quad, qcam);
+  };
+}
+
+run((dt, t) => {
+  blendColors();
+  clock();
+  setVar($('#order'), '--c', (calm ? 1 : sec('order').c).toFixed(3));
+  if (bake3) bake3(dt, t);
+});
 </script>
 </body>
 </html>
