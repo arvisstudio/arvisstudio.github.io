@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Темп — фітнес-клуб (концепт від Arvis)</title>
-<meta name="description" content="Концепт сайту фітнес-клубу від Arvis: 3D-гиря гойдається від швидкості прокрутки, слова лишають слід, абонемент підбирається за хвилину.">
+<meta name="description" content="Концепт сайту фітнес-клубу від Arvis: одне тренування — розминка, сила, кардіо, відновлення. Лінія пульсу йде через увесь сайт, гиря гойдається від швидкості прокрутки, спідометр рахує твій темп.">
 <meta name="theme-color" content="#ff5a3c">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Темп — концепт сайту фітнес-клубу від Arvis">
-<meta property="og:description" content="Гортаєш швидше — гиря розгойдується сильніше. Слова зі слідом і підбір абонемента.">
+<meta property="og:description" content="Гортай швидше — пульс росте, гиря розгойдується. Розженись до 180 — і вона зробить повний оберт.">
 <meta property="og:url" content="https://arvisstudio.github.io/portfolio/fitnes-temp/">
 <meta property="og:image" content="https://arvisstudio.github.io/portfolio/shots/fitnes-temp-og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -19,333 +19,339 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Rubik:wght@400;500;700&display=swap">
 <script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" } }</script>
 <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+<link rel="modulepreload" href="../engine/arvis-scroll.js">
 <script>if (!/still/.test(location.search)) document.documentElement.classList.add("js")</script>
 <style>
-:root { --coral: #ff5a3c; --ink: #12141a; --cream: #fff6ea; --sun: #ffcf3f;
+:root { --coral: #ff5a3c; --ink0: #12141a; --cream: #fff6ea; --sun: #ffcf3f; --calm: #bfe3d8;
+  --bg: #ff5a3c; --ink: #12141a;
   --disp: "Dela Gothic One", "Arial Black", sans-serif; --sans: "Rubik", system-ui, sans-serif; }
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; background: var(--coral); }
-body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--coral); color: var(--ink); font: 400 17px/1.55 var(--sans); }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; overflow-x: hidden; overflow-x: clip; background: var(--bg); color: var(--ink); font: 400 17px/1.55 var(--sans); }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
-.concept { position: relative; z-index: 6; background: var(--ink); color: var(--cream); font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
+.concept { position: relative; z-index: 7; background: var(--ink0); color: var(--cream); font-size: 14px; line-height: 1.4; padding: 9px 16px; text-align: center; }
 .concept a { color: var(--sun); font-weight: 700; }
 #bell { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-.nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; position: relative; z-index: 3; }
-.brand { font: 400 26px/1 var(--disp); text-decoration: none; }
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border: 3px solid var(--ink); background: var(--ink); color: var(--cream);
-  font: 700 17px/1 var(--sans); text-decoration: none; cursor: pointer; border-radius: 0; }
-.nav .btn { background: transparent; color: var(--ink); min-height: 44px; padding: 0 16px; font-size: 15px; }
+header, main, section, footer { position: relative; }
+section > *, header > * { position: relative; z-index: 2; }
+.nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; z-index: 4; }
+.brand { font: 400 26px/1 var(--disp); text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 24px; border: 3px solid var(--ink0); background: var(--ink0); color: var(--cream); font: 700 17px/1 var(--sans); text-decoration: none; cursor: pointer; position: relative; }
+.nav .btn { background: transparent; color: var(--ink); border-color: currentColor; min-height: 44px; padding: 0 16px; font-size: 15px; }
+.pad { padding: 0 16px; }
+h2 { font: 400 clamp(44px, 10vw, 128px)/.95 var(--disp); margin: 0; letter-spacing: -.02em; }
+.ecg-u { display: block; width: min(420px, 80vw); height: 26px; margin: 6px 0 14px; }
+.ecg-u path { fill: none; stroke: currentColor; stroke-width: 4; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--c, 0) * 2); }
+.lead { margin: 0; max-width: 30ch; font: 600 clamp(18px, 2.1vw, 23px)/1.35 var(--sans); }
+/* інтервальний таймер: номер розділу 3-2-1 */
+.num { position: absolute; right: 12px; top: 8vh; z-index: 1; font: 400 clamp(120px, 34vw, 380px)/1 var(--disp); color: transparent; -webkit-text-stroke: 3px currentColor; opacity: .35; transform: scale(calc(1.25 - var(--c, 0) * .35)); transform-origin: right top; pointer-events: none; }
+
 /* рядки великих слів зі слідом */
 .rail { position: relative; z-index: 0; overflow: hidden; overflow: clip; white-space: nowrap; height: clamp(84px, 23vw, 280px); }
 .rail .w { position: absolute; left: 0; top: 0; font: 400 clamp(76px, 21vw, 260px)/1.05 var(--disp); letter-spacing: -.02em; will-change: transform; }
-.rail .w.ghost { color: transparent; -webkit-text-stroke: 2px var(--ink); }
-.rail.light .w { color: var(--cream); } .rail.light .w.ghost { color: transparent; -webkit-text-stroke-color: var(--cream); }
-header.hero { position: relative; min-height: calc(100svh - 110px); display: grid; align-content: space-between; padding-bottom: 30px; }
-.hero .low { position: relative; z-index: 2; display: grid; gap: 14px; justify-items: start; padding: 0 16px; }
-.hero p { margin: 0; max-width: 21ch; font: 700 clamp(20px, 2.3vw, 27px)/1.25 var(--sans); }
-h1 { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-section { position: relative; padding: 90px 0; }
-section > .pad { position: relative; z-index: 2; padding: 0 16px; }
-.zones { background: var(--ink); color: var(--cream); }
-.zones h2, .plan h2, .info h2 { font: 400 clamp(40px, 9vw, 120px)/.95 var(--disp); margin: 0 0 12px; letter-spacing: -.02em; }
-.zl { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 0; max-width: 560px; border-top: 2px solid var(--cream); }
-.zl li { display: grid; grid-template-columns: 50px minmax(0, 1fr); gap: 10px; padding: 16px 0; border-bottom: 2px solid var(--cream); }
-.zl b { font: 400 20px/1.2 var(--disp); display: block; }
-.zl span { font: 400 26px/1 var(--disp); color: var(--sun); }
-.plan { background: var(--cream); }
-.sub { margin: 0 0 26px; font-weight: 500; }
-.calc { display: grid; gap: 20px; max-width: 820px; }
+.rail .w.ghost { color: transparent; -webkit-text-stroke: 2px currentColor; }
+
+/* 1. перший екран + спідометр темпу прокрутки */
+.hero { min-height: calc(100svh - 38px); display: grid; align-content: space-between; padding-bottom: 26px; }
+.speedo { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: center; padding: 0 16px; margin-top: 10px; }
+.speedo svg { width: 120px; height: 70px; }
+.speedo .needle { transform-origin: 60px 62px; transition: transform .15s linear; }
+.speedo b { font: 400 30px/1 var(--disp); display: block; }
+.speedo small { font-weight: 600; font-size: 15px; }
+.speedo.hot b { color: var(--cream); background: var(--ink0); padding: 4px 8px; display: inline-block; }
+.hero .low { display: grid; gap: 14px; justify-items: start; padding: 0 16px; }
+
+/* розділи тренування: кожен відкривається дугою від гирі */
+.stage { padding: 16vh 0 14vh; min-height: 110vh; clip-path: circle(calc(var(--r, 1) * 230vmax) at 70% 100%); }
+.stage.cardio { clip-path: none; }
+.strength { background: var(--ink0); color: var(--cream); }
+.zl { list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 0; max-width: 560px; border-top: 2px solid currentColor; }
+.zl li { display: grid; grid-template-columns: 50px minmax(0, 1fr); gap: 10px; padding: 16px 0; border-bottom: 2px solid currentColor; }
+.zl b { font: 400 20px/1.2 var(--disp); display: block; } .zl span { font: 400 26px/1 var(--disp); color: var(--sun); }
+/* 3. кардіо: розклад їде вбік, як стрічка доріжки */
+.cardio { height: 260vh; padding: 0; min-height: 0; }
+.cardio .stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; overflow: clip; display: grid; align-content: center; gap: 18px; padding: 0 0 0; }
+.belt { display: flex; gap: 12px; padding: 0 16px; will-change: transform; }
+.day { flex: 0 0 auto; width: 210px; background: var(--cream); color: var(--ink0); border: 3px solid var(--ink0); padding: 14px; }
+.day b { display: block; font: 400 22px/1 var(--disp); margin-bottom: 8px; }
+.day li { list-style: none; padding: 6px 0; border-top: 1px solid #12141a33; font-weight: 600; }
+.day ul { margin: 0; padding: 0; }
+.track { height: 14px; margin: 0 16px; background: repeating-linear-gradient(90deg, var(--ink0) 0 18px, transparent 18px 30px); background-position-x: var(--bx, 0); border-top: 3px solid var(--ink0); border-bottom: 3px solid var(--ink0); }
+.recover { background: var(--calm); color: var(--ink0); }
+/* 5. підбір абонемента: пульс заспокоюється */
+.plan { padding: 14vh 0 12vh; background: var(--cream); color: var(--ink0); }
+.calc { display: grid; gap: 20px; max-width: 820px; margin: 20px 16px 0; }
 .calc h3 { margin: 0 0 10px; font: 700 15px/1.2 var(--sans); text-transform: uppercase; letter-spacing: .08em; }
 .seg { display: flex; flex-wrap: wrap; gap: 8px; }
-.seg button { min-height: 48px; padding: 0 16px; border: 3px solid var(--ink); background: transparent; color: var(--ink); font: 700 16px/1 var(--sans); cursor: pointer; }
-.seg button[aria-pressed="true"] { background: var(--ink); color: var(--sun); }
-.out { background: var(--ink); color: var(--cream); padding: 20px; display: grid; gap: 14px; }
+.seg button { min-height: 48px; padding: 0 16px; border: 3px solid var(--ink0); background: transparent; color: var(--ink0); font: 700 16px/1 var(--sans); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink0); color: var(--sun); }
+.days { display: grid; grid-template-columns: minmax(0, 1fr) 110px; gap: 12px; align-items: center; }
+.days input { width: 100%; min-height: 44px; accent-color: var(--coral); }
+.days svg { width: 110px; height: 40px; }
+.days svg path { fill: none; stroke: var(--coral); stroke-width: 3; }
+/* перемикач тренера — «блин на грифі» */
+.bar { display: inline-flex; align-items: center; gap: 12px; min-height: 48px; cursor: pointer; font-weight: 700; background: none; border: 0; color: inherit; font: 700 16px/1 var(--sans); padding: 0; }
+.bar i { position: relative; width: 84px; height: 10px; background: #9aa0a6; border-radius: 4px; display: inline-block; }
+.bar i::after { content: ""; position: absolute; top: -15px; left: 0; width: 18px; height: 40px; background: var(--ink0); border-radius: 4px; transition: left .4s cubic-bezier(.3, 1.8, .5, 1); }
+.bar[aria-pressed="true"] i::after { left: 66px; background: var(--coral); }
+.out { background: var(--ink0); color: var(--cream); padding: 20px; display: grid; gap: 14px; cursor: pointer; }
 .out .name { font: 400 clamp(24px, 3.4vw, 36px)/1.1 var(--disp); color: var(--sun); }
 .nums { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .nums div { border: 2px solid var(--cream); padding: 10px 12px; white-space: nowrap; }
-.nums small { display: block; font-size: 14px; opacity: .8; }
-/* одометр: кожна цифра — стовпчик 0–9, що прокручується */
+.nums small { display: block; font-size: 14px; opacity: .85; }
 .odo { display: inline-flex; font: 400 clamp(30px, 6vw, 58px)/1 var(--disp); height: 1em; overflow: hidden; vertical-align: bottom; }
 .odo i { display: block; font-style: normal; height: 1em; overflow: hidden; }
 .odo i span { display: block; transition: transform .9s cubic-bezier(.2, .9, .25, 1.15); }
 .odo i span b { display: block; height: 1em; font-weight: 400; }
 .unit { font: 700 18px/1 var(--sans); margin-left: 6px; }
-.out .fine { font-size: 14px; opacity: .75; margin: 0; }
-.out .btn { justify-self: start; background: var(--coral); border-color: var(--coral); color: var(--ink); }
-.done { margin: 0; background: var(--sun); color: var(--ink); padding: 12px 14px; font-weight: 600; }
-.info { background: var(--coral); }
-.cols { display: grid; gap: 0; max-width: 900px; border-top: 3px solid var(--ink); }
-.cols div { padding: 16px 0; border-bottom: 3px solid var(--ink); }
+.fine { font-size: 14px; opacity: .8; margin: 0; }
+#go { justify-self: start; background: var(--coral); border-color: var(--coral); color: var(--ink0); }
+#go em { font-style: normal; background: var(--ink0); color: var(--sun); padding: 2px 6px; font-size: 14px; }
+.rep { position: absolute; right: 10px; top: -6px; font: 400 20px/1 var(--disp); color: var(--ink0); pointer-events: none; animation: rep .7s ease-out forwards; }
+@keyframes rep { to { transform: translateY(-34px); opacity: 0; } }
+.done { margin: 0; background: var(--sun); color: var(--ink0); padding: 12px 14px; font-weight: 600; }
+.info { padding: 12vh 0 14vh; }
+.cols { display: grid; border-top: 3px solid currentColor; max-width: 900px; margin: 0 16px; }
+.cols div { padding: 16px 0; border-bottom: 3px solid currentColor; }
 .cols b { display: block; font: 400 22px/1.2 var(--disp); }
-footer { position: relative; z-index: 2; background: var(--ink); color: var(--cream); padding: 24px 16px 32px; font-size: 15px; }
-.js .rise { opacity: 0; transform: translateY(22px); transition: opacity .6s, transform .7s cubic-bezier(.2, .8, .2, 1); }
-.js .rise.in { opacity: 1; transform: none; }
+footer { z-index: 2; background: var(--ink0); color: var(--cream); padding: 18px 16px 110px; font-size: 15px; display: flex; flex-wrap: wrap; align-items: center; }
+/* пульс через увесь сайт: смуга над липкою кнопкою */
+#ecg { position: fixed; z-index: 4; left: 0; right: 0; bottom: 74px; height: 44px; width: 100%; pointer-events: none; }
+#ecg path { fill: none; stroke: currentColor; stroke-width: 3; stroke-linejoin: round; }
+.sticky { position: fixed; z-index: 5; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); transform: translate(-50%, 160%); transition: transform .45s cubic-bezier(.2, 1.3, .4, 1); box-shadow: 4px 4px 0 var(--sun); }
+.sticky.on { transform: translate(-50%, 0); }
+.sticky svg { width: 22px; height: 22px; }
 @media (min-width: 900px) {
-  .nav, .hero .low, section > .pad, footer { padding-left: 56px; padding-right: 56px; }
+  .nav, .pad, .speedo, .hero .low, .belt { padding-left: 56px; padding-right: 56px; }
+  .calc, .cols { margin-left: 56px; margin-right: 56px; }
   .cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .zones .pad > * { max-width: 46%; }
+  .track { margin: 0 56px; }
+  .day { width: 260px; }
+  footer { padding-left: 56px; padding-bottom: 110px; }
 }
-@media (prefers-reduced-motion: reduce) { .js .rise { opacity: 1; transform: none; transition: none; } .odo i span { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .sticky, .bar i::after, .odo i span, .speedo .needle { transition: none; } }
 </style>
 </head>
 <body>
 <div class="concept">Концепт-сайт від <b>Arvis</b>: такого закладу немає, це приклад нашої роботи. <a href="https://t.me/arvisstudio_bot">Хочу такий сайт</a></div>
 <canvas id="bell" aria-hidden="true"></canvas>
+<svg id="ecg" viewBox="0 0 1000 44" preserveAspectRatio="none" aria-hidden="true"><path id="ecgp"/></svg>
 <nav class="nav"><a class="brand" href="#top">ТЕМП</a><a class="btn" href="#plan">Підібрати абонемент</a></nav>
-<header class="hero" id="top">
-  <h1>Темп — фітнес-клуб</h1>
-  <div class="rail" data-dir="-1" data-text="ТЕМП ТЕМП ТЕМП ТЕМП " aria-hidden="true"></div>
-  <div class="low rise"><p>Гортайте швидше — гиря відчує. А абонемент підберемо за хвилину.</p><a class="btn" href="#plan">Підібрати абонемент</a></div>
+
+<header class="hero" id="top" data-sec="hero" data-bg="#ff5a3c" data-ink="#12141a">
+  <h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Темп — фітнес-клуб</h1>
+  <div>
+    <div class="rail" data-dir="-1" data-text="ТЕМП ТЕМП ТЕМП ТЕМП " aria-hidden="true"></div>
+    <div class="speedo" id="speedo"><svg viewBox="0 0 120 70" aria-hidden="true"><path d="M10 62a50 50 0 0 1 100 0" fill="none" stroke="#12141a" stroke-width="8"/><path d="M85 19a50 50 0 0 1 25 43" fill="none" stroke="#fff6ea" stroke-width="8"/><path class="needle" id="needle" d="M60 62 22 52" stroke="#12141a" stroke-width="5" stroke-linecap="round"/><circle cx="60" cy="62" r="6" fill="#12141a"/></svg>
+      <div><b id="bpm">60 bpm</b><small id="tempoTxt">Темп твоєї прокрутки. Розженись до 180!</small></div></div>
+  </div>
+  <div class="low"><p class="lead">Одне тренування від розминки до відновлення. Гортай швидше — пульс росте, гиря розгойдується.</p><a class="btn" href="#plan">Підібрати абонемент</a></div>
 </header>
 
 <main>
-  <section class="zones" id="zones">
-    <div class="rail light" data-dir="1" data-text="СИЛА · КАРДІО · БОКС · " aria-hidden="true"></div>
-    <div class="rail light" data-dir="-1" data-text="РОЗТЯЖКА · КРОСФІТ · " aria-hidden="true"></div>
-    <div class="pad">
-      <h2 class="rise">Зали</h2>
-      <p class="rise" style="max-width:34ch;font-size:18px">Тут будуть фото ваших залів і розклад групових занять.</p>
-      <ul class="zl">
-        <li class="rise"><span>01</span><div><b>Вільні ваги</b>Штанги, гантелі, гирі.</div></li>
-        <li class="rise"><span>02</span><div><b>Кардіо</b>Доріжки, велотренажери, гребля.</div></li>
-        <li class="rise"><span>03</span><div><b>Групові</b>Бокс, розтяжка, функціональні.</div></li>
-      </ul>
+  <section class="stage warm" id="warm" data-sec="warm" data-bg="#ffcf3f" data-ink="#12141a">
+    <span class="num" aria-hidden="true">3</span>
+    <div class="pad"><h2>Розминка</h2><svg class="ecg-u" viewBox="0 0 420 26" aria-hidden="true"><path pathLength="1" d="M0 16h120l10-12 10 22 10-14 8 4h262"/></svg><p class="lead">Суглоби, легке кардіо, розтяжка — 10 хвилин, щоб тіло встигло прокинутись.</p></div>
+  </section>
+  <section class="stage strength" id="strength" data-sec="strength" data-bg="#12141a" data-ink="#fff6ea">
+    <span class="num" aria-hidden="true">2</span>
+    <div class="rail" data-dir="1" data-text="СИЛА · ГИРІ · ШТАНГА · " aria-hidden="true"></div>
+    <div class="pad"><h2>Сила</h2><svg class="ecg-u" viewBox="0 0 420 26" aria-hidden="true"><path pathLength="1" d="M0 16h100l10-14 12 24 10-16 8 6h280"/></svg>
+      <ul class="zl"><li><span>01</span><div><b>Вільні ваги</b>Штанги, гантелі, гирі.</div></li><li><span>02</span><div><b>Тренажери</b>Для новачків — з підказками.</div></li><li><span>03</span><div><b>Функціональні</b>Канати, ящики, слайдери.</div></li></ul></div>
+  </section>
+  <section class="stage cardio" id="cardio" data-sec="cardio" data-bg="#ff5a3c" data-ink="#12141a">
+    <div class="stick">
+      <span class="num" aria-hidden="true" style="top:2vh">1</span>
+      <div class="pad"><h2>Кардіо</h2><svg class="ecg-u" viewBox="0 0 420 26" aria-hidden="true"><path pathLength="1" d="M0 16h80l10-14 10 24 10-18 8 8h302"/></svg><p class="lead">Розклад їде, як стрічка доріжки. Приклад розкладу.</p></div>
+      <div class="belt" id="belt"></div>
+      <div class="track" id="track" aria-hidden="true"></div>
     </div>
   </section>
-
-  <section class="plan" id="plan">
-    <div class="pad">
-      <h2 class="rise">Ваш абонемент</h2>
-      <p class="sub rise">Три питання — і цифри покрутяться, як на табло.</p>
-      <div class="calc rise">
-        <div><h3>Мета</h3><div class="seg" id="goal"></div></div>
-        <div><h3>Днів на тиждень</h3><div class="seg" id="days"></div></div>
-        <div><h3>Коли зручно</h3><div class="seg" id="time"></div></div>
-        <div><h3>Тренер</h3><div class="seg" id="coach"></div></div>
-        <div class="out">
-          <span class="name" id="name"></span>
-          <div class="nums">
-            <div><small>Тренувань на місяць</small><span class="odo" id="o1"></span></div>
-            <div><small>Приклад ціни за місяць</small><span class="odo" id="o2"></span><span class="unit">₴</span></div>
-          </div>
-          <p class="fine">Приклад цін — справжні поставить клуб.</p>
-          <button class="btn" type="button" id="go">Хочу на пробне</button>
-          <p class="done" id="done" hidden>Це концепт: на справжньому сайті заявка прийде в Telegram, а адміністратор запросить на пробне тренування.</p>
-        </div>
+  <section class="stage recover" id="recover" data-sec="recover" data-bg="#bfe3d8" data-ink="#12141a">
+    <span class="num" aria-hidden="true">0</span>
+    <div class="pad"><h2>Відновлення</h2><svg class="ecg-u" viewBox="0 0 420 26" aria-hidden="true"><path pathLength="1" d="M0 16h160l6-6 6 10 6-6h242"/></svg><p class="lead">Тут усе сповільнюється: розтяжка, дихання, сауна. Тут буде опис ваших зон відпочинку.</p></div>
+  </section>
+  <section class="plan" id="plan" data-sec="plan" data-bg="#fff6ea" data-ink="#12141a">
+    <div class="pad"><h2>Ваш абонемент</h2><svg class="ecg-u" viewBox="0 0 420 26" aria-hidden="true"><path pathLength="1" d="M0 16h420"/></svg><p class="lead">Пульс заспокоюється — обирайте без поспіху.</p></div>
+    <div class="calc">
+      <div><h3>Мета</h3><div class="seg" id="goal"></div></div>
+      <div><h3>Разів на тиждень: <span id="dTxt">3</span></h3><div class="days"><input type="range" id="days" min="2" max="6" step="1" value="3" aria-label="Разів на тиждень"><svg viewBox="0 0 110 40" aria-hidden="true"><path id="mini"/></svg></div></div>
+      <div><h3>Коли зручно</h3><div class="seg" id="time"></div></div>
+      <div><h3>Тренер</h3><button class="bar" type="button" id="coach" aria-pressed="false"><i></i><span id="coachTxt">Сам</span></button></div>
+      <div class="out" id="out" title="Торкнись — гиря присяде">
+        <span class="name" id="name"></span>
+        <div class="nums"><div><small>Тренувань на місяць</small><span class="odo" id="o1"></span></div><div><small>Приклад ціни за місяць</small><span class="odo" id="o2"></span><span class="unit">₴</span></div></div>
+        <p class="fine">Приклад цін — справжні поставить клуб.</p>
+        <button class="btn" type="button" id="go">Хочу на пробне <em id="reps" hidden></em></button>
+        <p class="done" id="done" hidden>Це концепт: на справжньому сайті заявка прийде в Telegram, а адміністратор запросить на пробне тренування.</p>
       </div>
     </div>
   </section>
-
-  <section class="info">
-    <div class="pad">
-      <h2>Де ми</h2>
-      <div class="cols">
-        <div><b>Адреса</b>Тут буде ваша адреса і карта.</div>
-        <div><b>Телефон</b>Тут буде ваш номер.</div>
-        <div><b>Відгуки</b>Тут будуть відгуки ваших клієнтів.</div>
-      </div>
-    </div>
+  <section class="info" id="info" data-sec="info" data-bg="#ff5a3c" data-ink="#12141a">
+    <div class="pad"><h2>Де ми</h2></div>
+    <div class="cols" style="margin-top:20px"><div><b>Адреса</b>Тут буде ваша адреса і карта.</div><div><b>Телефон</b>Тут буде ваш номер.</div><div><b>Відгуки</b>Тут будуть відгуки ваших клієнтів.</div></div>
   </section>
 </main>
-<footer>Сайт зроблено командою <a href="https://arvisstudio.github.io">Arvis</a></footer>
+<footer id="foot">Сайт зроблено командою&nbsp;<a href="https://arvisstudio.github.io">Arvis</a></footer>
+<a class="btn sticky" id="sticky" href="#plan"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7a4 4 0 0 1 8 0h1v3H7V7z M6 10h12l1 10H5z" fill="currentColor"/></svg>Абонемент</a>
 
 <script type="module">
-const still = /still/.test(location.search);
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-const weak = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 8) <= 4;
-const coarse = matchMedia('(pointer: coarse)').matches;
-// ---- набір Arvis для 3D: цикл кадрів, що не падає ----
-// втрата WebGL-контексту → полотно ховається, сайт працює далі; вікно 0×0 → не малюємо; пішли зі сторінки → звільняємо GPU;
-// повільні кадри → менше пікселів, потім 30 к/с
-const kit = { dead: false, paused: false, gap: weak ? 1000 / 31 : 0, w: innerWidth, h: innerHeight, onDead: null };
-function kill3D() {
-  if (kit.dead) return;
-  kit.dead = true;
-  if (kit.renderer) kit.renderer.domElement.style.display = 'none';
-  if (kit.onDead) try { kit.onDead(); } catch (e) { /* нічого */ }
-}
-function guard3D(canvas, renderer, onResize) {
-  kit.renderer = renderer; kit.onResize = onResize; kit.pr = renderer.getPixelRatio();
-  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); kill3D(); });
-  addEventListener('pagehide', (e) => { kit.paused = true; if (!e.persisted) try { renderer.dispose(); } catch (err) { /* нічого */ } });
-  addEventListener('pageshow', (e) => { if (e.persisted) kit.paused = false; });
-}
-function safeDraw(fn, dt) {
-  if (kit.dead || kit.paused || !(innerWidth > 0 && innerHeight > 0)) return;
-  try {
-    if (innerWidth !== kit.w || innerHeight !== kit.h) { kit.w = innerWidth; kit.h = innerHeight; if (kit.onResize) kit.onResize(); }
-    fn(dt);
-  } catch (e) { kill3D(); }
-}
-function loop(fn) {
-  let last = performance.now(), acc = 0, n = 0;
-  (function tick(now) {
-    if (kit.dead) return;
-    requestAnimationFrame(tick);
-    if (document.hidden || kit.paused) { last = now; return; }
-    if (now - last < kit.gap) return;
-    const raw = (now - last) / 1000; last = now;
-    acc += raw; n++;
-    if (n === 45) {
-      if (acc / n > 1 / 40 && kit.renderer) {
-        if (kit.pr > 1.01) { kit.pr = Math.max(1, kit.pr - 0.35); kit.renderer.setPixelRatio(kit.pr); if (kit.onResize) try { kit.onResize(); } catch (e) { /* нічого */ } }
-        else kit.gap = 1000 / 31;
-      }
-      acc = 0; n = 0;
-    }
-    safeDraw(fn, Math.min(0.05, raw));
-  })(last);
-}
-const $ = (s) => document.querySelector(s);
-const rise = document.querySelectorAll('.rise');
-if (still || reduce) rise.forEach((el) => el.classList.add('in'));
-else { const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: 0, rootMargin: '0px 0px -8% 0px' }); rise.forEach((el) => io.observe(el)); }
+import { reduce, weak, calm, clamp, lerp, seg, smooth, sec, track, blendColors, createStage, studioEnv, run, stickyCTA, arvisCursor, haptic, setVar, S } from '../engine/arvis-scroll.js';
+const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
+track();
+stickyCTA($('#sticky'), $('#top'), $('#plan'));
+arvisCursor($('#foot'));
 
-// ---------- слова зі слідом: що швидше гортаєш, то довший шлейф ----------
+// ---------- розклад-доріжка ----------
+const DAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'], CL = [['Бокс', 'Розтяжка', 'Функціональне'], ['Сайкл', 'Кросфіт', 'Йога'], ['Біг-клуб', 'Бокс', 'Пілатес']];
+$('#belt').innerHTML = DAYS.map((d, i) => `<div class="day"><b>${d}</b><ul>${CL[i % 3].map((c, k) => `<li>${['8:00', '13:00', '19:00'][k]} · ${c}</li>`).join('')}</ul></div>`).join('');
+
+// ---------- слова зі слідом ----------
 const GH = weak ? 3 : 5;
-const rails = [...document.querySelectorAll('.rail')].map((r) => {
-  const txt = r.dataset.text.repeat(3);
-  r.innerHTML = [...Array(GH)].map(() => `<span class="w ghost">${txt}</span>`).join('') + `<span class="w">${txt}</span>`;
-  return { r, dir: +r.dataset.dir, els: [...r.querySelectorAll('.w')], hist: [] };
-});
-let vel = 0, lastY = scrollY, lastT = performance.now();
-function railsFrame(now) {
-  const dt = Math.max(0.001, (now - lastT) / 1000); lastT = now;
-  const y = scrollY;
-  vel += ((y - lastY) / dt - vel) * Math.min(1, dt * 8); lastY = y;
-  if (Math.abs(vel) < 2) vel = 0;
+const rails = $$('.rail').map((r) => { const txt = r.dataset.text.repeat(3); r.innerHTML = [...Array(GH)].map(() => `<span class="w ghost">${txt}</span>`).join('') + `<span class="w">${txt}</span>`; return { r, dir: +r.dataset.dir, els: [...r.querySelectorAll('.w')], span: 0 }; });
+function railsFrame(slow) {
   for (const R of rails) {
-    const rect = R.r.getBoundingClientRect();
-    if (rect.bottom < -50 || rect.top > innerHeight + 50) continue;
-    const span = R.els[0].offsetWidth / 3;
-    let x = ((y * 0.6 * R.dir) % span + span) % span - span;
-    if (reduce) x = -span * 0.1;
-    const lag = reduce ? 0 : Math.max(-260, Math.min(260, vel * 0.09));
+    const rect = R.r.getBoundingClientRect(); if (rect.bottom < -50 || rect.top > innerHeight + 50) continue;
+    if (!R.span) R.span = R.els[0].offsetWidth / 3;
+    const span = R.span; let x = ((scrollY * 0.6 * R.dir) % span + span) % span - span; if (calm) x = -span * 0.1;
+    const lag = calm ? 0 : clamp(S.v * 0.09 * slow, -260, 260);
     R.els.forEach((el, i) => {
       if (i === GH) { el.style.transform = `translate3d(${x.toFixed(1)}px,0,0)`; return; }
-      const k = (GH - i) / GH;   // далі від головного — більший відступ і прозоріший
+      const k = (GH - i) / GH;
       el.style.transform = `translate3d(${(x - lag * k * R.dir * 0.8).toFixed(1)}px,0,0) skewX(${(-lag * 0.04 * R.dir).toFixed(1)}deg)`;
-      el.style.opacity = lag === 0 ? 0 : (0.55 * (1 - k * 0.8)).toFixed(2);
+      el.style.opacity = Math.abs(lag) < 2 ? 0 : (0.55 * (1 - k * 0.8)).toFixed(2);
     });
   }
 }
 
-// ---------- підбір абонемента з одометром ----------
+// ---------- підбір абонемента ----------
 const GOAL = [['Схуднути', 'Кардіо'], ['Сила', 'Силовий'], ['Витривалість', 'Функціональний'], ['Просто рух', 'Вільний']];
-const DAYS = [['2', 8, 700], ['3', 12, 900], ['4', 16, 1100], ['5+', 0, 1300]];
 const TIME = [['Ранок', 0.85, 'ранковий'], ['День', 0.75, 'денний'], ['Вечір', 1, 'вечірній']];
-const COACH = [['Сам', 0], ['З тренером', 1600]];
-const st = { goal: 0, days: 1, time: 2, coach: 0 };
-const seg = (id, list, key) => {
-  const box = $(id);
-  box.innerHTML = list.map((x, i) => `<button type="button" data-i="${i}" aria-pressed="${st[key] === i}">${x[0]}${key === 'coach' && x[1] ? ' +' + x[1] + ' ₴' : ''}</button>`).join('');
-  box.onclick = (e) => { const b = e.target.closest('button'); if (!b) return; st[key] = +b.dataset.i; box.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); calc(); };
-};
-seg('#goal', GOAL, 'goal'); seg('#days', DAYS, 'days'); seg('#time', TIME, 'time'); seg('#coach', COACH, 'coach');
+const st = { goal: 0, time: 2, days: 3, coach: false };
+const seg2 = (id, list, key) => { const box = $(id); box.innerHTML = list.map((x, i) => `<button type="button" data-i="${i}" aria-pressed="${st[key] === i}">${x[0]}</button>`).join('');
+  box.onclick = (e) => { const b = e.target.closest('button'); if (!b) return; st[key] = +b.dataset.i; box.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', x === b)); calc(); }; };
+seg2('#goal', GOAL, 'goal'); seg2('#time', TIME, 'time');
+const daysEl = $('#days');
+daysEl.addEventListener('input', () => { st.days = +daysEl.value; calc(); });
+$('#coach').onclick = (e) => { st.coach = !st.coach; e.currentTarget.setAttribute('aria-pressed', st.coach); $('#coachTxt').textContent = st.coach ? 'З тренером +1600 ₴' : 'Сам'; haptic(8); calc(); };
 function odo(el, value, digits) {
   const s = String(value).padStart(digits, ' ');
   if (el.children.length !== digits) el.innerHTML = [...Array(digits)].map(() => `<i><span>${[...Array(10)].map((_, d) => `<b>${d}</b>`).join('')}<b> </b></span></i>`).join('');
-  [...s].forEach((c, i) => { const n = c === ' ' ? 10 : +c; el.children[i].firstChild.style.transform = `translateY(${-n}em)`; });
+  [...s].forEach((c, i) => { el.children[i].firstChild.style.transform = `translateY(${-(c === ' ' ? 10 : +c)}em)`; });
 }
+// ціна: 2 р/тиж 700, 3 — 900, 4 — 1100, 5–6 — безліміт 1300 (приклад)
+const BASE = { 2: [8, 700], 3: [12, 900], 4: [16, 1100], 5: [0, 1300], 6: [0, 1300] };
 function calc() {
-  const [, visits, base] = DAYS[st.days];
-  const price = Math.round((base * TIME[st.time][1] + COACH[st.coach][1]) / 10) * 10;
+  const [visits, base] = BASE[st.days];
+  const price = Math.round((base * TIME[st.time][1] + (st.coach ? 1600 : 0)) / 10) * 10;
+  $('#dTxt').textContent = st.days >= 5 ? `${st.days} (безліміт)` : st.days;
   $('#name').textContent = `«${GOAL[st.goal][1]} ${TIME[st.time][2]}${visits ? ' ' + visits : ' безліміт'}»`;
-  odo($('#o1'), visits || 30, 2);
-  odo($('#o2'), price, 4);
+  odo($('#o1'), visits || 30, 2); odo($('#o2'), price, 4);
   $('#done').hidden = true;
 }
 calc();
-$('#go').onclick = () => { $('#done').hidden = false; };
+let reps = 0, squat = 0;
+$('#go').onclick = (e) => { e.stopPropagation(); reps++; const r = $('#reps'); r.hidden = false; r.textContent = `×${reps}`;
+  const p = document.createElement('i'); p.className = 'rep'; p.textContent = '+1'; e.currentTarget.appendChild(p); setTimeout(() => p.remove(), 750);
+  $('#done').hidden = false; haptic(10); };
+$('#out').addEventListener('click', () => { squat = 1; haptic(6); });   // тап по картці — гиря присідає
 
-// ---------- 3D-гиря на «пружині» від швидкості прокрутки ----------
+// ---------- пульс: смуга через увесь сайт ----------
+const ecg = $('#ecgp'), mini = $('#mini');
+let phase = 0;
+function beatY(x) { const f = x - Math.floor(x); return f < 0.06 ? -f * 40 : f < 0.1 ? -2.4 + (f - 0.06) * 260 : f < 0.14 ? 8 - (f - 0.1) * 300 : f < 0.18 ? -4 + (f - 0.14) * 100 : 0; }
+function drawEcg(dt, amp, rate) {
+  phase += (dt || 0) * rate;
+  let d = 'M0 22';
+  for (let x = 0; x <= 1000; x += 8) d += `L${x} ${(22 + beatY(x / 1000 * 3 - phase) * amp).toFixed(1)}`;
+  ecg.setAttribute('d', d);
+}
+function drawMini() { let d = 'M0 22'; for (let x = 0; x <= 110; x += 3) d += `L${x} ${(22 + beatY(x / 110 * st.days * 0.6) * 1.3).toFixed(1)}`; mini.setAttribute('d', d); }
+daysEl.addEventListener('input', drawMini); drawMini();
+
+// ---------- 3D-гиря ----------
 let THREE = null;
 try { THREE = await import('three'); } catch (e) { /* без 3D */ }
-const canvas = $('#bell');
-let renderer = null;
-if (THREE) try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !weak, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
-let draw3 = () => {};
-if (renderer) try {
-  renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : coarse ? 1.5 : 1.75));
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
+const stage = createStage(THREE, $('#bell'));
+let bell3 = null;
+if (stage) {
+  const { renderer } = stage;
+  const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
   camera.position.set(0, 0, 13);
-  const pmrem = new THREE.PMREMGenerator(renderer), env = new THREE.Scene();
-  env.add(new THREE.Mesh(new THREE.BoxGeometry(30, 30, 30), new THREE.MeshBasicMaterial({ color: 0x3a2a26, side: THREE.BackSide })));
-  [[24, 4, '#ffffff', 5, 0, 13, 4], [4, 20, '#ffffff', 3.5, -13, 0, 4], [4, 20, '#ff5a3c', 3, 13, 0, 2], [10, 4, '#ffcf3f', 2, 0, -12, 6]].forEach(([w, h, c, k, x, y, z]) => {
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(k), side: THREE.DoubleSide }));
-    m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m);
-  });
-  scene.environment = pmrem.fromScene(env, 0.04).texture;
+  scene.environment = studioEnv(THREE, renderer, 0x3a2a26, [[24, 4, '#ffffff', 5, 0, 13, 4], [4, 20, '#ffffff', 3.5, -13, 0, 4], [4, 20, '#ff5a3c', 3, 13, 0, 2], [10, 4, '#ffcf3f', 2, 0, -12, 6]]);
   const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(-4, 6, 7); scene.add(key);
-  const seg = weak ? 40 : 80;
-  // гиря: куля з пласким дном, ручка-дуга, на боці — коралова цифра 16
+  const segs = weak ? 40 : 72;
   const pivot = new THREE.Group(); scene.add(pivot);
   const bell = new THREE.Group(); pivot.add(bell);
-  const bodyG = new THREE.SphereGeometry(1, seg, seg / 2);
-  { const p = bodyG.attributes.position; for (let i = 0; i < p.count; i++) { let y = p.getY(i); if (y < -0.82) p.setY(i, -0.82 - (y + 0.82) * 0.1); } bodyG.computeVertexNormals(); }
+  const bodyG = new THREE.SphereGeometry(1, segs, segs / 2);
+  { const p = bodyG.attributes.position; for (let i = 0; i < p.count; i++) { const y = p.getY(i); if (y < -0.82) p.setY(i, -0.82 - (y + 0.82) * 0.1); } bodyG.computeVertexNormals(); }
   const iron = new THREE.MeshPhysicalMaterial({ color: 0x15161b, metalness: 0.35, roughness: 0.38, clearcoat: 0.8, clearcoatRoughness: 0.25 });
   bell.add(new THREE.Mesh(bodyG, iron));
   const handle = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.13, 16, 48, Math.PI * 1.12), new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0.18 }));
   handle.position.y = 0.72; handle.rotation.z = -Math.PI * 0.06; bell.add(handle);
   [-1, 1].forEach((s) => { const c = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.2, 0.36, 16), iron); c.position.set(s * 0.6, 0.78, 0); bell.add(c); });
   const tc = document.createElement('canvas'); tc.width = tc.height = 256;
+  const tex = new THREE.CanvasTexture(tc); tex.colorSpace = THREE.SRGBColorSpace;
   const paint = () => { const g = tc.getContext('2d'); g.clearRect(0, 0, 256, 256); g.fillStyle = '#ff5a3c'; g.font = '400 150px "Dela Gothic One", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('16', 128, 140); tex.needsUpdate = true; };
-  const tex = new THREE.CanvasTexture(tc); tex.colorSpace = THREE.SRGBColorSpace; paint(); document.fonts && document.fonts.ready.then(paint);
-  // наліпка повторює кривизну кулі: шматок сфери трохи більшого радіуса
-  const decal = new THREE.Mesh(new THREE.SphereGeometry(1.006, 32, 16, Math.PI * 0.32, Math.PI * 0.36, Math.PI * 0.34, Math.PI * 0.36), new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.5 }));
-  decal.rotation.y = -Math.PI * 0.0; bell.add(decal);
-  bell.position.y = -1.1;   // точка підвісу — ручка
-
+  paint(); if (document.fonts) document.fonts.ready.then(paint);
+  bell.add(new THREE.Mesh(new THREE.SphereGeometry(1.006, 32, 16, Math.PI * 0.32, Math.PI * 0.36, Math.PI * 0.34, Math.PI * 0.36), new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.5 })));
+  bell.position.y = -1.1;
   let W = 1, H = 1;
-  function resize() {
-    renderer.setSize(innerWidth, innerHeight, false);
-    camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
-    H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect;
-  }
-  resize(); addEventListener('resize', resize);
-  guard3D(canvas, renderer, resize);
-  const plan = $('#plan');
-  // маятник: кут і кутова швидкість; поштовх — зміна швидкості прокрутки
-  let ang = 0, angV = 0, prevVel = 0, squash = 0, time = 0, spin = 0;
-  draw3 = (dt) => {
-    time += dt;
-    const pTop = plan.getBoundingClientRect().top;
-    const visible = pTop > innerHeight * 0.35;
-    canvas.style.visibility = visible ? 'visible' : 'hidden';
-    if (!visible) return;
-    const v = reduce ? 0 : Math.max(-4000, Math.min(4000, vel)) / 1000;
-    const acc = dt ? (v - prevVel) / dt : 0; prevVel = v;
-    angV += (-ang * 18 - angV * 2.2 - acc * 0.9) * dt;
-    ang += angV * dt;
-    ang = Math.max(-1.1, Math.min(1.1, ang));
-    squash += ((Math.min(0.35, Math.abs(v) * 0.12)) - squash) * Math.min(1, dt * 8);
-    spin += dt * (0.3 + Math.abs(v) * 1.5);
-    const phone = innerWidth < 700;
-    const sc = phone ? Math.min(1.05, W / 1.8) : Math.min(1.6, H / 2.5);
-    pivot.scale.setScalar(sc);
-    const zonesP = Math.min(1, Math.max(0, scrollY / Math.max(1, $('#zones').offsetTop)));
-    pivot.position.set((phone ? 0.05 : 0.4) * W + Math.min(1, zonesP * 2.5) * (phone ? 0.62 : 0.05) * W, (phone ? 0.42 : 0.5) * H, 0);
+  stage.onResize = (w, h) => { camera.aspect = w / h; camera.updateProjectionMatrix(); H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect; };
+  let ang = 0, angV = 0, prevV = 0, sq = 0, spin = 0, flip = 0;
+  bell3 = (dt, t, slow, flipGo, visible) => {
+    const step = dt || 0.016, v = calm ? 0 : clamp(S.v, -3000, 3000) / 1000 * slow;
+    const acc = (v - prevV) / step; prevV = v;
+    angV += (-ang * 18 - angV * 2.2 - acc * 0.9) * step; ang = clamp(ang + angV * step, -1.1, 1.1);
+    sq += ((Math.min(0.35, Math.abs(v) * 0.12)) - sq) * Math.min(1, step * 8);
+    // присідання від тапу по картці
+    squat = Math.max(0, squat - step * 2.4);
+    const sqz = sq + Math.sin(squat * Math.PI) * 0.3;
+    spin += step * (0.3 + Math.abs(v) * 1.5) * slow;
+    if (flipGo && flip === 0) flip = 0.0001;
+    if (flip > 0) { flip += step / 0.8; if (flip >= 1) flip = 0; }
+    // на телефоні гиря менша й біля правого краю — не закриває заголовки; у підборі — маленька в куті
+    const phone = innerWidth < 700, sc = phone ? Math.min(0.8, W / 2.5) : Math.min(1.5, H / 2.6);
+    const plan = sec('plan'), inPlan = smooth(0.0, 0.3, plan.raw), heroP = clamp(scrollY / Math.max(1, innerHeight * 0.8));
+    pivot.scale.setScalar(sc * lerp(1, phone ? 0.6 : 0.75, inPlan));
+    const px0 = phone ? lerp(0.35, 0.78, heroP) : lerp(0.42, 0.6, heroP);
+    pivot.position.set(lerp(px0 * W, (phone ? 0.78 : 0.62) * W, inPlan), lerp((phone ? 0.36 : 0.42) * H, (phone ? 0.5 : 0.3) * H, inPlan), 0);
     pivot.rotation.z = ang;
-    bell.rotation.y = -0.4 + spin * 0.4 + (reduce ? 0 : Math.sin(time * 0.8) * 0.1);
-    bell.scale.set(1 - squash * 0.35, 1 + squash, 1 - squash * 0.35);
-    renderer.render(scene, camera);
+    bell.rotation.set(flip > 0 ? flip * Math.PI * 2 : 0, -0.4 + spin * 0.4 + (calm ? 0 : Math.sin(t * 0.8) * 0.1), 0);
+    bell.scale.set(1 - sqz * 0.35, 1 + sq - Math.sin(squat * Math.PI) * 0.45, 1 - sqz * 0.35);
+    stage.show(visible);
+    if (visible) renderer.render(scene, camera);
   };
-} catch (e) { canvas.style.display = 'none'; draw3 = () => {}; }
-
-function frame(now, dt) { railsFrame(now); if (!kit.dead) safeDraw(draw3, dt); }
-if (reduce || still) { frame(performance.now(), 0); addEventListener('scroll', () => frame(performance.now(), 0), { passive: true }); if (still) setTimeout(() => frame(performance.now(), 0), 400); }
-else {
-  // слова зі слідом працюють і без 3D, тому цикл — свій, 3D малюється через safeDraw
-  let last = performance.now();
-  (function tick(now) {
-    requestAnimationFrame(tick);
-    if (document.hidden || kit.paused || now - last < kit.gap) return;
-    const dt = Math.min(0.05, (now - last) / 1000); last = now; frame(now, dt);
-  })(last);
 }
+
+// ---------- кадр ----------
+const needle = $('#needle'), bpmEl = $('#bpm'), tempo = $('#tempoTxt'), speedo = $('#speedo'), belt = $('#belt'), trackEl = $('#track');
+const stages = ['warm', 'strength', 'recover'].map((id) => $('#' + id));
+let bpmS = 60, hotUntil = 0, lastBpm = '';
+run((dt, t) => {
+  blendColors();
+  const rec = sec('recover'), plan = sec('plan'), cardio = sec('cardio');
+  // відновлення і підбір — усе сповільнюється
+  const slow = calm ? 0 : 1 - smooth(0.1, 0.5, rec.raw) * 0.7;
+  railsFrame(slow);
+  // темп прокрутки: 0–3000 px/с → 60–180 bpm
+  const bpm = calm ? 60 : 60 + clamp(S.speed / 3000) * 120 * slow;
+  bpmS = lerp(bpmS, bpm, 0.1);
+  const b = Math.round(bpmS) + ' bpm'; if (b !== lastBpm) { lastBpm = b; bpmEl.textContent = b; needle.style.transform = `rotate(${((bpmS - 60) / 120 * 150).toFixed(1)}deg)`; }
+  let flipGo = false;
+  if (bpmS > 176 && performance.now() > hotUntil) { hotUntil = performance.now() + 2500; flipGo = true; speedo.classList.add('hot'); tempo.textContent = 'Ти в темпі!'; haptic(20); }
+  if (hotUntil && performance.now() > hotUntil) { hotUntil = 0; speedo.classList.remove('hot'); tempo.textContent = 'Темп твоєї прокрутки. Розженись до 180!'; }
+  // розділи відкриваються дугою знизу
+  stages.forEach((el) => { const s = sec(el.id); setVar(el, '--r', (calm ? 1 : smooth(0.0, 0.32, s.raw)).toFixed(3)); });
+  // кардіо: вертикальна прокрутка рухає розклад убік (сам скрол не перехоплюємо)
+  const maxX = Math.max(0, belt.scrollWidth - innerWidth + 32), cx = calm ? 0 : -seg(cardio.raw, 0.25, 0.8) * maxX;
+  belt.style.transform = `translate3d(${cx.toFixed(1)}px,0,0)`; setVar(trackEl, '--bx', `${cx.toFixed(0)}px`);
+  // пульс: амплітуда від швидкості, у підборі — спокійний
+  const calmP = smooth(0.0, 0.4, plan.raw) * (1 - smooth(0.7, 1, plan.raw));
+  drawEcg(calm ? 0 : dt, lerp(0.6 + clamp(S.speed / 1500) * 1.6, 0.35, calmP) * slow + 0.15, lerp(1 + bpmS / 60, 0.8, calmP));
+  if (bell3) bell3(dt, t, slow || 0.3, flipGo, plan.raw < 0.85);
+});
 </script>
 </body>
 </html>
