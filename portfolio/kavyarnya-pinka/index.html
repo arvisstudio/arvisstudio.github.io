@@ -243,6 +243,7 @@ footer { z-index: 2; background: var(--esp); color: var(--cream); padding: 18px 
 
 <script type="module">
 import { reduce, weak, calm, clamp, lerp, seg, smooth, ease, sec, track, blendColors, reveal, createStage, studioEnv, run, stickyCTA, arvisCursor, haptic, textPoints } from '../engine/arvis-scroll.js';
+import { setVar } from '../engine/arvis-scroll.js';
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 
 track(); reveal();
@@ -292,7 +293,7 @@ $('#go').onclick = (e) => {
   const b = e.currentTarget;
   for (let i = 0; i < 12; i++) {   // кільце бульбашок пінки
     const d = document.createElement('i'); d.className = 'bubble'; const a = i / 12 * Math.PI * 2;
-    d.style.setProperty('--x', `${Math.cos(a) * 70}px`); d.style.setProperty('--y', `${Math.sin(a) * 44}px`);
+    setVar(d, '--x', `${Math.cos(a) * 70}px`); setVar(d, '--y', `${Math.sin(a) * 44}px`);
     b.appendChild(d); setTimeout(() => d.remove(), 800);
   }
 };
@@ -331,12 +332,12 @@ function pushLetters(bx, by, br, dt) {
 let THREE = null;
 try { THREE = await import('three'); } catch (e) { /* сайт працює без 3D */ }
 const root = document.documentElement;
-const stage = createStage(THREE, $('#scene'), { onLost: () => { $('#dust').style.display = 'none'; root.style.setProperty('--txt', 1); } });
+const stage = createStage(THREE, $('#scene'), { onLost: () => { $('#dust').style.display = 'none'; setVar(root, '--txt', 1); } });
 const dustCv = $('#dust'), dust = dustCv.getContext('2d');
 
 if (!stage) {
   // без 3D: текст меню одразу видно, решта — звичайний сайт
-  root.style.setProperty('--txt', 1);
+  setVar(root, '--txt', 1);
   dustCv.style.display = 'none';
   run(() => blendColors());
 } else {
@@ -477,7 +478,7 @@ if (!stage) {
     // --- пил: крапки летять від зерна до контурів назв меню, гаснуть, проступає справжній текст ---
     dust.clearRect(0, 0, innerWidth, innerHeight);
     const fly = seg(menu.c, 0.04, 0.38), fade = smooth(0.4, 0.58, menu.c);
-    root.style.setProperty('--txt', (calm ? 1 : smooth(0.36, 0.55, menu.c)).toFixed(3));
+    setVar(root, '--txt', (calm ? 1 : smooth(0.36, 0.55, menu.c)).toFixed(3));
     if (fly > 0 && fade < 1 && !calm) {
       dust.fillStyle = '#3b2416'; dust.globalAlpha = 1 - fade;
       for (const p of P) {
@@ -518,7 +519,7 @@ if (!stage) {
     }
     // латте-арт і кнопка: серце малюється, потім розтягується в кнопку
     const drawn = calm ? 1 : seg(art.c, 0.3, 0.6), morph = calm ? 1 : smooth(0.62, 0.82, art.c);
-    artEl.style.setProperty('--d', drawn.toFixed(3)); artEl.style.setProperty('--m', morph.toFixed(3));
+    setVar(artEl, '--d', drawn.toFixed(3)); setVar(artEl, '--m', morph.toFixed(3));
     artGo.classList.toggle('live', morph > 0.9); artGo.tabIndex = morph > 0.9 ? 0 : -1;
     liq.uniforms.uSwirl.value = calm ? 0 : pour.c * 3 * (1 - top);
     liq.uniforms.uTime.value = t;

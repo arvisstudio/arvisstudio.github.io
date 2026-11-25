@@ -49,11 +49,17 @@ function readScroll(dt) {
     s.raw = clamp((vh - r.top) / (vh + r.height));
     s.craw = clamp((vh / 2 - r.top) / Math.max(1, r.height));
     s.p = lerp(s.p, s.raw, k); s.c = lerp(s.c, s.craw, k);
-    if (r.bottom > -vh && r.top < vh * 2) { s.el.style.setProperty('--p', s.p.toFixed(4)); s.el.style.setProperty('--c', s.c.toFixed(4)); }
+    // пишемо в стилі лише те, що змінилось (кожен запис — перерахунок стилів)
+    if (r.bottom > -vh && r.top < vh * 2) { setVar(s.el, '--p', s.p.toFixed(3)); setVar(s.el, '--c', s.c.toFixed(3)); }
   }
-  document.documentElement.style.setProperty('--pp', S.p.toFixed(4));
+}
+const varCache = new WeakMap();
+export function setVar(el, name, value) {
+  let m = varCache.get(el); if (!m) varCache.set(el, (m = {}));
+  if (m[name] !== value) { m[name] = value; el.style.setProperty(name, value); }
 }
 
+let lastBg = '', lastInk = '';
 /** Фон і текст сторінки перетікають: колір наступної секції проступає в останніх 15% поточної. data-bg / data-ink на секціях. */
 export function blendColors(root = document.documentElement) {
   const list = S.secs.filter((s) => s.el.dataset.bg);
@@ -64,6 +70,8 @@ export function blendColors(root = document.documentElement) {
   const t = next === cur ? 0 : smooth(0.85, 1, cur.craw);
   const bg = mixHex(cur.el.dataset.bg, next.el.dataset.bg, t);
   const ink = mixHex(cur.el.dataset.ink || '#12141a', next.el.dataset.ink || '#12141a', t);
+  if (bg === lastBg && ink === lastInk) return;
+  lastBg = bg; lastInk = ink;
   root.style.setProperty('--bg', bg); root.style.setProperty('--ink', ink);
   const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = bg;
 }

@@ -243,6 +243,7 @@ footer { z-index: 2; background: var(--k); color: var(--w); padding: 70px 16px 9
 
 <script type="module">
 import { reduce, weak, calm, clamp, lerp, seg, smooth, sec, track, blendColors, reveal, createStage, studioEnv, run, stickyCTA, arvisCursor, haptic, S } from '../engine/arvis-scroll.js';
+import { setVar } from '../engine/arvis-scroll.js';
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 track(); reveal();
 stickyCTA($('#sticky'), $('#top'), $('#calc'));
@@ -288,7 +289,7 @@ $('#go').onclick = (e) => {
 const scan = $('#scan'), wears = $$('.wear');
 function scanner(c) {
   const s = calm ? 1 : seg(c, 0.2, 0.8);
-  scan.style.setProperty('--s', s.toFixed(3));
+  setVar(scan, '--s', s.toFixed(3));
   wears.forEach((w) => w.classList.toggle('on', s >= +w.dataset.x));
 }
 // ---------- підвал: колесо котиться і лишає слід ----------
@@ -303,9 +304,9 @@ function roll() {
 // ---------- 3D-колесо ----------
 let THREE = null;
 try { THREE = await import('three'); } catch (e) { /* без 3D */ }
-const stage = createStage(THREE, $('#wheel'), { onLost: () => $$('.slot').forEach((s) => s.style.setProperty('--ico', 1)) });
+const stage = createStage(THREE, $('#wheel'), { onLost: () => $$('.slot').forEach((s) => setVar(s, '--ico', 1)) });
 let wheel3 = null;
-if (!stage) $$('.slot').forEach((s) => s.style.setProperty('--ico', 1));
+if (!stage) $$('.slot').forEach((s) => setVar(s, '--ico', 1));
 else {
   const { renderer } = stage;
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(30, 1, 0.1, 200);
@@ -369,7 +370,7 @@ else {
     const sc = phone ? Math.min(1, W / 1.9) : Math.min(1.25, H / 3.2);
     // фази: перший екран → розбирання → політ у маточину → деталі по розділах → калькулятор
     const e = calm ? 0.6 : smooth(0.05, 0.42, ex.c), fly = calm ? 0 : smooth(0.48, 0.86, ex.c);
-    hole.style.setProperty('--m', (calm ? 0 : smooth(0.62, 0.96, ex.c)).toFixed(3));
+    setVar(hole, '--m', (calm ? 0 : smooth(0.62, 0.96, ex.c)).toFixed(3));
     const toCalc = smooth(0.12, 0.3, calcS.raw);
     let x = phone ? 0.22 * W : 0.38 * W, y = phone ? -0.42 * H : -0.12 * H, s = sc;
     const enter = smooth(0, 0.5, ex.raw * 2);
@@ -382,7 +383,7 @@ else {
     let solo = -1, soloK = 0;
     for (const [id, pi] of Object.entries(PARTS_FOR)) {
       const sP = sec(id), k = seg(sP.raw, 0.04, 0.3);
-      slots[pi].style.setProperty('--ico', (calm ? 1 : smooth(0.28, 0.36, sP.raw)).toFixed(3));
+      setVar(slots[pi], '--ico', (calm ? 1 : smooth(0.28, 0.36, sP.raw)).toFixed(3));
       if (solo < 0 && sP.raw > 0.01 && sP.raw < 0.35 && !calm) { solo = pi; soloK = k; }
     }
     wheel.visible = !inParts || solo >= 0 || toCalc > 0;

@@ -220,6 +220,7 @@ footer { z-index: 2; background: var(--navy); color: var(--cream); padding: 18px
 
 <script type="module">
 import { reduce, weak, calm, clamp, lerp, smooth, sec, track, blendColors, reveal, createStage, studioEnv, run, stickyCTA, arvisCursor, haptic, textPoints, S } from '../engine/arvis-scroll.js';
+import { setVar } from '../engine/arvis-scroll.js';
 const $ = (s) => document.querySelector(s), $$ = (s) => [...document.querySelectorAll(s)];
 track(); reveal(); reveal('.tag');
 stickyCTA($('#sticky'), $('#top'), $('#book'));
@@ -257,7 +258,7 @@ function opts(id, list, key, label, onPick) {
   };
 }
 // мікровзаємодії: з картки послуги падають «волосинки», по годині проходить хромовий відблиск
-const hairfall = (btn) => { if (reduce) return; for (let i = 0; i < 8; i++) { const h = document.createElement('i'); h.className = 'hairfall'; h.style.left = `${10 + i * 11}%`; h.style.setProperty('--dx', `${(i % 3 - 1) * 10}px`); h.style.setProperty('--r', `${(i % 2 ? 1 : -1) * 60}deg`); h.style.animationDelay = `${i * 30}ms`; btn.appendChild(h); setTimeout(() => h.remove(), 1000); } };
+const hairfall = (btn) => { if (reduce) return; for (let i = 0; i < 8; i++) { const h = document.createElement('i'); h.className = 'hairfall'; h.style.left = `${10 + i * 11}%`; setVar(h, '--dx', `${(i % 3 - 1) * 10}px`); setVar(h, '--r', `${(i % 2 ? 1 : -1) * 60}deg`); h.style.animationDelay = `${i * 30}ms`; btn.appendChild(h); setTimeout(() => h.remove(), 1000); } };
 const glint = (btn) => { if (reduce) return; btn.classList.remove('glint'); void btn.offsetWidth; btn.classList.add('glint'); setTimeout(() => btn.classList.remove('glint'), 600); };
 function draw() {
   opts('#s', SVC, 's', ([n, p]) => `${n} · ${p} ₴`, hairfall);
@@ -463,7 +464,7 @@ run((dt, t) => {
   }
   if (scOn !== scisOn) { scisOn = scOn; scis.style.opacity = scOn ? 1 : 0; }
   // майстри відкриваються по лінії розрізу навскіс
-  mstEl.style.setProperty('--r', (calm ? 1 : smooth(0.12, 0.42, mst.raw)).toFixed(3));
+  setVar(mstEl, '--r', (calm ? 1 : smooth(0.12, 0.42, mst.raw)).toFixed(3));
   drawHair(dt, t);
   if (pole3) pole3(dt, t, clamp(scrollY / Math.max(1, heroEl.offsetHeight)), clamp(tipLen / Math.max(1, cutLen)));
 });
