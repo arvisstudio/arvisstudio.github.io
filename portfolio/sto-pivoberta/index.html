@@ -70,7 +70,10 @@ h1 { font: 700 clamp(70px, 23vw, 300px)/.82 var(--cond); text-transform: upperca
 .part ul { list-style: none; padding: 0 16px; margin: 26px 0 0; max-width: 620px; border-top: 3px solid currentColor; }
 .part li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 14px 0; border-bottom: 3px solid currentColor; font-weight: 600; }
 .part li b { font: 700 18px/1.2 var(--cond); white-space: nowrap; }
-.part .note { padding: 0 16px; margin: 12px 0 0; font-size: 15px; font-weight: 600; opacity: .85; }
+.part .note { padding: 0 16px; margin: 12px 0 0; font-size: 15px; font-weight: 600; opacity: .9; }
+.part h2, .part li, .part .note { background: var(--bg); }
+.part .note { display: inline-block; margin-left: 16px; padding: 4px 6px; }
+.part ul, .part .head { position: relative; z-index: 3; }
 
 /* 4. діагностика: жовта смуга сканера відкриває підписи «знос» */
 .diag { height: 200vh; }
@@ -78,7 +81,7 @@ h1 { font: 700 clamp(70px, 23vw, 300px)/.82 var(--cond); text-transform: upperca
 .scan { position: relative; width: min(520px, 92vw); aspect-ratio: 4 / 3; border: 3px solid currentColor; background: var(--w); overflow: hidden; }
 .scan svg.parts { position: absolute; inset: 0; width: 100%; height: 100%; }
 .bar { position: absolute; top: 0; bottom: 0; width: 14px; left: calc(var(--s, 0) * 104% - 14px); background: var(--y); border-left: 3px solid var(--k); border-right: 3px solid var(--k); }
-.wear { position: absolute; background: var(--k); color: var(--y); font: 700 15px/1.2 var(--cond); text-transform: uppercase; padding: 5px 8px; letter-spacing: .03em; opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .3s; }
+.wear { position: absolute; z-index: 2; background: #12141a; color: #ffcf3f; border: 2px solid #ffcf3f; font: 700 15px/1.2 var(--cond); text-transform: uppercase; padding: 5px 8px; letter-spacing: .03em; opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .3s; }
 .wear.on { opacity: 1; transform: none; }
 
 /* 5. калькулятор */
@@ -402,7 +405,7 @@ else {
         vis = i === solo;
         if (vis) {
           const r = slots[i].getBoundingClientRect(), [tx, ty] = fromScreen(r.left + r.width / 2, r.top + r.height / 2);
-          local = [lerp(0, tx, soloK), lerp(0, ty, soloK), lerp(sc * 1.4, r.width / innerHeight * H * 0.42, soloK)];
+          local = [lerp(W * 0.55, tx, soloK), lerp(H * 0.45, ty, soloK), lerp(sc * 0.7, r.width / innerHeight * H * 0.42, soloK)];
         }
       }
       if (toCalc > 0.5) {

@@ -46,7 +46,7 @@ h2 { font: 400 clamp(44px, 10vw, 120px)/.95 var(--serif); margin: 0 0 10px; }
 .time { display: inline-block; font: 800 14px/1 var(--sans); letter-spacing: .12em; background: var(--cream); color: #2d1b0e; padding: 5px 8px; margin-bottom: 10px; }
 
 /* годинник у куті: йде разом із прокруткою (04:00 → 08:00) */
-.clock { position: fixed; z-index: 5; right: 12px; top: 64px; width: 64px; height: 64px; pointer-events: none; }
+.clock { position: fixed; z-index: 5; right: 10px; bottom: max(12px, env(safe-area-inset-bottom)); width: 54px; height: 54px; pointer-events: none; }
 .clock .h, .clock .m { transform-origin: 32px 32px; }
 .clock text { font: 800 11px/1 var(--sans); }
 
@@ -66,7 +66,8 @@ h1 { font: 400 clamp(64px, 19vw, 250px)/.85 var(--serif); margin: 0; padding: 0 
 .oven .stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; overflow: clip; display: grid; place-items: center; }
 .mouth { position: absolute; left: 50%; top: 56%; width: 64vmin; height: 52vmin; transform: translate(-50%, -50%) scale(calc(1 + var(--z, 0) * 9)); border-radius: 50% 50% 0 0 / 70% 70% 0 0; background: var(--ember); border: 10px solid #4a2a14; box-shadow: 0 0 0 16px #6b3d1c; }
 .mouth::after { content: ""; position: absolute; left: 10%; right: 10%; bottom: 14%; height: 8%; background: #ffd27a; border-radius: 99px; }
-.oven .label { position: absolute; top: 12vh; left: 16px; right: 16px; z-index: 3; opacity: calc(1 - var(--z, 0) * 3); }
+.oven .label { position: absolute; top: 12vh; left: 16px; right: 16px; z-index: 3; opacity: calc(1 - var(--z, 0) * 3); color: #f7e7c4; }
+.oven .label h2 { display: inline-block; background: #2d1b0e; padding: 0 10px; }
 /* 5. меню */
 .goods { display: grid; gap: 34vh; padding: 12vh 0 20vh; }
 .item { display: grid; gap: 8px; max-width: 520px; padding: 0 16px; }
@@ -117,9 +118,10 @@ footer { z-index: 2; padding: 18px 16px 96px; font-size: 15px; background: #2d1b
   .nav, .pad, h1, .hero .low, .item { padding-left: 56px; padding-right: 56px; }
   .sheet, .trio { margin: 0 56px; }
   .trio { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .clock { right: 28px; width: 76px; height: 76px; }
+  .clock { right: 28px; bottom: 24px; width: 76px; height: 76px; }
   footer { padding-left: 56px; padding-bottom: 40px; }
 }
+@media (max-width: 699px) { .hero .low { padding-right: 72px; } }
 @media (prefers-reduced-motion: reduce) { .js .rise-in { opacity: 1; transform: none; transition: none; } .sticky, .when .hand { transition: none; } }
 </style>
 </head>
@@ -228,8 +230,15 @@ $('#goods').addEventListener('click', (e) => {
 // ---------- годинник у куті: 04:00 → 08:00 разом із прокруткою ----------
 const ch = $('#ch'), cm = $('#cm'), ct = $('#ct');
 let lastMin = -1;
+const MARKS = [['hero', 240], ['knead', 300], ['rise', 360], ['oven', 420], ['menu', 460], ['order', 480], ['info', 480]];
 function clock() {
-  const mins = Math.round(4 * 60 + (calm ? 1 : S.p) * 4 * 60);
+  let mins = 240;
+  for (let i = 0; i < MARKS.length; i++) {
+    const s = sec(MARKS[i][0]); if (!s.el) continue;
+    const r = s.el.getBoundingClientRect(), into = clamp((innerHeight * 0.5 - r.top) / Math.max(1, r.height));
+    if (r.top < innerHeight * 0.5) mins = MARKS[i][1] + (i + 1 < MARKS.length ? (MARKS[i + 1][1] - MARKS[i][1]) * into : 0);
+  }
+  mins = Math.round(calm ? 480 : Math.min(480, mins));
   if (mins === lastMin) return; lastMin = mins;
   const h = Math.floor(mins / 60), m = mins % 60;
   ch.style.transform = `rotate(${(h % 12 + m / 60) * 30}deg)`; cm.style.transform = `rotate(${m * 6}deg)`;

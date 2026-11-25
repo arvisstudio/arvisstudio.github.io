@@ -69,7 +69,8 @@ export function blendColors(root = document.documentElement) {
   const cur = list[i], next = list[Math.min(list.length - 1, i + 1)];
   const t = next === cur ? 0 : smooth(0.85, 1, cur.craw);
   const bg = mixHex(cur.el.dataset.bg, next.el.dataset.bg, t);
-  const ink = mixHex(cur.el.dataset.ink || '#12141a', next.el.dataset.ink || '#12141a', t);
+  // текст не змішуємо (сірий на змішаному фоні нечитабельний) — він перемикається посередині переходу
+  const ink = t < 0.5 ? (cur.el.dataset.ink || '#12141a') : (next.el.dataset.ink || '#12141a');
   if (bg === lastBg && ink === lastInk) return;
   lastBg = bg; lastInk = ink;
   root.style.setProperty('--bg', bg); root.style.setProperty('--ink', ink);
@@ -175,6 +176,8 @@ export function run(update) {
 /** Закріплена кнопка дії: з'являється після першого екрана, ховається, коли видно форму (щоб не дублювати). */
 export function stickyCTA(btn, hero, target) {
   if (!btn) return;
+  // текст кнопки — завжди в один рядок і в межах екрана
+  Object.assign(btn.style, { whiteSpace: 'nowrap', maxWidth: 'calc(100vw - 24px)', fontSize: innerWidth < 380 ? '15px' : '' });
   const state = { heroOut: false, formIn: false };
   const set = () => btn.classList.toggle('on', state.heroOut && !state.formIn);
   if (!('IntersectionObserver' in window)) { btn.classList.add('on'); return; }

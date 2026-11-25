@@ -72,9 +72,11 @@ h1 span { display: block; } h1 span:nth-child(2) { padding-left: .5em; }
 .tag:nth-child(even) { justify-self: end; }
 .tag b { display: block; font: italic 800 clamp(21px, 2.6vw, 28px)/1.15 var(--serif); }
 .tag span { font-weight: 800; } .tag small { display: block; font-size: 15px; opacity: .85; }
-.js .tag { opacity: 0; transform: translateX(var(--from, -40px)) rotate(-3deg); transition: opacity .5s, transform .7s cubic-bezier(.2, 1.3, .4, 1); }
+.js .tag { transform: translateX(var(--from, -40px)) rotate(-3deg); transition: transform .7s cubic-bezier(.2, 1.3, .4, 1); }
 .js .tag:nth-child(even) { --from: 40px; }
-.js .tag.in { opacity: 1; transform: none; }
+.js .tag.in { transform: none; }
+.svc .note { display: inline-block; background: var(--bg); padding: 2px 6px; margin-left: -6px; }
+.tags { position: relative; z-index: 3; }
 
 /* 3. майстри: секція відкривається по лінії розрізу навскіс */
 .mst { padding: 14vh 0 12vh; background: var(--navy); color: var(--cream); clip-path: polygon(0 0, calc(var(--r, 1) * 170%) 0, calc(var(--r, 1) * 170% - 70%) 100%, 0 100%); }
@@ -206,7 +208,7 @@ footer { z-index: 2; background: var(--navy); color: var(--cream); padding: 18px
     </div>
   </section>
 
-  <section class="info" id="info" data-sec="info" data-bg="#d62a24" data-ink="#fff6ea">
+  <section class="info" id="info" data-sec="info" data-bg="#b01f1a" data-ink="#fff6ea">
     <div class="pad"><h2 class="rise">Де ми</h2></div>
     <div class="grid3 rise">
       <div><b>Адреса</b>Тут буде ваша адреса і карта.</div>

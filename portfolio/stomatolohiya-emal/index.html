@@ -58,7 +58,7 @@ header, main, section, footer { position: relative; }
 .tx small { display: inline-block; font: 700 14px/1 var(--sans); letter-spacing: .1em; background: var(--deep); color: var(--white); padding: 6px 9px; border-radius: 6px; }
 .tx h1, .tx h2 { font: 800 clamp(48px, 14vw, 180px)/.86 var(--head); letter-spacing: -.05em; margin: 10px 0; }
 .tx h2 { font-size: clamp(40px, 10vw, 120px); }
-.tx p { margin: 0; font: 600 clamp(17px, 2vw, 21px)/1.4 var(--sans); max-width: 30ch; background: var(--lbg, #fff); }
+.tx p { margin: 0; font: 600 clamp(17px, 2vw, 21px)/1.4 var(--sans); max-width: 30ch; }
 .hint { display: inline-flex; gap: 8px; align-items: center; margin-top: 12px; font-weight: 600; font-size: 15px; }
 .gauge { position: absolute; z-index: 8; right: 12px; top: 24vh; bottom: 18vh; width: 98px; pointer-events: none; }
 .gauge i { position: absolute; left: 10px; top: 0; bottom: 0; width: 3px; background: var(--deep); border-radius: 2px; }
@@ -113,7 +113,7 @@ footer { z-index: 2; background: var(--deep); color: var(--white); padding: 18px
   .slots { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   footer { padding-left: 56px; padding-bottom: 40px; }
 }
-@media (max-width: 699px) { .peek { padding: 0 100px 15vh 16px; justify-content: flex-end; font-size: 17px; } .gauge { width: 84px; right: 6px; } .gauge span { font-size: 12px; } .tx { right: 96px; } }
+@media (max-width: 699px) { .peek { padding: 0 44px 15vh 16px; justify-content: flex-end; font-size: 17px; } .gauge { width: 30px; right: 8px; } .gauge span { display: none; } .gauge span.on { display: block; right: 26px; left: auto; } .tx { right: 44px; } }
 @media (prefers-reduced-motion: reduce) { .sticky, .keys .t { transition: none; } }
 </style>
 </head>
@@ -235,6 +235,7 @@ $('#go').onclick = (e) => {
 show();
 
 // ---------- лінза: за пальцем/курсором; на телефоні сама повільно «плаває» ----------
+const gaugeLabels = $$('#gauge span');
 const stick = $('#stick'), layers = $$('.layer.masked'), ring = $('#ring'), txs = $$('.tx'), gauge = $('#gauge');
 let px = innerWidth * 0.62, py = innerHeight * 0.55, tx = px, ty = py, manual = 0;
 const setT = (x, y) => { tx = x; ty = y; manual = 2.5; };
@@ -339,9 +340,10 @@ run((dt, t) => {
   ring.style.display = lensOn ? 'block' : 'none';
   if (lensOn) { const rr = lensR + smooth(0.45, 1, f) * (big - lensR); ring.style.width = ring.style.height = `${rr * 2}px`; ring.style.transform = `translate(${(px - rr).toFixed(0)}px, ${(py - rr).toFixed(0)}px)`; ring.style.opacity = rr > innerWidth ? 0 : 1; }
   // текст поточного шару (справжній HTML), шкала глибини
-  const active = calm ? 0 : Math.min(4, Math.round(depth - 0.25));
+  const active = calm ? 0 : Math.min(4, k + (f > 0.72 ? 1 : 0));   // текст — того шару, що зараз на весь екран
   txs.forEach((el, i) => { setVar(el, 'opacity', i === active ? '1' : '0'); el.classList.toggle('on', i === active); });
   setVar(gauge, '--d', clamp(depth / 3).toFixed(3));
+  gaugeLabels.forEach((g, i) => g.classList.toggle('on', i === Math.min(3, active)));
   setVar(gauge, 'opacity', (1 - smooth(3.2, 3.6, depth)).toFixed(2));
   // слід щітки
   if (brush.length) { const live = performance.now() - mouseT < 600; let x = mouseX, y = mouseY;

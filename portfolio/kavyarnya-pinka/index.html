@@ -47,7 +47,7 @@ h2 { font: 400 clamp(36px, 8.5vw, 104px)/.95 var(--disp); letter-spacing: -.03em
 
 /* 1. перший екран: зерно падає крізь назву, літери розлітаються, як кеглі */
 .hero { min-height: calc(100svh - 38px); display: grid; align-content: space-between; padding-bottom: 28px; }
-h1 { margin: 6vh 0 0; padding: 0 16px; font: 400 clamp(68px, 23vw, 300px)/.85 var(--disp); letter-spacing: -.04em; display: flex; flex-wrap: wrap; }
+h1 { margin: 6vh 0 0; padding: 0 16px; font: 400 clamp(54px, 17.5vw, 300px)/.85 var(--disp); letter-spacing: -.04em; display: flex; flex-wrap: nowrap; }
 h1 span { display: inline-block; will-change: transform; }
 .beat { display: flex; flex-wrap: wrap; gap: 6px 10px; padding: 0 16px; margin: 14px 0 0; list-style: none; font: 800 16px/1 var(--sans); }
 .beat li { background: var(--esp); color: var(--cream); padding: 7px 12px; border-radius: 99px; }
@@ -473,7 +473,8 @@ if (!stage) {
     bean.rotation.set(t * 0.6 + roast.c * 4, t * 0.9 + hero.c * 6, 0.3);
     beanM.color.copy(GREEN).lerp(ROAST, smooth(0.15, 0.85, roast.c));
     const [bx, by] = toScreen(bean.position);
-    pushLetters(bx, by, (phone ? 70 : 140) * (1 - burst), step);
+    const pushing = smooth(0.03, 0.12, fall) * (1 - smooth(0.85, 1, fall));
+    pushLetters(bx, by, (phone ? 70 : 140) * (1 - burst) * pushing, step);
 
     // --- пил: крапки летять від зерна до контурів назв меню, гаснуть, проступає справжній текст ---
     dust.clearRect(0, 0, innerWidth, innerHeight);
@@ -492,14 +493,19 @@ if (!stage) {
     // --- чашка: піднімається в «Наливаємо», згори в «Латте-арт», сідає у форму замовлення ---
     const rise = smooth(0, 0.3, pour.c), fill = calm ? 0.92 : smooth(0.22, 0.85, pour.c);
     const top = smooth(0.05, 0.4, art.c);
-    const toOrder = smooth(0, 0.25, order.c);
+    const toOrder = smooth(0.05, 0.32, order.c);
     const cupOn = pour.p > 0.02 && order.c < 0.9;
     cup.visible = cupOn;
     let cx = 0, cy = lerp(-H * 1.6, -H * 0.42, rise), cs = sc * 1.25;
     cy = lerp(cy, -H * 0.12, top); cs = lerp(cs, sc * 1.7, top);
+    if (toOrder === 0) cs *= 1 - (calm ? 0 : smooth(0.84, 0.97, art.c));   // наприкінці латте-арту чашка зникає — під заголовком форми її вже нема
     if (toOrder > 0) {
       const r = spot.getBoundingClientRect(), [wx, wy] = fromScreen(r.left + r.width / 2, r.top + r.height * 0.62);
-      cx = lerp(cx, wx, toOrder); cy = lerp(cy, wy, toOrder); cs = lerp(cs, r.height / innerHeight * H * 0.95, toOrder);
+      // чашка спершу зменшується й зникає, а потім з'являється вже у віконці — не їде через текст
+      const target = Math.min(r.height / innerHeight * H * 0.42, r.width / innerWidth * W * 0.4);
+      const away = Math.max(smooth(0, 0.4, toOrder), smooth(0.84, 0.97, art.c)), land = smooth(0.55, 1, toOrder);
+      cx = land > 0 ? wx : cx; cy = land > 0 ? wy : cy;
+      cs = land > 0 ? target * land : cs * (1 - away);
     }
     // розмір S/M/L — пружиною
     sizeV += ((sizeGoal - sizeNow) * 180 - sizeV * 14) * step; sizeNow += sizeV * step;
@@ -529,7 +535,7 @@ if (!stage) {
 
     // полотно спить, коли нічого не видно (між зерном і чашкою або після замовлення)
     // у формі чашка сидить у віконці панелі — полотно (без дотиків) піднімаємо над панеллю
-    sceneCv.style.zIndex = toOrder > 0.55 ? 4 : 1;
+    sceneCv.style.zIndex = toOrder > 0.97 ? 4 : 1;
     const any = bean.visible || cup.visible;
     stage.show(any);
     if (any) renderer.render(scene, camera);

@@ -99,7 +99,7 @@ h2 { font: 400 clamp(44px, 10vw, 128px)/.95 var(--disp); margin: 0; letter-spaci
 .out .name { font: 400 clamp(24px, 3.4vw, 36px)/1.1 var(--disp); color: var(--sun); }
 .nums { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .nums div { border: 2px solid var(--cream); padding: 10px 12px; white-space: nowrap; }
-.nums small { display: block; font-size: 14px; opacity: .85; }
+.nums small { display: block; font-size: 14px; opacity: .85; white-space: normal; line-height: 1.25; margin-bottom: 4px; }
 .odo { display: inline-flex; font: 400 clamp(30px, 6vw, 58px)/1 var(--disp); height: 1em; overflow: hidden; vertical-align: bottom; }
 .odo i { display: block; font-style: normal; height: 1em; overflow: hidden; }
 .odo i span { display: block; transition: transform .9s cubic-bezier(.2, .9, .25, 1.15); }
@@ -312,11 +312,12 @@ if (stage) {
     if (flipGo && flip === 0) flip = 0.0001;
     if (flip > 0) { flip += step / 0.8; if (flip >= 1) flip = 0; }
     // на телефоні гиря менша й біля правого краю — не закриває заголовки; у підборі — маленька в куті
-    const phone = innerWidth < 700, sc = phone ? Math.min(0.8, W / 2.5) : Math.min(1.5, H / 2.6);
+    const phone = innerWidth < 700, sc = phone ? Math.min(0.62, W / 3.3) : Math.min(1.5, H / 2.6);
     const plan = sec('plan'), inPlan = smooth(0.0, 0.3, plan.raw), heroP = clamp(scrollY / Math.max(1, innerHeight * 0.8));
     pivot.scale.setScalar(sc * lerp(1, phone ? 0.6 : 0.75, inPlan));
-    const px0 = phone ? lerp(0.35, 0.78, heroP) : lerp(0.42, 0.6, heroP);
-    pivot.position.set(lerp(px0 * W, (phone ? 0.78 : 0.62) * W, inPlan), lerp((phone ? 0.36 : 0.42) * H, (phone ? 0.5 : 0.3) * H, inPlan), 0);
+    // телефон: гиря біля правого краю, у вільній смузі між заголовком і текстом; у формі — схована
+    const px0 = phone ? 0.84 : lerp(0.42, 0.6, heroP), py0 = phone ? lerp(-0.02, 0.18, heroP) : 0.42;
+    pivot.position.set(lerp(px0 * W, (phone ? 0.84 : 0.62) * W, inPlan), lerp(py0 * H, (phone ? 0.5 : 0.3) * H, inPlan), 0);
     pivot.rotation.z = ang;
     bell.rotation.set(flip > 0 ? flip * Math.PI * 2 : 0, -0.4 + spin * 0.4 + (calm ? 0 : Math.sin(t * 0.8) * 0.1), 0);
     bell.scale.set(1 - sqz * 0.35, 1 + sq - Math.sin(squat * Math.PI) * 0.45, 1 - sqz * 0.35);
@@ -350,7 +351,7 @@ run((dt, t) => {
   // пульс: амплітуда від швидкості, у підборі — спокійний
   const calmP = smooth(0.0, 0.4, plan.raw) * (1 - smooth(0.7, 1, plan.raw));
   drawEcg(calm ? 0 : dt, lerp(0.6 + clamp(S.speed / 1500) * 1.6, 0.35, calmP) * slow + 0.15, lerp(1 + bpmS / 60, 0.8, calmP));
-  if (bell3) bell3(dt, t, slow || 0.3, flipGo, plan.raw < 0.85);
+  if (bell3) bell3(dt, t, slow || 0.3, flipGo, innerWidth < 700 ? plan.raw < 0.12 : plan.raw < 0.85);
 });
 </script>
 </body>
