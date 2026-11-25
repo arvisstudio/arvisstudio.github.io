@@ -154,6 +154,49 @@ footer { position: relative; z-index: 2; background: var(--ink); color: var(--cr
 const still = /still/.test(location.search);
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const weak = (navigator.hardwareConcurrency || 4) <= 4 || (navigator.deviceMemory || 8) <= 4;
+const coarse = matchMedia('(pointer: coarse)').matches;
+// ---- набір Arvis для 3D: цикл кадрів, що не падає ----
+// втрата WebGL-контексту → полотно ховається, сайт працює далі; вікно 0×0 → не малюємо; пішли зі сторінки → звільняємо GPU;
+// повільні кадри → менше пікселів, потім 30 к/с
+const kit = { dead: false, paused: false, gap: weak ? 1000 / 31 : 0, w: innerWidth, h: innerHeight, onDead: null };
+function kill3D() {
+  if (kit.dead) return;
+  kit.dead = true;
+  if (kit.renderer) kit.renderer.domElement.style.display = 'none';
+  if (kit.onDead) try { kit.onDead(); } catch (e) { /* нічого */ }
+}
+function guard3D(canvas, renderer, onResize) {
+  kit.renderer = renderer; kit.onResize = onResize; kit.pr = renderer.getPixelRatio();
+  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); kill3D(); });
+  addEventListener('pagehide', (e) => { kit.paused = true; if (!e.persisted) try { renderer.dispose(); } catch (err) { /* нічого */ } });
+  addEventListener('pageshow', (e) => { if (e.persisted) kit.paused = false; });
+}
+function safeDraw(fn, dt) {
+  if (kit.dead || kit.paused || !(innerWidth > 0 && innerHeight > 0)) return;
+  try {
+    if (innerWidth !== kit.w || innerHeight !== kit.h) { kit.w = innerWidth; kit.h = innerHeight; if (kit.onResize) kit.onResize(); }
+    fn(dt);
+  } catch (e) { kill3D(); }
+}
+function loop(fn) {
+  let last = performance.now(), acc = 0, n = 0;
+  (function tick(now) {
+    if (kit.dead) return;
+    requestAnimationFrame(tick);
+    if (document.hidden || kit.paused) { last = now; return; }
+    if (now - last < kit.gap) return;
+    const raw = (now - last) / 1000; last = now;
+    acc += raw; n++;
+    if (n === 45) {
+      if (acc / n > 1 / 40 && kit.renderer) {
+        if (kit.pr > 1.01) { kit.pr = Math.max(1, kit.pr - 0.35); kit.renderer.setPixelRatio(kit.pr); if (kit.onResize) try { kit.onResize(); } catch (e) { /* нічого */ } }
+        else kit.gap = 1000 / 31;
+      }
+      acc = 0; n = 0;
+    }
+    safeDraw(fn, Math.min(0.05, raw));
+  })(last);
+}
 const $ = (s) => document.querySelector(s);
 const rise = document.querySelectorAll('.rise');
 if (still || reduce) rise.forEach((el) => el.classList.add('in'));
@@ -223,8 +266,8 @@ const canvas = $('#bell');
 let renderer = null;
 if (THREE) try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !weak, powerPreference: 'high-performance' }); } catch (e) { renderer = null; }
 let draw3 = () => {};
-if (renderer) {
-  renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : 1.75));
+if (renderer) try {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, weak ? 1.25 : coarse ? 1.5 : 1.75));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
@@ -263,6 +306,7 @@ if (renderer) {
     H = Math.tan(THREE.MathUtils.degToRad(15)) * camera.position.z; W = H * camera.aspect;
   }
   resize(); addEventListener('resize', resize);
+  guard3D(canvas, renderer, resize);
   const plan = $('#plan');
   // маятник: кут і кутова швидкість; поштовх — зміна швидкості прокрутки
   let ang = 0, angV = 0, prevVel = 0, squash = 0, time = 0, spin = 0;
@@ -289,15 +333,16 @@ if (renderer) {
     bell.scale.set(1 - squash * 0.35, 1 + squash, 1 - squash * 0.35);
     renderer.render(scene, camera);
   };
-}
+} catch (e) { canvas.style.display = 'none'; draw3 = () => {}; }
 
-function frame(now, dt) { railsFrame(now); draw3(dt); }
+function frame(now, dt) { railsFrame(now); if (!kit.dead) safeDraw(draw3, dt); }
 if (reduce || still) { frame(performance.now(), 0); addEventListener('scroll', () => frame(performance.now(), 0), { passive: true }); if (still) setTimeout(() => frame(performance.now(), 0), 400); }
 else {
-  const gap = weak ? 1000 / 31 : 0; let last = performance.now();
+  // слова зі слідом працюють і без 3D, тому цикл — свій, 3D малюється через safeDraw
+  let last = performance.now();
   (function tick(now) {
     requestAnimationFrame(tick);
-    if (document.hidden || now - last < gap) return;
+    if (document.hidden || kit.paused || now - last < kit.gap) return;
     const dt = Math.min(0.05, (now - last) / 1000); last = now; frame(now, dt);
   })(last);
 }
